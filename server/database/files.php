@@ -1,6 +1,6 @@
 <?php
 require_once("connection.php");
-/* Files Manipulation */
+/* Files Manipulation functions */
 
 function createFile($path, $user){
     global $db;
