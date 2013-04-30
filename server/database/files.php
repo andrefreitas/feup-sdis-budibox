@@ -19,6 +19,13 @@ function addFileChunk($path, $user, $hosts){
     $files->update(array("path" => $path, "user" => $user),$newData);
 }
 
+function addFileChunkHost($path,$user,$chunkNumber,$host){
+    global $db;
+    $files = $db->files;
+    $newData = array('$addToSet' => array("chunks." . (string)$chunkNumber => $host));
+    $files->update(array("path" => $path, "user" => $user),$newData);
+}
+
 function setFileStatus($path, $user, $status){
     global $db;
     $files = $db->files;
