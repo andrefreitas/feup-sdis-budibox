@@ -22,6 +22,10 @@ function getUser($email){
     return $users->findOne(array("email" => $email));
 }
 
+function userExists($email){
+    return count(getUser($email)) > 0;
+}
+
 function getUserKey($email){
     global $db;
     $users = $db->users;
