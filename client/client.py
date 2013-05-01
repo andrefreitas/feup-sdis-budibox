@@ -9,7 +9,7 @@ class Client:
         self.name = name
         self.email = email
         self.password = password
-        self.api = "http://127.0.0.1/server/api/"
+        self.api = "http://master.budibox.com/api/"
     
     def login(self):
         data = 'login.php?auth=12&email="'+self.email+'"&password="'+self.password+'"'
@@ -17,12 +17,13 @@ class Client:
     
     def request(self, data):
         request = urllib.urlopen(self.api + data)
-        json_response = json.load(request)        
+        json_response = json.load(request) 
+        print json_response['result']
         if (json_response['result'] == 'error'):
             print "Username or password incorrect. Please try again or register at http://www.budibox.com!"
         else:
             print "Login successful!"
 
-c = Client('ana', 'ana', 'teste')
+c = Client('ana', 'tt', 'maasd')
 c.login()
         
