@@ -1,8 +1,5 @@
 from file import File
-import httplib
-import urllib
-import urllib2
-import json
+
 
 class Client:
     def __init__(self, name, email, password):
@@ -26,4 +23,4 @@ class Client:
 
 c = Client('ana', 'tt', 'maasd')
 c.login()
-        
+     
