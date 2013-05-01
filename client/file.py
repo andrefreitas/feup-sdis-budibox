@@ -7,7 +7,7 @@ import re
 import hashlib
 import os
 import datetime
-from Crypto.Cipher import ARC4
+from Crypto.Cipher import ARC4 
 
 CHUNK_SIZE=64000
 
