@@ -1,0 +1,98 @@
+@CHARSET "ISO-8859-1";
+@font-face {
+    font-family: "Hattori Hanzo";
+    src: url("../lib/Hattori_Hanzo.otf") ;
+}
+body{
+	background: url("../images/bgpattern.png");
+	padding: 0;
+	margin: 0;
+	font-family: "Hattori Hanzo";
+	color: #3a3a3a;
+}
+
+#header{
+	height: 111px;
+	width: 100%;
+	background: url("../images/header.png") repeat-x;
+}
+
+.container{
+	width:1100px;
+	margin: 0 auto;
+}
+
+.featureLogo{
+	display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.blocks{
+	margin-top: 20px;
+	background: red;
+}
+
+.block img{
+	float: left;
+}
+
+
+.block{
+	font-size: 19px;
+	float: left;
+	margin-right: 40px;
+	padding-right: 30px;
+	height: 200px;
+}
+
+.register{
+	width: 180px;
+}
+
+.unlimited{
+	width: 350px;
+}
+
+.download{
+	width: 360px;
+}
+
+.download img{
+	margin-top: 10px;
+	
+}
+
+.block:last-child{
+	border-right: none;
+}
+
+.block h1{
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+input{
+	border-radius: 5px;
+	border: solid 1px  #cbcbcb; 
+	padding: 5px;
+}
+
+input:hover{
+	background: #f8f8f8;
+}
+
+button{
+	background: #d47241;
+	border: solid 1px #cb4a28; 
+	border-radius: 5px;
+	color: #fff;
+	padding: 2px 5px 2px 5px;
+	text-shadow: 1px 1px #636363;
+}
+
+button:hover{
+	background: #e5632d;
+
+}
+
