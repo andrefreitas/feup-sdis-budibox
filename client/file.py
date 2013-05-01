@@ -7,6 +7,7 @@ import re
 import hashlib
 import os
 import datetime
+from Crypto.Cipher import ARC4
 
 CHUNK_SIZE=64000
 
@@ -20,10 +21,12 @@ def fix_directory_path(directory):
 
 
 class File:
-    def __init__(self, full_path, file_id=None):
+    def __init__(self, full_path, key, file_id=None):
         self.set_full_path(full_path)
         self.parse_name()
         self._file_id=file_id
+        self.encoder = ARC4.new(key)
+        self.decoder = ARC4.new(key)
         
     def parse_name(self):
         file_extension_pattern="[a-zA-Z0-9_\-]+\.[a-zA-Z0-9]+$"
@@ -47,7 +50,7 @@ class File:
             chunk = f.read(CHUNK_SIZE)
             if (chunk!=""): 
                 chunk_file=open(directory+self._name.split(".")[0]+"_"+str(i)+".chunk", "wb")
-                chunk_encrypted=chunk.encode("base64", "strict")
+                chunk_encrypted= self.encoder.encrypt(chunk)
                 chunk_file.write(chunk_encrypted)
                 chunk_file.close()
                 i+=1
@@ -71,7 +74,7 @@ class File:
         # Write chunks to file
         for i in range(len(chunks)):
                 chunk=open(chunks_directory+chunks[i], "rb")
-                decrypted_file=chunk.read().decode("base64", "strict")
+                decrypted_file=self.decoder.decrypt(chunk.read())
                 restored_file.write(decrypted_file)
                 chunk.close()
                 
@@ -112,7 +115,7 @@ class File:
         
         
 
-test = File('C:\\Users\\Ana Gomes\\Documents\\git\\budibox\\README.txt')
+test = File('C:\\Users\\Ana Gomes\\Documents\\git\\budibox\\README.txt', "teste")
 test.generate_file_id()
 print test.get_file_id()
 test.generate_chunks('C:\\Users\\Ana Gomes\\Documents\\git\\budibox')
