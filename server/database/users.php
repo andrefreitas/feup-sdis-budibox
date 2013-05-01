@@ -46,6 +46,7 @@ function updateUserEmail($oldEmail, $newEmail){
     $users = $db->users;
     $newdata = array('$set' => array("email" => $newEmail));
     $users->update(array("email" => $oldEmail), $newdata);
+    $files->update(array("user" => $oldEmail), $newdata, array("multiple" => true));
 }
 
 function updateUserPassword($email, $password){
@@ -60,6 +61,8 @@ function deleteUser($email){
     global $db;
     $users = $db->users;
     $users->remove(array("email" => $email));
+    $files = $db->files;
+    $files->remove(array("user" => $email),array("multiple" => true));
 }
 
 ?>
