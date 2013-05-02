@@ -9,9 +9,9 @@
 *     user : <user email>,
 *     status : <status of the file>,
 *     chunks : [
-*               [ <computer id>, <computer id> ], // chunk 0
-*               [ <computer id>, <computer id>, <computer id>], // chunk 1
-*               ... // chunk n
+*                  [ <computer id>, <computer id> ], // chunk 0
+*                  [ <computer id>, <computer id>, <computer id>], // chunk 1
+*                  ... // chunk n
 *              ]
 * }
 */

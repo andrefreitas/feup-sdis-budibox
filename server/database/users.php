@@ -1,14 +1,25 @@
 <?php
-/** -- FIX THIS -- **/
+/* -----------------------
+ * Users collection
+* -----------------------
+* JSON document schema:
+* {
+*     name : <user name>,
+*     email : <email address>,
+*     password : <sha256 password>,
+*     key : <md5 private key that is used to encrypt>,
+*     registrationDate : <registration date>
+* }
+*/
 require_once("connection.php");
+require_once("files.php");
 /*
  * Users manipulation functions
  */
-$computers = $db->computers; #collection
+$users = $db->users; #collection
 
 function createUser($name, $email, $password){
-    global $db;
-    $users = $db->users;
+    global $users;
     $password = hash('sha256', $password);
     $key = substr(str_shuffle(md5(time())),0,10);
     $users->insert(array("name" => $name, 
@@ -20,8 +31,7 @@ function createUser($name, $email, $password){
 }
 
 function getUser($email){
-    global $db;
-    $users = $db->users;
+    global $users;
     return $users->findOne(array("email" => $email));
 }
 
@@ -30,42 +40,36 @@ function userExists($email){
 }
 
 function getUserKey($email){
-    global $db;
-    $users = $db->users;
+    global $users;
     $data = $users->findOne(array("email" => $email),array("key" => true));
     return $data["key"];
 }
 
 function checkUserLogin($email, $password){
-    global $db;
-    $users = $db->users;
+    global $users;
     $password = hash('sha256', $password);
     $data = $users->findOne(array("email" => $email,"password" => $password));
     return count($data)>0;
 }
 
 function updateUserEmail($oldEmail, $newEmail){
-    global $db;
-    $users = $db->users;
+    global $users;
     $newdata = array('$set' => array("email" => $newEmail));
     $users->update(array("email" => $oldEmail), $newdata);
-    $files->update(array("user" => $oldEmail), $newdata, array("multiple" => true));
+    updateFilesUser($oldEmail, $newEmail);
 }
 
 function updateUserPassword($email, $password){
-    global $db;
-    $users = $db->users;
+    global $users;
     $password = hash('sha256', $password);
     $newdata = array('$set' => array("password" => $password));
     $users->update(array("email" => $email), $newdata);
 }
 
 function deleteUser($email){
-    global $db;
-    $users = $db->users;
+    global $users;
     $users->remove(array("email" => $email));
-    $files = $db->files;
-    $files->remove(array("user" => $email),array("multiple" => true));
+    removeFilesFromUser($email);
 }
 
 ?>
