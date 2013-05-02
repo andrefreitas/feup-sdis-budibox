@@ -1,8 +1,11 @@
 <?php
+/** -- FIX THIS -- **/
 require_once("connection.php");
 /*
  * Users manipulation functions
  */
+$computers = $db->computers; #collection
+
 function createUser($name, $email, $password){
     global $db;
     $users = $db->users;

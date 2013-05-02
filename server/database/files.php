@@ -1,10 +1,28 @@
 <?php
+/*-----------------------
+*  Files Collection
+* -----------------------
+* JSON document schema:
+* {
+*     path : <file path>,
+*     modification : <modification sha256>,
+*     user : <user email>,
+*     status : <status of the file>,
+*     chunks : [
+*               [ <computer id>, <computer id> ], // chunk 0
+*               [ <computer id>, <computer id>, <computer id>], // chunk 1
+*               ... // chunk n
+*              ]
+* }
+*/
 require_once("connection.php");
-/* Files Manipulation functions */
+require_once("computers.php");
+
+/* Set files collection */
+$files = $db->files;
 
 function createFile($path, $user, $modification){
-    global $db;
-    $files = $db->files;
+    global $files;
     $files->insert(array("path" => $path, 
     					 "modification" => $modification,
                          "user" => $user,
@@ -13,13 +31,16 @@ function createFile($path, $user, $modification){
                    ));
 }
 
-function addFileChunk($path, $user, $hosts){
-    global $db;
-    $files = $db->files;
-    $newData = array('$push' => array("chunks" => $hosts));
+
+function addChunk($path, $user, $computers){
+    global $files;
+    foreach($computers as &$computer){
+        $computer = new MongoId($computer);
+    }
+    $newData = array('$push' => array("chunks" => $computers));
     $files->update(array("path" => $path, "user" => $user),$newData);
 }
-
+/** Until here ---- **/
 function addFileChunkHost($path,$user,$chunkNumber,$host){
     global $db;
     $files = $db->files;
