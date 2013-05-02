@@ -1,9 +1,20 @@
 <?php
-require_once("connection.php");
-/* 
- * Computers manipulation functions
+/* -----------------------
+ * Computers collection
+ * -----------------------
+ * JSON document schema:
+ * {
+ *     user : <user email>,
+ *     name : <computer name>,
+ *     setupDate : <computer setup date>,
+ *     status : <status of the computer>,
+ *     lastTimeAlive : <last time the computer was online>  
+ * }
  */
-$computers = $db->computers; #collection
+require_once("connection.php");
+
+/* Set computers collection */
+$computers = $db->computers; 
 
 function createComputer($user, $name){
 	global $computers;
@@ -26,6 +37,18 @@ function getHostStatus($user, $name){
 	$data = $computers->findOne(array("user" => $user, "name" => $name), array("status" => true));
 	if($data)
 		return $data["status"];
+}
+function updateComputersEmail($oldUserEmail, $newUserEmail){
+    global $computers;
+    $newData = array('$set' => array("user" => $newUserEmail));
+    $computers->update(array("user" => $oldUserEmail), $newData, array("multiple" => true));
+}
+
+function getComputerID($user, $name){
+    global $computers;
+    $result = $computers->findOne(array("user" => $user, "name" => $name), array("_id" => true));
+    if($result)
+        return $result["_id"];
 }
 
 
