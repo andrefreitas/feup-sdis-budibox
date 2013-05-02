@@ -40,17 +40,15 @@ function addChunk($path, $user, $computers){
     $newData = array('$push' => array("chunks" => $computers));
     $files->update(array("path" => $path, "user" => $user),$newData);
 }
-/** Until here ---- **/
-function addFileChunkHost($path,$user,$chunkNumber,$host){
-    global $db;
-    $files = $db->files;
-    $newData = array('$addToSet' => array("chunks." . (string)$chunkNumber => $host));
+
+function addComputerToChunk($path,$user,$chunkNumber,$computer){
+    global $files;
+    $newData = array('$addToSet' => array("chunks." . (string)$chunkNumber => new MongoId($computer)));
     $files->update(array("path" => $path, "user" => $user),$newData);
 }
 
-function getChunkHosts($path,$user,$chunkNumber){
-	global $db;
-	$files = $db->files;
+function getChunkComputers($path,$user,$chunkNumber){
+	global $files;
 	$data = $files->findOne(array("path" => $path, "user" => $user));
 	if(count($data) > 0 and count($data["chunks"])>$chunkNumber){
 		return $data["chunks"][$chunkNumber];
@@ -58,30 +56,33 @@ function getChunkHosts($path,$user,$chunkNumber){
 	
 }
 
-function deleteFileChunkHost($path,$user,$chunkNumber,$host){
-	global $db;
-	$files = $db->files;
-	$newData = array('$pull' => array("chunks." . (string)$chunkNumber => $host));
+function removeComputerFromChunk($path,$user,$chunkNumber,$computer){
+	global $files;
+	$newData = array('$pull' => array("chunks." . (string)$chunkNumber => new MongoId($computer)));
 	$files->update(array("path" => $path, "user" => $user),$newData);
 }
 
 function setFileStatus($path, $user, $status){
-    global $db;
-    $files = $db->files;
+    global $files;
     $newData = array('$set' => array("status" => $status));
     $files->update(array("path" => $path, "user" => $user),$newData);
 }
 
+function getFileStatus($path, $user){
+    global $files;
+    $result = $files->findOne(array("path" => $path, "user" => $user),array("status" => true));
+    if($result)
+        return $result["status"];
+}
+
 function setFileModification($path, $user, $modification){
-	global $db;
-	$files = $db->files;
+	global $files;
 	$newData = array('$set' => array("modification" => $modification));
 	$files->update(array("path" => $path, "user" => $user),$newData);
 }
 
 function getFileModification($path, $user){
-	global $db;
-	$files = $db->files;
+	global $files;
 	$data = $files->findOne(array("path" => $path , "user" => $user),array("modification" => true));
 	if( count($data) > 0 ){
 		return $data["modification"];
@@ -89,16 +90,35 @@ function getFileModification($path, $user){
 }
 
 function resetFileChunks($path, $user){
-	global $db;
-	$files = $db->files;
+	global $files;
 	$newData = array('$set' => array("chunks" => array()));
 	$files->update(array("path" => $path, "user" => $user),$newData);
 }
 
 function updateFilePath($user, $oldPath, $newPath){
-	global $db;
-	$files = $db->files;
+	global $files;
 	$newData = array('$set' => array("path" => $newPath));
 	$files->update(array("path" => $oldPath, "user" => $user),$newData);
+}
+
+function updateFilesUser($oldUserEmail, $newUserEmail){
+    global $files;
+    $newData = array('$set' => array("user" => $newUserEmail));
+    $files->update(array("user" => $oldUserEmail),$newData, array("multiple" => true));
+}
+
+function removeFilesFromUser($userEmail){
+    global $files;
+    $files->remove(array("user" => $userEmail));
+}
+
+function getFilesFromUser($userEmail){
+    global $files;
+    $cursor =  $files->find(array("user" => $userEmail), array("path" => true, "status" => true));
+    $data = array();
+    foreach($cursor as $doc){
+        $data[] = $doc;
+    }
+    return $data; 
 }
 ?>
