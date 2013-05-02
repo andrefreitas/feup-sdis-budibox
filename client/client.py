@@ -1,5 +1,5 @@
 from file import File
-
+import utils
 
 class Client:
     def __init__(self, name, email, password):
@@ -9,18 +9,18 @@ class Client:
         self.api = "http://master.budibox.com/api/"
     
     def login(self):
-        data = 'login.php?auth=12&email="'+self.email+'"&password="'+self.password+'"'
-        self.request(data)
-    
-    def request(self, data):
-        request = urllib.urlopen(self.api + data)
-        json_response = json.load(request) 
-        print json_response['result']
-        if (json_response['result'] == 'error'):
+        url = self.api+'login.php'
+        values = {'auth': '12',
+                  'email': self.email,
+                  'password': self.password
+                  }
+        response = utils.json_request(url, values)
+        print response
+        if (response['result'] == 'error'):
             print "Username or password incorrect. Please try again or register at http://www.budibox.com!"
         else:
             print "Login successful!"
 
-c = Client('ana', 'tt', 'maasd')
+c = Client('ana', 'a', 'a')
 c.login()
      
