@@ -13,7 +13,7 @@
         </div>
         <div class="container">
             <img src="images/clouds.png">
-            <img src="images/logo.png" class="featureLogo">
+        
             <div class="blocks">
                 <div class="block unlimited">
                     <h1>Unlimited cloud space!</h1>
