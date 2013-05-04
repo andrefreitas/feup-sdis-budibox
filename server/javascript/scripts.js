@@ -11,14 +11,16 @@ $(document).ready(function(){
         	var data = createUser(name,email, password1);
         	if(data["result"] == "userAlreadyExists"){
         		$(".notifications").append("<div class='error'>The email <u>" + email + "</u> is already in use!</div>");
-        		$(".error").fadeIn("slow");
+        		 $(".error").effect( "bounce", 
+        		            {times:3}, 300 );
         	}else{
         		$(".notifications").append("<div class='confirmation'>Registration done! A confirmation email has been sent to <u>" + email + "</u></div>");
             	$(".confirmation").fadeIn("slow");
         	}
         
         }else{
-        	$(".error").fadeIn("slow");
+        	 $(".error").effect( "bounce", 
+     	            {times:3}, 300 );
         }
 	});
 	
