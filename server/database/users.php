@@ -42,10 +42,7 @@ function getUserConfirmationKey($userEmail){
         return $result["confirmationKey"];
 }
 
-function activateUser($confirmationKey){
-    global $users;
-    $users->update(array("confirmationKey" =>))
-}
+
 function getUser($email){
     global $users;
     return $users->findOne(array("email" => $email));
