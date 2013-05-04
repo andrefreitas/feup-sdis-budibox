@@ -3,6 +3,8 @@
     chdir("..");
     chdir("database");
     require_once("users.php");
+    chdir("../actions/");
+    require_once("email.php");
 
     if(!isset($_GET["name"]) or  !isset($_GET["email"]) or !isset($_GET["password"])){
         echo json_encode(array("result" => "missingParams"));
@@ -12,6 +14,7 @@
         $email = (string) $_GET["email"];
         $password = (string) $_GET["password"];
         createUser($_GET["name"],$_GET["email"],$_GET["password"]);
+        sendConfirmationEmail($email);
         echo json_encode(array("result" => "ok"));
         
     }

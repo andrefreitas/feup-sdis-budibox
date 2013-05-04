@@ -35,6 +35,17 @@ function createUser($name, $email, $password){
                    ));
 }
 
+function getUserConfirmationKey($userEmail){
+    global $users;
+    $result = $users->findOne(array("email" => $userEmail),array("confirmationKey" => true));
+    if(isset($result["confirmationKey"]))
+        return $result["confirmationKey"];
+}
+
+function activateUser($confirmationKey){
+    global $users;
+    $users->update(array("confirmationKey" =>))
+}
 function getUser($email){
     global $users;
     return $users->findOne(array("email" => $email));
