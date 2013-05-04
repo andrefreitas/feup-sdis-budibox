@@ -15,6 +15,7 @@ body{
 	height: 111px;
 	width: 100%;
 	background: url("../images/header.png") repeat-x;
+	padding-top: 20px;
 }
 
 .container{
@@ -50,6 +51,9 @@ body{
 	width: 200px;
 }
 
+.register input{
+	width: 180px;
+}
 .unlimited{
 	width: 350px;
 }
@@ -71,6 +75,8 @@ body{
 	margin: 0;
 	margin-bottom: 10px;
 }
+
+/* Inputs and forms */
 
 input{
 	border-radius: 5px;
@@ -96,3 +102,29 @@ button:hover{
 
 }
 
+/* Error */
+.error{
+	background: url("../images/stop.png") #c55353 no-repeat;
+	background-position: 6px 5px;
+	padding: 9px;
+	padding-left: 60px;
+	border: solid 1px #ab3d3d;
+	color: #ffffff;
+	min-height: 30px;
+	font-size: 30px;
+	display: none;
+}
+
+/* Confirmation */
+.confirmation{
+	background: url("../images/confirmation.png") #93c93d no-repeat;
+	background-position: 3px 1px;
+	padding: 9px;
+	padding-left: 60px;
+	border: solid 1px #607b35;
+	color: #ffffff;
+	min-height: 30px;
+	font-size: 30px;
+	margin: 0 auto;
+	display: none;
+}

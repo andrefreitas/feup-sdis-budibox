@@ -4,7 +4,10 @@
     chdir("database");
     require_once("users.php");
 
-    if(isset($_GET["name"]) and isset($_GET["email"]) and isset($_GET["password"]) and !userExists((string)$_GET["email"])){
+    if(!isset($_GET["name"]) or  !isset($_GET["email"]) or !isset($_GET["password"])){
+        echo json_encode(array("result" => "missingParams"));
+    }
+    else if(!userExists((string)$_GET["email"]) ){
         $name = (string) $_GET["name"];
         $email = (string) $_GET["email"];
         $password = (string) $_GET["password"];
@@ -12,5 +15,5 @@
         echo json_encode(array("result" => "ok"));
         
     }
-    else echo json_encode(array("result" => "error"));
+    else echo json_encode(array("result" => "userAlreadyExists"));
 ?>

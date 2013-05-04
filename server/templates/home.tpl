@@ -5,15 +5,22 @@
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
         <link rel="shortcut icon" href="images/favicon.ico" />
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
         <script src="javascript/scripts.js"></script>
         <meta charset="UTF-8" />
     </head>
     <body>
         <div id="header">
+            <div class="container">
+               
+            </div>
         </div>
         <div class="container">
             <img src="images/clouds.png">
-        
+            <div class="notifications">
+       
+            </div>
+  
             <div class="blocks">
                 <div class="block unlimited">
                     <h1>Unlimited cloud space!</h1>

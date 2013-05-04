@@ -8,7 +8,9 @@
 *     email : <email address>,
 *     password : <sha256 password>,
 *     key : <md5 private key that is used to encrypt>,
-*     registrationDate : <registration date>
+*     registrationDate : <registration date>,
+*     status : <the user status>,
+*     confirmationKey : <the confirmation key that is emailed>
 * }
 */
 require_once("connection.php");
@@ -22,11 +24,14 @@ function createUser($name, $email, $password){
     global $users;
     $password = hash('sha256', $password);
     $key = substr(str_shuffle(md5(time())),0,10);
+    $confirmationKey = substr(str_shuffle(md5(time())),0,14);
     $users->insert(array("name" => $name, 
                          "email" => $email, 
                          "password" => $password,
                          "key" => $key,
-                         "registrationDate" => new MongoDate()
+                         "registrationDate" => new MongoDate(),
+                         "status" => "inactive",
+                         "confirmationKey" => $confirmationKey
                    ));
 }
 
