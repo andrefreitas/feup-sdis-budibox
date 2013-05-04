@@ -13,7 +13,12 @@ $(document).ready(function(){
         		$(".notifications").append("<div class='error'>The email <u>" + email + "</u> is already in use!</div>");
         		 $(".error").effect( "bounce", 
         		            {times:3}, 300 );
-        	}else{
+        	}else if(data["result"] == "invalidEmailDomain"){
+        		$(".notifications").append("<div class='error'>The email <u>" + email + "</u> doesn\'t exists!</div>");
+       		    $(".error").effect( "bounce", 
+       		            {times:3}, 300 );
+        	}
+        	else{
         		$(".notifications").append("<div class='confirmation'>Registration done! A confirmation email has been sent to <u>" + email + "</u></div>");
             	$(".confirmation").fadeIn("slow");
         	}
@@ -58,7 +63,8 @@ function createUser(name, email, password){
 	var data = $.getJSON("api/createUser.php?",{
 		name: name,
         email: email,
-        password: password
+        password: password,
+        timeout: 3000
 	});
 	$.ajaxSetup( { "async": true } );
 	return $.parseJSON(data["responseText"]);
