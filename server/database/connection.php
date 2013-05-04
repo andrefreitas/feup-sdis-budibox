@@ -4,7 +4,7 @@
         $connection = new MongoClient("mongodb:// ". $members . "/?replicaSet=" . $replicaSet);
         $db = $connection->selectDB($database);
     } catch (Exception $e) {
-        echo "Failed connecting to mongodb";
+        echo "Failed connecting to mongodb: " . $e->getMessage();
     }
     
 ?>
