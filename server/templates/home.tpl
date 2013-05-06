@@ -13,7 +13,7 @@
         <div id="header">
             <div class="container">
                 <div class="login">
-                    <form  action="login.php">
+                    <form action="actions/login.php" onsubmit="return validateLogin()">
                         <input type="email" name="email" placeholder="Email" />
                         <input type="password" name="password" placeholder="Password"/>
                         <input type="submit" value="LOGIN">                     

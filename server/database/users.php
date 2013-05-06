@@ -60,6 +60,14 @@ function userIsActive($confirmationKey){
     return $result;
 }
 
+function getUserStatus($email){
+    global $users;
+    $result = $users->findOne(array("email" => $email), array("status" => true));
+    if($result)
+        return $result["status"];
+    
+}
+
 function getUser($email){
     global $users;
     return $users->findOne(array("email" => $email));

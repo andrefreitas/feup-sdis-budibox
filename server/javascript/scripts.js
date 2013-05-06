@@ -136,3 +136,27 @@ function changePassword(confirmationKey, newPassword){
 	$.ajaxSetup( { "async": true } );
 	return $.parseJSON(data["responseText"]);
 }
+
+function loginIsValid(email, password){
+	$.ajaxSetup( { "async": false } );
+	var data = $.getJSON("api/login.php?",{
+		email: email,
+		password: password,
+        timeout: 3000
+	});
+	$.ajaxSetup( { "async": true } );
+	return $.parseJSON(data["responseText"])["result"] == "ok";
+}
+
+function validateLogin(){
+	var data = $(".login form").serializeArray(),
+		email = data[0]["value"],
+		password = data[1]["value"];
+	if(email.length == 0 || password.length == 0 || !loginIsValid(email, password)){
+		alert("Invalid login");
+	}else{
+		return true;
+	}
+	
+	return false;
+}
