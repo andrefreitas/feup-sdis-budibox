@@ -18,7 +18,21 @@
         <div class="container">
             <img src="images/clouds.png">
             <div class="notifications">
-       
+               {if isset($welcome) and $welcome eq 0} 
+                 <div class="error">
+                     Invalid registration key!
+                 </div>
+                {/if}
+                {if isset($welcome) and $welcome eq 1} 
+                 <div class="confirmation">
+                  Your registration has been confirmed :) 
+                 </div>
+                {/if} 
+                {if isset($welcome) and $welcome eq 2} 
+                 <div class="confirmation">
+                      That account was already active.
+                 </div>
+                {/if} 
             </div>
   
             <div class="blocks">

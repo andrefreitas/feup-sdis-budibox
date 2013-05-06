@@ -42,10 +42,22 @@ function getUserConfirmationKey($userEmail){
         return $result["confirmationKey"];
 }
 
+function confirmationKeyIsValid($confirmationKey){
+    global $users;
+    $result = $users->findOne(array("confirmationKey" => $confirmationKey));
+    return $result;
+}
+
 function activateUser($confirmationKey) {
     global $users;
     $newData = array('$set' => array("status" => "active"));
     $users->update(array("confirmationKey" => $confirmationKey), $newData);
+}
+
+function userIsActive($confirmationKey){
+    global $users;
+    $result = $users->findOne(array("confirmationKey" => $confirmationKey, "status" => "active"), array("_id" => true));
+    return $result;
 }
 
 function getUser($email){

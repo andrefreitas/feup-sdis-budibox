@@ -12,7 +12,7 @@
         </div>
         <div style='width: 600px; background: #fff; margin:0 auto; padding: 25px; text-align: justify'>
             <div align="center"><img src="http://budibox.com/images/logo.png"></div>
-            <h1 style='margin: 0; padding: 0;font-size: 20px; margin-top: 10px;'>Hello {$user}</h1>
+            <h1 style='margin: 0; padding: 0;font-size: 20px; margin-top: 10px;'>Hello {$user}!</h1>
             Before you start using Budibox you need to  <a href="http://master.budibox.com/actions/confirmRegistration.php?key={$key}" style='color:#cb4b27; text-decoration: none; '>confirm your registration</a> to verify that 
             this email is yours. 
        
