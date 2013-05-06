@@ -115,4 +115,8 @@ class File:
         
         
 
-
+test = File('C:\\Users\\Ana Gomes\\Documents\\git\\budibox\\README.txt', "teste")
+test.generate_file_id()
+print test.get_file_id()
+test.generate_chunks('C:\\Users\\Ana Gomes\\Documents\\git\\budibox')
+test.restore_file('C:\\Users\\Ana Gomes\\Documents\\git\\budibox', 'C:\\Users\\Ana Gomes\\Documents\\git', 1)
