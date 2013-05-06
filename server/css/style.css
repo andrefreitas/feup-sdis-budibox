@@ -128,3 +128,30 @@ button:hover{
 	margin: 0 auto;
 	display: none;
 }
+
+/* Processing */
+.processing{
+	background: #fff;
+	padding: 9px;
+	border: solid 1px #c2c2c2;
+	color: #3a3a3a;
+	font-size: 30px;
+	margin: 0 auto;
+	text-align: center;
+	overflow:hidden;
+	height: 35px;
+	
+}
+.processing .loading{
+	height: 40px;
+	width: 50px;
+	float: left;
+	
+}
+
+.processing .message{
+	height: 40px;
+	width: 350px;
+	float: left;
+
+}

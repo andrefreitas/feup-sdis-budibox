@@ -32,7 +32,7 @@
                  <div class="confirmation">
                       That account was already active.
                  </div>
-                {/if} 
+                {/if}
             </div>
   
             <div class="blocks">
