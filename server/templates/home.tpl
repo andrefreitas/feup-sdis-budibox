@@ -12,8 +12,15 @@
     <body>
         <div id="header">
             <div class="container">
-               
-            </div>
+                <div class="login">
+                    <form  action="login.php">
+                        <input type="email" name="email" placeholder="Email" />
+                        <input type="password" name="password" placeholder="Password"/>
+                        <input type="submit" value="LOGIN">                     
+                    </form>
+                     <span class="forgot">Don't remember your password?</span>
+                </div>
+             </div>
         </div>
         <div class="container">
             <img src="images/clouds.png">
@@ -38,7 +45,7 @@
             <div class="blocks">
                 <div class="block unlimited">
                     <h1>Unlimited cloud space!</h1>
-                    <img src="images/storage.png">
+                    <img src="images/storage.png" alt="Storage disks">
                     We offer you unlimited space in our cloud. The more you offer the more you have for yourself!
                 </div>
                 <div class="block register">
@@ -47,7 +54,7 @@
                         <input type="text" name="name" placeholder="Name"/> <br/>
                         <input type="email" name="email" placeholder="Email"/> <br/>
                         <input type="password" name="password1" placeholder="Password"/> <br/>
-                        <input type="password" name="password2"placeholder="Confirm Password"/> <br/>
+                        <input type="password" name="password2" placeholder="Confirm Password"/> <br/>
                         <button type="button" name="register">Confirm</button>
                     </form>
                 </div>
@@ -55,9 +62,9 @@
                     <h1>Download the app</h1>
                      We love all plataforms so choose yours:
                      <span>
-                     <img src="images/windows.png" width="80" height="80">
-                     <img src="images/osx.png" width="80" height="80">
-                     <img src="images/linux.png" width="80" height="80">
+                     <img src="images/windows.png" width="80" height="80" alt="Windows">
+                     <img src="images/osx.png" width="80" height="80" alt="OSX">
+                     <img src="images/linux.png" width="80" height="80" alt="Linux">
                      </span>
                 </div>
             </div>

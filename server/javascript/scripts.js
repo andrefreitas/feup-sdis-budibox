@@ -41,6 +41,32 @@ $(document).ready(function(){
 	    $(".error").effect( "bounce", 
 	            {times:3}, 300 );
 	});
+	/* Forget Password */
+	$(".forgot").click(function(){
+		$("#header").html('<div class="recover"><form><input type="email" name="email" placeholder="Email" /> <button type="button">RECOVER PASSWORD</button></form></div>');
+		
+		/* Recover Password */
+		$(".recover button").click(function(){
+			var data = $(".recover form").serializeArray(),
+			    email = data[0]["value"],
+			    result = recoverPassword(email);
+			if(result["result"]=="emailSent"){
+				$("#header").html('<div class="container"><div class="confirmation">An email has been sent to ' + email +'</div></div>');
+				$(".confirmation").fadeIn("slow");
+			}
+			else{
+				$("#header").html('<div class="container"><div class=\'error\'>The email <u> '+ email + '</u> doesn\'t exists!</div></div>');
+       		    $(".error").effect( "bounce", {times:3}, 300 );
+			}
+
+		});
+	
+	});
+	
+
+	
+	
+
 });
 
 function registrationIsValid(name,email,password1,password2){
@@ -65,6 +91,16 @@ function createUser(name, email, password){
 		name: name,
         email: email,
         password: password,
+        timeout: 3000
+	});
+	$.ajaxSetup( { "async": true } );
+	return $.parseJSON(data["responseText"]);
+}
+
+function recoverPassword(email){
+	$.ajaxSetup( { "async": false } );
+	var data = $.getJSON("api/recoverPassword.php?",{
+        email: email,
         timeout: 3000
 	});
 	$.ajaxSetup( { "async": true } );

@@ -155,3 +155,67 @@ button:hover{
 	float: left;
 
 }
+
+/* Login */
+.login{
+	margin-top: 15px;
+	text-align: center;
+}
+
+.recover{
+	margin-top: 15px;
+	text-align: center;
+}
+#header input,
+#header button{
+	height: 25px;
+	width: 200px;
+	border: solid 1px #a13212;
+	color: #cb4828;
+	font-weight: bold;
+	font-size: 15px;
+	padding-left: 8px;
+	padding-right: 8px;
+	box-shadow: inset 0px 0px 8px #dfaf99;
+	
+}
+
+#header input[type='submit'], 
+#header button
+{
+	height: 37px;
+	color: #fff;
+	background: #545454;
+	box-shadow: none;
+	border:solid 1px #3f3f3f;
+}
+
+#header .login input[type='submit']{
+	width: 80px;
+}
+
+
+
+#header input[type='submit']:hover,
+#header button:hover{
+	box-shadow: inset 0px 5px 8px #6c6c6c;
+}
+
+#header input[type='submit']:active,
+#header button:active{
+	background: #3d3d3d;
+
+}
+
+.forgot{
+	color: #fff;
+	margin-left: 130px;
+	margin-top: 5px;
+	display: block;
+	text-shadow: 1px 1px #a13212;
+	
+}
+.forgot:hover{
+	text-decoration: underline;
+	cursor:help;
+}
