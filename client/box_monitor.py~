@@ -45,5 +45,5 @@ class BoxMonitor(FileSystemEventHandler):
        observer.join()
        
        
-c = BoxMonitor('/home/anagomes/')
+c = BoxMonitor('C:\\Users\\Ana Gomes\\Documents')
 c.start()
