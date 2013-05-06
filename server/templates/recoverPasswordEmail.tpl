@@ -14,8 +14,8 @@
             <div align="center"><img src="http://budibox.com/images/logo.png"></div>
             <h1 style='margin: 0; padding: 0;font-size: 20px; margin-top: 10px;'>Hello {$user}!</h1>
             As you requested, you can 
-            <a href="http://master.budibox.com/actions/setNewPassword.php?key={$key}" style='color:#cb4b27; text-decoration: none; '>recover your password here</a>
-           
+            <a href="http://master.budibox.com/changePassword.php?key={$key}" style='color:#cb4b27; text-decoration: none; '>recover your password here</a>
+            
         </div>
     </body>
 </html>

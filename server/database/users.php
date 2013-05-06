@@ -96,6 +96,13 @@ function updateUserPassword($email, $password){
     $users->update(array("email" => $email), $newdata);
 }
 
+function updateUserPasswordByConfirmationKey($confirmationKey, $password){
+    global $users;
+    $password = hash('sha256', $password);
+    $newdata = array('$set' => array("password" => $password));
+    $users->update(array("confirmationKey" => $confirmationKey), $newdata);
+}
+
 function deleteUser($email){
     global $users;
     $users->remove(array("email" => $email));

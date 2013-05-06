@@ -88,7 +88,8 @@ input:hover{
 	background: #f8f8f8;
 }
 
-button{
+button,
+input[type='submit']{
 	background: #d47241;
 	border: solid 1px #cb4a28; 
 	border-radius: 5px;
@@ -97,7 +98,8 @@ button{
 	text-shadow: 1px 1px #636363;
 }
 
-button:hover{
+button:hover,
+input[type='submit']:hover{
 	background: #e5632d;
 
 }
@@ -218,4 +220,25 @@ button:hover{
 .forgot:hover{
 	text-decoration: underline;
 	cursor:help;
+}
+
+/* New Password */
+.setNewPassword{
+	width: 500px;
+	margin: 0 auto;
+	margin-top: 200px;
+	border: solid 1px  #cbcbcb; 
+	border-radius: 5px;
+	background: #fff;
+	padding: 10px;
+}
+
+.setNewPassword h1{
+	margin-top: 0px;
+	margin-bottom: 4px;
+
+}
+
+.setNewPassword .notifications{
+	color: red;
 }

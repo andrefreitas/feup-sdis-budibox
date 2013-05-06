@@ -41,6 +41,7 @@ $(document).ready(function(){
 	    $(".error").effect( "bounce", 
 	            {times:3}, 300 );
 	});
+	
 	/* Forget Password */
 	$(".forgot").click(function(){
 		$("#header").html('<div class="recover"><form><input type="email" name="email" placeholder="Email" /> <button type="button">RECOVER PASSWORD</button></form></div>');
@@ -63,7 +64,25 @@ $(document).ready(function(){
 	
 	});
 	
-
+	/* Set new password */
+	$(".setNewPassword button").click(function(){
+		var data = $(".setNewPassword").serializeArray(),
+		key = data[0]["value"],
+	    password1 = data[1]["value"],
+	    password2 = data[2]["value"];
+		console.log(password1.length);
+		if(password1.length == 0){
+			$(".notifications").html("Please write a password!");
+		}
+		else if(password1.length>0 && password1==password2){
+			var result = changePassword(key,password1);
+			if(result["result"] == "ok"){
+				$(".setNewPassword").html("<div align='center'><h1>Password changed successfully!</h2></div>");
+			}
+		}else{
+			$(".notifications").html("Invalid Passwords!");
+		}
+	});
 	
 	
 
@@ -101,6 +120,17 @@ function recoverPassword(email){
 	$.ajaxSetup( { "async": false } );
 	var data = $.getJSON("api/recoverPassword.php?",{
         email: email,
+        timeout: 3000
+	});
+	$.ajaxSetup( { "async": true } );
+	return $.parseJSON(data["responseText"]);
+}
+
+function changePassword(confirmationKey, newPassword){
+	$.ajaxSetup( { "async": false } );
+	var data = $.getJSON("api/changePassword.php?",{
+		confirmationKey: confirmationKey,
+		newPassword: newPassword,
         timeout: 3000
 	});
 	$.ajaxSetup( { "async": true } );
