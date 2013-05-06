@@ -153,7 +153,10 @@ function validateLogin(){
 		email = data[0]["value"],
 		password = data[1]["value"];
 	if(email.length == 0 || password.length == 0 || !loginIsValid(email, password)){
-		alert("Invalid login");
+		$('.error').remove();
+		$('.subnotifications').html("<div class='error'>Invalid Login!</div>");
+		$(".error").effect( "bounce", 
+	            {times:3}, 300 );
 	}else{
 		return true;
 	}

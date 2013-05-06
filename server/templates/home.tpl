@@ -23,6 +23,7 @@
              </div>
         </div>
         <div class="container">
+            <div class="subnotifications"></div>
             <img src="images/clouds.png">
             <div class="notifications">
                {if isset($welcome) and $welcome eq 0} 
