@@ -360,5 +360,14 @@ ul.navigation {
 
 .userInfo .info .email{
 	font-size: 15px;
-	
+}
+
+/* User area body */
+.content{
+	width:1098px;
+	background: white;
+	border-right: solid 1px #b6b6b6;
+	border-left: solid 1px #b6b6b6;
+	overflow:hidden;
+	min-height: 800px;
 }
