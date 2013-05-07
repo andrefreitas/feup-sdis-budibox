@@ -44,7 +44,7 @@ $(document).ready(function(){
 	
 	/* Forget Password */
 	$(".forgot").click(function(){
-		$("#header").html('<div class="recover"><form><input type="email" name="email" placeholder="Email" /> <button type="button">RECOVER PASSWORD</button></form></div>');
+		$("#header").html('<div class="limbo"></div><div class="recover"><form><input type="email" name="email" placeholder="Email" /> <button type="button">RECOVER PASSWORD</button></form></div>');
 		
 		/* Recover Password */
 		$(".recover button").click(function(){

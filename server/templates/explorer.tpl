@@ -12,7 +12,11 @@
     <body>
         <div id="header">
             <div class="container">
-                
+                <ul class="navigation">
+                    <li>Explorer</li>
+                    <li>My Account</li>
+                    <li>Statistics</li>
+                </ul>
              </div>
         </div>
         <div class="container">

@@ -15,12 +15,17 @@ body{
 	height: 111px;
 	width: 100%;
 	background: url("../images/header.png") repeat-x;
-	padding-top: 20px;
+}
+
+.limbo{
+	height: 20px;
 }
 
 .container{
 	width:1100px;
 	margin: 0 auto;
+	overflow: auto;
+	overflow: hidden;
 }
 
 .featureLogo{
@@ -31,7 +36,7 @@ body{
 
 .blocks{
 	margin-top: 20px;
-	background: red;
+	height: 230px;
 }
 
 .block img{
@@ -48,7 +53,7 @@ body{
 }
 
 .register{
-	width: 200px;
+	width: 180px;
 }
 
 .register input{
@@ -241,4 +246,23 @@ input[type='submit']:hover{
 
 .setNewPassword .notifications{
 	color: red;
+}
+
+/* User Area */
+.navigation{
+	list-style-type: none;
+	color: #fff;
+}
+
+ul.navigation {
+	padding: 0;
+	margin: 0;
+	
+}
+.navigation li{
+	float: left;
+	background: red;
+	width: 200px;
+	padding: 10px;
+	height: 111px;
 }
