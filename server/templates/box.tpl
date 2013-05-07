@@ -42,6 +42,16 @@
                     <div class="path">
                     {$dir}
                     </div>
+                    <ul>
+                        {foreach from=$directories item=directory}
+                            <li class="directory">{$directory}</li>
+                        {/foreach}
+                        {foreach from=$files item=file}
+                            <li class="file">{$file}</li>
+                        {/foreach}
+                    </ul>
+                    
+                    
                 </div>
             </div>
         </div>

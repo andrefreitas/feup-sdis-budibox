@@ -439,3 +439,14 @@ ul.navigation {
 	padding-top: 2px;
 }
 
+.items li{
+	list-style: none;
+	border-top: solid 1px #e1e1e1;
+	padding: 10px 10px 10px 10px;
+	font-size: 20px;
+}
+
+.items ul{
+	margin-right: 40px;
+	
+}
