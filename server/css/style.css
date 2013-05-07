@@ -442,23 +442,37 @@ ul.navigation {
 .items li{
 	list-style: none;
 	border-top: solid 1px #e1e1e1;
-	padding: 10px 10px 10px 10px;
+	padding: 12px 10px 12px 10px;
 	font-size: 17px;
+
+
 }
+
+
+
+.items li:last-child{
+	border-bottom: solid 1px #e1e1e1;
+}
+
 
 
 .items li.directory{
 	background: url('../images/folder.png') no-repeat;
-	background-position: 0px 4px;
+	background-position: 8px 5px;
 	padding-left: 50px;
+	cursor: pointer;
 	
 }
 
 .items li.file{
 	background: url('../images/file.png') no-repeat;
-	background-position: 0px 4px;
+	background-position: 8px 5px;
 	padding-left: 50px;
 	
+}
+
+.items li:hover{
+	background-color: #f6f6f6;
 }
 .items ul{
 	margin-right: 40px;

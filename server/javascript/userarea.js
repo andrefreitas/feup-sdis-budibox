@@ -7,6 +7,9 @@ $(document).ready(function(){
 	$('.logouti').click(function(){
 		window.location.href="actions/logout.php";
 	})
+	
+	/* Items li */
+
 
 });
 
