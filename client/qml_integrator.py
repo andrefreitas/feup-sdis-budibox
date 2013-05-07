@@ -42,4 +42,3 @@ view.setGeometry(360, 360, 360, 360)
 view.setMaximumSize(360, 360)
 view.show()
 
-app.exec_()
