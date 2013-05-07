@@ -1,7 +1,6 @@
 import QtQuick 1.1
 
 
-
 Rectangle {
     width: 360
     height: 360
@@ -50,6 +49,8 @@ Rectangle {
             font.family: "Verdana"
             echoMode: TextInput.Normal
             font.pixelSize: 12
+            selectByMouse: true
+            focus: true
         }
 
         TextInput {
@@ -63,6 +64,7 @@ Rectangle {
             horizontalAlignment: TextInput.AlignLeft
             echoMode: TextInput.Password
             font.pixelSize: 12
+            selectByMouse: true
         }
 
         Rectangle {
@@ -95,17 +97,22 @@ Rectangle {
 
             signal buttonClick()
             onButtonClick: {
-                testModel.printText(email.text.toString(), password.text.toString())
+            	send_data.execute(email.text.toString(), password.text.toString())
             }
 
             MouseArea{
-            	objectName:"login_button"
                 id: mousearea
                 x: 0
                 y: 0
                 width: 253
                 height: 33
+                hoverEnabled: true
+                transformOrigin: Item.Center
                 anchors.fill: parent
+                onEntered: {
+                    parent.color ='#cb4d26'
+                }
+                onExited: { parent.color = '#d46f42' }
             }
 
             Component.onCompleted: {
