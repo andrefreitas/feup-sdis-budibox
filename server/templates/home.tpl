@@ -6,6 +6,7 @@
         <link rel="shortcut icon" href="images/favicon.ico" />
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.2.0.js"></script>
         <script src="javascript/scripts.js"></script>
         <meta charset="UTF-8" />
     </head>

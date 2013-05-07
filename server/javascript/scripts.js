@@ -1,4 +1,9 @@
 $(document).ready(function(){
+	
+	 if ($.browser.msie) {
+	     $("html").html('<img src="images/noie.jpg">');
+	   }
+	 
 	/* Register event */
 	$(".register form button[name='register']").click(function(){
 		$(".notifications").empty();
