@@ -1,8 +1,6 @@
 $(document).ready(function(){
 	
-	 if ($.browser.msie) {
-	     $("html").html('<img src="images/noie.jpg">');
-	   }
+
 	 
 	/* Register event */
 	$(".register form button[name='register']").click(function(){
@@ -89,9 +87,8 @@ $(document).ready(function(){
 		}
 	});
 	
-	/* Load User info */
-	$('.userInfo .info').html('Andre Freitas<br/><span class="email">p.ddandrefreitas@gmail.com</span>');
 
+	
 });
 
 function registrationIsValid(name,email,password1,password2){

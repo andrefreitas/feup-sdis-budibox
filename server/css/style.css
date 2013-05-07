@@ -375,5 +375,67 @@ ul.navigation {
 	bottom: 0px;
 	top: 0px;
 	z-index:-1;
+	padding-top:111px;
+}
+
+.content .head{
+	height: 33px;
+	padding: 10px;
+	background: #f2f2f2;
+	color: #cb4f25;
+	border-bottom:solid 4px #e1e1e1;
+	
+	
+}
+
+.content .head h1 {
+	margin: 0;
+	padding: 0;
+	display: inline;
+	margin-right: 5px;
+	
+}
+
+/* Box */
+.leftPanel{
+	width: 230px;
+	float: left;
+	min-height:200px;
+	border-right: solid 1px #e1e1e1;
+	position:relative;
+	bottom: 0px;
+	
+}
+
+.leftPanel h2{
+	margin: 0px;
+	padding: 0px;
+	padding: 5px 10px 5px 10px;
+	background:#cc4e2b;
+	color: #fff;
+	font-size: 17px;
+	border-left: solid 4px #a13212;
+}
+
+.leftPanel h2.explorer{
+	background: url("../images/explorer.png") #cc4e2b no-repeat;
+	background-position: 5px 5px;
+	padding-left: 30px;
+}
+
+
+.items{
+	width: 867px;
+	float: left;
+	min-height:200px;
+
+}
+
+.path{
+	padding-left: 15px;
+	font-size: 26px;
+	color: #cb4f25;
+	font-weight: bold;
+	padding-top: 2px;
 }
 

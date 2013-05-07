@@ -32,7 +32,17 @@
         </div>
         <div class="container">
             <div class="content">
-              
+                <div class="head">
+                    <h1>Box</h1> Here you can manage all the files you have in the cloud
+                </div>
+                <div class="leftPanel">
+                    <h2 class="explorer">File explorer</h2>
+                </div>
+                <div class="items">
+                    <div class="path">
+                    {$dir}
+                    </div>
+                </div>
             </div>
         </div>
   
