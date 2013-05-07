@@ -13,9 +13,11 @@
         <div id="header">
             <div class="container">
                 <ul class="navigation">
-                    <li>Explorer</li>
-                    <li>My Account</li>
-                    <li>Statistics</li>
+                    <li class="boxi">My Box</li>
+                    <li class="accounti">My Account</li>
+                    <li class="statsi">Statistics</li>
+                    <li class="feedbacki">Give Feedback</li>
+                    <li class="logouti">Logout</li>
                 </ul>
              </div>
         </div>

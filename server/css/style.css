@@ -26,6 +26,7 @@ body{
 	margin: 0 auto;
 	overflow: auto;
 	overflow: hidden;
+	border-right: solid 1px;
 }
 
 .featureLogo{
@@ -257,12 +258,63 @@ input[type='submit']:hover{
 ul.navigation {
 	padding: 0;
 	margin: 0;
+	float: left;
 	
 }
 .navigation li{
 	float: left;
-	background: red;
-	width: 200px;
+	width: 130px;
 	padding: 10px;
-	height: 111px;
+	padding-top: 80px;
+	height: 20px;
+	text-align:center;
+	text-transform:uppercase;
+	font-size: 14px;
+	border-left: solid 1px #a13212;
+	cursor: pointer;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.navigation li:last-child{
+	border-right: solid 1px #a13212;
+}
+
+.navigation li:hover{
+	background-color: #cb4d26;
+
+}
+
+.navigation li:active{
+		box-shadow: inset 0px 3px 8px #9c381a;
+
+}
+
+.boxi{
+	background: url("../images/box.png")  no-repeat;
+	background-position: 50px 15px;
+}
+
+.accounti{
+	background: url("../images/account.png")  no-repeat;
+	background-position: 50px 15px;
+}
+
+.statsi{
+	background: url("../images/stats.png")  no-repeat;
+	background-position: 50px 15px;
+}
+
+.feedbacki{
+	background: url("../images/feedback.png")  no-repeat;
+	background-position: 50px 15px;
+}
+
+.logouti{
+	background: url("../images/logout.png")  no-repeat;
+	background-position: 50px 15px;
 }

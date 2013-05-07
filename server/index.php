@@ -2,7 +2,7 @@
     chdir("common");
     require_once("init.php");
     if(isset($_SESSION["_id"]))
-        header("Location: explorer.php");
+        header("Location: box.php");
     if(isset($_GET["welcome"]))
         $smarty->assign('welcome', $_GET["welcome"]);
     $smarty->display('home.tpl');
