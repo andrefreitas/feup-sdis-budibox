@@ -59,6 +59,7 @@ body{
 
 .register input{
 	width: 180px;
+	margin-bottom: 3px;
 }
 .unlimited{
 	width: 350px;
@@ -369,5 +370,9 @@ ul.navigation {
 	border-right: solid 1px #b6b6b6;
 	border-left: solid 1px #b6b6b6;
 	overflow:hidden;
-	min-height: 800px;
+	position: absolute;
+	bottom: 0px;
+	top: 0px;
+	z-index:-1;
 }
+

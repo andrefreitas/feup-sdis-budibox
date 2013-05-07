@@ -25,7 +25,7 @@
         </div>
         <div class="container">
             <div class="subnotifications"></div>
-            <img src="images/clouds.png">
+            <img src="images/clouds.png" alt ="Clouds">
             <div class="notifications">
                {if isset($welcome) and $welcome eq 0} 
                  <div class="error">

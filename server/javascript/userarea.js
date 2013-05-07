@@ -2,6 +2,11 @@ $(document).ready(function(){
 	/* Load User info */
 	loadUserInfo();
 	$(".userInfo .avatar img").delay(3000).css("visibility", "visible");
+	
+	/* Links */
+	$('.logouti').click(function(){
+		window.location.href="actions/logout.php";
+	})
 
 });
 
