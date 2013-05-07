@@ -26,7 +26,7 @@ body{
 	margin: 0 auto;
 	overflow: auto;
 	overflow: hidden;
-	border-right: solid 1px;
+
 }
 
 .featureLogo{
@@ -294,6 +294,10 @@ ul.navigation {
 
 }
 
+.navigation a{
+	color: white;
+}
+
 .boxi{
 	background: url("../images/box.png")  no-repeat;
 	background-position: 50px 15px;
@@ -317,4 +321,44 @@ ul.navigation {
 .logouti{
 	background: url("../images/logout.png")  no-repeat;
 	background-position: 50px 15px;
+}
+
+.userInfo{
+	width: 300px;
+	height: 100px;
+	float: left;
+	margin-left: 20px;
+	margin-top: 19px;
+	
+}
+
+.userInfo .avatar{
+	float: left;
+}
+
+.userInfo .avatar img{
+	border-radius: 3px;
+	border: solid 1px #a13212;
+	width: 70px;
+	height: 70px;
+	visibility: hidden;
+	
+}
+
+
+.userInfo .info{
+	color: #fff;
+	float: left;
+	padding-left: 20px;
+	padding-top: 14px;
+	font-size: 23px;
+	width: 200px;
+	line-height: 18px;
+	text-shadow: 1px 1px #a13212;
+}
+
+
+.userInfo .info .email{
+	font-size: 15px;
+	
 }
