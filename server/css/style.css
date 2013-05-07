@@ -443,11 +443,21 @@ ul.navigation {
 	list-style: none;
 	border-top: solid 1px #e1e1e1;
 	padding: 10px 10px 10px 10px;
-	font-size: 20px;
+	font-size: 17px;
 }
 
 
 .items li.directory{
+	background: url('../images/folder.png') no-repeat;
+	background-position: 0px 4px;
+	padding-left: 50px;
+	
+}
+
+.items li.file{
+	background: url('../images/file.png') no-repeat;
+	background-position: 0px 4px;
+	padding-left: 50px;
 	
 }
 .items ul{
