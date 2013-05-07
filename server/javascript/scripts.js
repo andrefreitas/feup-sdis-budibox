@@ -163,3 +163,17 @@ function validateLogin(){
 	
 	return false;
 }
+
+/*
+* Get gravatar
+*/
+function getGravatar(email){
+	$.ajaxSetup( { "async": false } );
+	var data = $.getJSON("api/getGravatar.php?",{
+		email: email,
+        default: "http://gnomo.fe.up.pt/~lbaw12503/fastmarket/images/default-avatar.png",
+        size: 70
+	});
+	$.ajaxSetup( { "async": true } );
+	return $.parseJSON(data["responseText"])["url"];
+}
