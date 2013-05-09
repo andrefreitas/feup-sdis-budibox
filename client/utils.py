@@ -12,7 +12,7 @@ import platform
 import socket
 import re
 
-def json_request(url,params):
+def json_request(url,params = {}):
     url += "?"
     for param in params.keys():
         url += param + "=" + params[param] + "&"
