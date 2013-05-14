@@ -121,4 +121,22 @@ function getFilesFromUser($userEmail){
     }
     return $data; 
 }
+/* 
+ * Return the files from a given directory. Note: allways use / in the beginning 
+ * and end of the directory name.
+ */
+function getDirectoryFiles($userEmail, $directory = "/", $status = "any"){
+    global $files;
+    $regex = array('$regex' => "^" . $directory . "[a-zA-Z0-9\.\-_\ ]+$");
+    $statement = array( "user" => $userEmail, "path" => $regex);
+    if ($status!="any") {
+        $statement["status"] = $status;
+    }
+    $cursor =  $files->find($statement);
+    $data = array();
+    foreach($cursor as $doc){
+        $data[] = $doc;
+    }
+    return $data;
+}
 ?>
