@@ -35,9 +35,7 @@
                 <div class="head">
                     <h1>Box</h1> Here you can manage all the files you have in the cloud
                 </div>
-                <div class="leftPanel">
-                    <h2 class="explorer">File explorer</h2>
-                </div>
+         
                 <div class="items">
                     <div class="path">
                     {$dir}
@@ -47,7 +45,7 @@
                             <li class="directory">{$directory}</li>
                         {/foreach}
                         {foreach from=$files item=file}
-                            <li class="file">{$file}</li>
+                            <li class="file">{$file}<div class="actions"></div></li>
                         {/foreach}
                     </ul>
                     

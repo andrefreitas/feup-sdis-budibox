@@ -20,8 +20,18 @@ $(document).ready(function(){
 		var dir = basePath + $(this).text() + "/";
 		window.location.href="box.php?dir=" + dir;
 	});
-
-
+	
+	$('.file').hover(function(){
+		var actions = '<button type="button" class="download">Download</button> <button type="button" class="delete">Delete</button>';
+		$(this).children(".actions").html(actions);
+	}		
+	,function(){
+		$(this).children(".actions").html("");
+	});
+	
+/*
+ *  <button type="button" class="download">Download</button> <button type="button" class="delete">Delete</button>
+ */
 });
 
 /*

@@ -132,7 +132,7 @@ input[type='submit']:hover{
 	font-size: 30px;
 	margin: 0 auto;
 	display: none;
-}
+} 
 
 /* Processing */
 .processing{
@@ -172,7 +172,7 @@ input[type='submit']:hover{
 }
 
 .recover{
-	margin-top: 15px;
+	padding-top: 35px;
 	text-align: center;
 }
 #header input,
@@ -188,6 +188,8 @@ input[type='submit']:hover{
 	box-shadow: inset 0px 0px 8px #dfaf99;
 	
 }
+
+
 
 #header input[type='submit'], 
 #header button
@@ -424,7 +426,8 @@ ul.navigation {
 
 
 .items{
-	width: 867px;
+	margin-top: 10px;
+	width: 100%;
 	float: left;
 	min-height:200px;
 
@@ -443,8 +446,6 @@ ul.navigation {
 	border-top: solid 1px #e1e1e1;
 	padding: 12px 10px 12px 10px;
 	font-size: 17px;
-
-
 }
 
 
@@ -469,6 +470,43 @@ ul.navigation {
 	padding-left: 50px;
 	
 }
+
+/* -- Begin File Actions --*/
+.items .file .actions{
+	display: inline;
+	float: right;
+	
+}
+
+.items .file .actions button{
+	cursor: pointer;
+	
+}
+
+.items .file .actions button.download{
+	width: 100px;
+	background-color: #93c93d;
+	border: solid 1px #607b35;
+	
+}
+
+.items .file .actions button.delete{
+	width: 100px;
+	background-color: #c55353;
+	border: solid 1px #5d2828;
+	
+}
+
+.items .file .actions button.download:hover{
+	box-shadow: inset 0px 3px 8px #699325;
+}
+
+.items .file .actions button.delete:hover{
+	box-shadow: inset 0px 3px 8px #8c2f2f;
+}
+
+
+/* -- End File Actions --*/
 
 .items li:hover{
 	background-color: #f6f6f6;
