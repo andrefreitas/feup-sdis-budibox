@@ -126,7 +126,8 @@ function getFilesFromUser($userEmail){
  * and end of the directory name.
  */
 function getDirectoryFiles($userEmail, $directory = "/", $status = "any"){
-    global $files;
+    global $db;
+    $files = $db->files;
     $regex = array('$regex' => "^" . $directory . "[a-zA-Z0-9\.\-_\ ]+$");
     $statement = array( "user" => $userEmail, "path" => $regex);
     if ($status!="any") {
@@ -135,8 +136,27 @@ function getDirectoryFiles($userEmail, $directory = "/", $status = "any"){
     $cursor =  $files->find($statement);
     $data = array();
     foreach($cursor as $doc){
-        $data[] = $doc;
+        $path = $doc["path"];
+        $path = substr($path, strlen($directory));
+        $data[] = $path;
     }
+    return $data;
+}
+
+function getDirectoryFolders($userEmail, $directory = "/"){
+    global $db;
+    $files = $db->files;
+    $regex = array('$regex' => "^" . $directory . "[a-zA-Z0-9\-_\ ]+/");
+    $statement = array( "user" => $userEmail, "path" => $regex);
+    $cursor =  $files->find($statement);
+    $data = array();
+    foreach($cursor as $doc){
+        $path = $doc["path"];
+        $path = substr($path, strlen($directory));
+        $path = explode('/', $path);
+        $data[] = $path[0];
+    }
+    $data = array_unique($data);
     return $data;
 }
 ?>
