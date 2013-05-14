@@ -13,7 +13,6 @@
     <body>
         <div id="header">
             <div class="container">
-                <div class="limbo"></div>
                 <div class="login">
                     <form action="actions/login.php" onsubmit="return validateLogin()">
                         <input type="email" name="email" placeholder="Email" />
