@@ -3,6 +3,7 @@
     <head>
         <title>Budibox explorer</title>
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="css/reveal.css"/>
         <link rel="shortcut icon" href="images/favicon.ico" />
         <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>

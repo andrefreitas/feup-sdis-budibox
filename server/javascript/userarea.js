@@ -8,11 +8,12 @@ $(document).ready(function(){
 		window.location.href="actions/logout.php";
 	});
 	
-	
-	/* Links */
 	$('.boxi').click(function(){
 		window.location.href="box.php";
 	});
+	
+
+
 	
 	/* Items li */
 	$('.directory').click(function(){
