@@ -51,5 +51,15 @@ function getComputerID($user, $name){
         return $result["_id"];
 }
 
+function computerExists($user, $name){
+    global $computers;
+    $result = $computers->findOne(array("user" => $user, "name" => $name), array("_id" => true));
+    return ($result != null);
+}
 
+function setComputerLocation($user, $name, $lat, $lon){
+    global $computers;
+    $newData = array('$set' => array("location" => array("lat" => $lat, "lon" => $lon)));
+    $computers->update(array("user" => $user, "name" => $name), $newData);
+}
 ?>
