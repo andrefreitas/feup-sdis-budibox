@@ -6,9 +6,14 @@ $(document).ready(function(){
 	/* Links */
 	$('.logouti').click(function(){
 		window.location.href="actions/logout.php";
-	})
+	});
 	
 	/* Items li */
+	$('.directory').click(function(){
+		var basePath = $('.path').text().trim();
+		var dir = basePath + $(this).text() + "/";
+		window.location.href="box.php?dir=" + dir;
+	});
 
 
 });
