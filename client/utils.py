@@ -21,20 +21,16 @@ def json_request(url,params = {}):
 def get_computer_name():
     return platform.node()
 
-def get_location(ip_address):
-    url = 'http://api.hostip.info/get_html.php?ip=' + ip_address + '&position=true'
-    response = urllib.urlopen(url).read()
-    
-    latitude_exp = "(Latitude:).(-?[0-9]+\.+[0-9]+)"
-    latitude = float (re.search(latitude_exp, response).group(2))
-    longitude_exp = "(Longitude:).(-?[0-9]+\.+[0-9]+)"
-    longitude = float (re.search(longitude_exp, response).group(2))
-    
+def get_location():
+    url = 'http://freegeoip.net/json/'
+    response = json.loads(urllib.urlopen(url).read())
+
+    latitude = response['latitude']
+    longitude = response['longitude']
+
     location = {'latitude': latitude,
                 'longitude': longitude
                 }
     return json.dumps(location)
-    
 
-print get_location('193.136.33.133')
-    
+print get_location()
