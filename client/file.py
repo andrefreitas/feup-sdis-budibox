@@ -69,10 +69,8 @@ class File:
         self.set_file_id(file_id)
         return file_id
 
-    def generate_chunks(self, directory=""):
+    def generate_chunks(self, db_file_id):
         f=open(self._full_path, "rb")
-        directory=fix_directory_path(directory)
-        print directory
         print self._name
         i=0
         while True:
@@ -86,7 +84,7 @@ class File:
                 # Creates request for a chunk
                 url = self.api+'chunks/put.php'
                 values = {'apikey': '12',
-                          'fileId': self._file_id,
+                          'fileId': db_file_id,
                           'modification': self._file_id,
                           'body': chunk_encrypted,
                           'number': str(i)
