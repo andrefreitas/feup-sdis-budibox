@@ -30,7 +30,6 @@ function setComputerStatus($user, $name, $status){
 	global $computers;
 	$params = array("status" => $status);
 	if($status == 'on'){
-	    echo "lasttime alive";
 	    $params["lastTimeAlive"] = new MongoDate();
 	}
 	$newData = array('$set' => $params);
