@@ -26,25 +26,30 @@ class Watcher:
             # Handle Events
             if added: 
                for path in added:
-                   self.added(path)
+                   self.added(path, client)
                 
             if removed:
                  for path in removed:
-                   self.removed(path)
+                   self.removed(path, client)
                    
             if modified:
                 for path in modified:
-                    self.modified(path)
+                    self.modified(path, client)
     
             before = after
         
-    def added(self, path):
-        print "Added: " + path
+    def added(self, path, client):
+        print "Added: " + path        
+        print path
+        print self.path
+        f = File(path, client)
+        # A alterar esta chamada
+        f.generate_chunks(self.path)
         
-    def removed(self, path):
+    def removed(self, path, client):
         print "Removed " + path
         
-    def modified(self, path):
+    def modified(self, path, client):
         print "Modified " +  path
         
     def files_to_timestamp(self, path):

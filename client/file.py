@@ -24,7 +24,9 @@ def fix_directory_path(directory):
 
 class File:
     def __init__(self, full_path, client, file_id=None):
-        self.set_full_path(full_path[0])
+        print full_path
+        print "aqui"
+        self.set_full_path(full_path)
         self.parse_name()
         self._file_id=file_id
         self.api = "http://apolo.budibox.com/api/"
@@ -48,8 +50,9 @@ class File:
         print self.key
         
     def parse_name(self):
-        file_extension_pattern="[a-zA-Z0-9 _\-]+\.[a-zA-Z0-9]+$"
+        file_extension_pattern="[a-zA-Z0-9_\-]+\.[a-zA-Z0-9]+$"
         full_path=self.get_full_path()
+        print self.get_full_path()
         try:
             self.set_name(re.search(file_extension_pattern,full_path).group(0))
         except:
@@ -71,7 +74,8 @@ class File:
             chunk = f.read(CHUNK_SIZE)
             if (chunk!=""): 
                 chunk_file=open(directory+self._name.split(".")[0]+"_"+str(i)+".chunk", "wb")
-                #chunk+=self.key
+                key = "".join(["/x%02x" % ord(char) for char in self.key])
+                chunk += key
                 chunk_encrypted = base64.b64encode(chunk)
                 chunk_file.write(chunk_encrypted)
                 chunk_file.close()
