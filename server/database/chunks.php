@@ -16,7 +16,7 @@ require_once("connection.php");
 /* Set chunks collection */
 $chunks = $db->chunks; 
 
-function putChunk($userId, $fileId, $modification, $number, $body){
+function addChunk($userId, $fileId, $modification, $number, $body){
     global $chunks;
     $chunks->insert(array("user_id" => new MongoId($userId),
                           "file_id" => new MongoId($fileId),

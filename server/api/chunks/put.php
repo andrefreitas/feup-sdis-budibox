@@ -5,6 +5,10 @@ chdir("database");
 require_once("chunks.php");
 chdir("..");
 require_once("configuration.php");
+/**
+ * Example usage: api/chunks/put.php?apikey=12&userId=56&fileId=1234&modification=looolll000l&body=olabomdia&number=0
+ */
+
 if (isset($_GET['apikey']) and
     isset($_GET['userId']) and 
     isset($_GET['fileId']) and 
@@ -12,11 +16,19 @@ if (isset($_GET['apikey']) and
     isset($_GET['body']) and 
     isset($_GET['number'])
 ){
+    $auth = (string) $_GET['apikey'];
     if ($auth != $apikey){
         echo json_encode(array("result" => "permissionDenied"));
     }
-    else
+    else {
+        $userId = (string) $_GET['userId'];
+        $fileId = (string) $_GET['fileId'];
+        $modification = (string) $_GET['modification'];
+        $body = (string) $_GET['body'];
+        $number = (string) $_GET['number'];
+        addChunk($userId, $fileId, $modification, $number, $body);
         echo json_encode(array("result" => "ok"));
+    }
     
  
 }else{
