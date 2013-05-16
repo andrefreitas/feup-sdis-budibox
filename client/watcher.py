@@ -9,9 +9,9 @@ class Watcher:
         
         self.path = path_to_watch
         
-    def start(self):
+    def start(self, client):
         before = self.files_to_timestamp(self.path)
-    
+        
         while 1:
             time.sleep (1)
             after = self.files_to_timestamp(self.path)

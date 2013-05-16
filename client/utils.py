@@ -16,6 +16,7 @@ def json_request(url,params = {}):
     url += "?"
     for param in params.keys():
         url += param + "=" + params[param] + "&"
+    
     return json.load(urllib.urlopen(url))
 
 def get_computer_name():

@@ -7,7 +7,10 @@ import re
 import hashlib
 import os
 import datetime
+import base64
+import utils
 from Crypto.Cipher import ARC4 
+
 
 CHUNK_SIZE=64000
 
@@ -21,12 +24,27 @@ def fix_directory_path(directory):
 
 
 class File:
-    def __init__(self, full_path, key, file_id=None):
+    def __init__(self, full_path, key, client, file_id=None):
         self.set_full_path(full_path)
         self.parse_name()
         self._file_id=file_id
+        self.client = client
         self.encoder = ARC4.new(key)
         self.decoder = ARC4.new(key)
+        
+    def get_salt(self):
+        url = self.api+'users/getKey.php'
+        values = {'apikey': '12',
+                  'user': self.client.get_email()
+                  }
+        
+        response = utils.json_request(url, values)
+        
+        if (response['result'] == 'ok'):
+            self.key = response['key']
+            
+        else:
+            print "ERROR in getting salt"
         
     def parse_name(self):
         file_extension_pattern="[a-zA-Z0-9_\-]+\.[a-zA-Z0-9]+$"
@@ -50,6 +68,7 @@ class File:
             chunk = f.read(CHUNK_SIZE)
             if (chunk!=""): 
                 chunk_file=open(directory+self._name.split(".")[0]+"_"+str(i)+".chunk", "wb")
+                chunk_file+=self.key
                 chunk_encrypted= self.encoder.encrypt(chunk)
                 chunk_file.write(chunk_encrypted)
                 chunk_file.close()

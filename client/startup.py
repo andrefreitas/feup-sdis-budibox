@@ -1,6 +1,7 @@
 from login_box import LoginBox, Receive_data
 from os.path import expanduser
 from watcher import Watcher
+import login_box
 import os
 
 # Makes login if necessary
@@ -16,4 +17,4 @@ if(not os.path.exists(budibox_home)):
 
 # Starts supervising folder 
 w = Watcher(budibox_home)
-w.start()
+w.start(login_box.client)
