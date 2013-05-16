@@ -13,8 +13,7 @@ if (isset($_GET["user"]) and isset($_GET["computer"])) {
     } else {
         if (!computerExists($user, $computer))
             createComputer($user, $computer);
-        else
-            setComputerStatus($user, $computer, "on");
+        setComputerStatus($user, $computer, "on");
         echo json_encode(array("result" => "ok"));
     }
 } else {
