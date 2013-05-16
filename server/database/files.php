@@ -152,6 +152,16 @@ function getFileById($id){
     global $files;
     return $files->findOne(array("_id" => new MongoId($id)));
 }
+
+
+function getFileId($user, $path){
+    global $files;
+    $file =  $files->findOne(array("user" => $user, "path" => $path));
+    if($file)
+        return (string)$file["_id"];
+    return false;
+}
+
 function getDirectoryFolders($userEmail, $directory = "/"){
     global $db;
     $files = $db->files;
