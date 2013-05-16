@@ -8,8 +8,6 @@
               "password" => $databasePassword,
               "timeout" => 6000 ));
         $connection->setReadPreference(MongoClient::RP_PRIMARY_PREFERRED , array());
- 
-
         $db = $connection->selectDB($database);
     } catch (Exception $e) {
         echo "Failed connecting to mongodb: " . $e->getMessage();
