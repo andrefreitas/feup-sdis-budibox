@@ -121,6 +121,12 @@ function getFilesFromUser($userEmail){
     }
     return $data; 
 }
+
+function fileExists($path, $user){
+    global $files;
+    $file = $files->findOne(array("user" => $user, "path" => $path), array("_id" => true));
+    return $file;
+}
 /* 
  * Return the files from a given directory. Note: allways use / in the beginning 
  * and end of the directory name.
