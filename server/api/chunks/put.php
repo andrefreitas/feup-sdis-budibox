@@ -6,7 +6,7 @@ require_once("chunks.php");
 chdir("..");
 require_once("configuration.php");
 /**
- * Example usage: api/chunks/put.php?apikey=12&userId=56&fileId=1234&modification=looolll000l&body=olabomdia&number=0
+ * Example usage: api/chunks/put.php?apikey=12&fileId=1234&modification=looolll000l&body=olabomdia&number=0
  */
 
 if (isset($_GET['apikey']) and
