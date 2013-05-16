@@ -29,7 +29,7 @@ class Watcher:
             if added: 
                 print "Added: ", ", ".join(added)
                 f = File(added, client)
-                #f.generate_chunks()
+                f.generate_chunks(self.path)
                 
             if removed: print "Removed: ", ", ".join(removed)
             if modified: print "Modified ", ", ".join(modified)

@@ -64,13 +64,15 @@ class File:
     def generate_chunks(self, directory=""):
         f=open(self._full_path, "rb")
         directory=fix_directory_path(directory)
+        print directory
+        print self._name
         i=0
         while True:
             chunk = f.read(CHUNK_SIZE)
             if (chunk!=""): 
                 chunk_file=open(directory+self._name.split(".")[0]+"_"+str(i)+".chunk", "wb")
-                chunk_file+=self.key
-                chunk_encrypted = base64.b64encode(chunk_file)
+                #chunk+=self.key
+                chunk_encrypted = base64.b64encode(chunk)
                 chunk_file.write(chunk_encrypted)
                 chunk_file.close()
                 i+=1
