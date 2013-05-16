@@ -15,9 +15,9 @@ if (isset($_GET['apikey']) and
     if ($auth != $apikey){
         echo json_encode(array("result" => "permissionDenied"));
     }
-    else{
-        echo json_encode(array("result" => "ok");
-    }
+    else
+        echo json_encode(array("result" => "ok"));
+    
  
 }else{
     echo json_encode(array("result" => "missingParams"));
