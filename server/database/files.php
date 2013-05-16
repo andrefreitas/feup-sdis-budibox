@@ -7,7 +7,7 @@
 *     path : <file path>,
 *     modification : <modification sha256>,
 *     user : <user email>,
-*     status : <status of the file>,
+*     status : <status of the file: {pending, active}>,
 *     chunks : [
 *                  [ <computer id>, <computer id> ], // chunk 0
 *                  [ <computer id>, <computer id>, <computer id>], // chunk 1
@@ -41,10 +41,10 @@ function addChunk($path, $user, $computers){
     $files->update(array("path" => $path, "user" => $user),$newData);
 }
 
-function addComputerToChunk($path,$user,$chunkNumber,$computer){
+function addComputerToChunk($fileId, $chunkNumber,$computer){
     global $files;
     $newData = array('$addToSet' => array("chunks." . (string)$chunkNumber => new MongoId($computer)));
-    $files->update(array("path" => $path, "user" => $user),$newData);
+    $files->update(array("_id" => new MongoId($fileId)), $newData);
 }
 
 function getChunkComputers($path,$user,$chunkNumber){
@@ -148,7 +148,10 @@ function getDirectoryFiles($userEmail, $directory = "/", $status = "any"){
     }
     return $data;
 }
-
+function getFileById($id){
+    global $files;
+    return $files->findOne(array("_id" => new MongoId($id)));
+}
 function getDirectoryFolders($userEmail, $directory = "/"){
     global $db;
     $files = $db->files;

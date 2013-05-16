@@ -4,7 +4,6 @@
  * -----------------------
  * JSON document schema:
  * {
- *     user_id: <ObjectId()>,
  *     file_id : <ObjectId()>,
  *     modification: <sha256 modification>,
  *     number : <chunk number>
@@ -16,10 +15,9 @@ require_once("connection.php");
 /* Set chunks collection */
 $chunks = $db->chunks; 
 
-function addChunk($userId, $fileId, $modification, $number, $body){
+function addChunk($fileId, $modification, $number, $body){
     global $chunks;
-    $chunks->insert(array("user_id" => new MongoId($userId),
-                          "file_id" => new MongoId($fileId),
+    $chunks->insert(array("file_id" => new MongoId($fileId),
                           "modification" => $modification,
                           "number" => $number,
                           "body" => $body   
