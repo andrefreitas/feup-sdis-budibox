@@ -2,20 +2,21 @@
 
 import os, sys, time
 from file import File
+from utils import *
 
 class Watcher:
     
     def __init__(self, path_to_watch):
         print "Watching " + path_to_watch
-        
-        self.path = path_to_watch
+        self.api = "http://apolo.budibox.com/api/"
+        self.path_to_watch = path_to_watch
         
     def start(self, client):
-        before = self.files_to_timestamp(self.path)
+        before = self.files_to_timestamp(self.path_to_watch)
         
         while 1:
             time.sleep (1)
-            after = self.files_to_timestamp(self.path)
+            after = self.files_to_timestamp(self.path_to_watch)
             added = [f for f in after.keys() if not f in before.keys()]
             removed = [f for f in before.keys() if not f in after.keys()]
             modified = []
@@ -39,12 +40,30 @@ class Watcher:
             before = after
         
     def added(self, path, client):
-        print "Added: " + path        
-        print path
-        print self.path
+        # Prints message of file added
+        print "Added: " + path
+        
+        # Creates file information
         f = File(path, client)
-        # A alterar esta chamada
-        f.generate_chunks(self.path)
+        f.generate_file_id()
+        
+        # Gets relative_path location
+        relative_path = path.split(self.path_to_watch)[1]
+        
+        # Sends request to server with information about the new file
+        url = self.api+'files/create.php'
+        values = {'apikey': '12',
+                  'path': relative_path ,
+                  'user': client.get_email(),
+                  'modification': f.get_file_id()
+                  }
+        response = json_request(url, values)
+        
+        
+        print response
+        
+        # Change path to create chunks
+        #f.generate_chunks(self.path_to_watch)
         
     def removed(self, path, client):
         print "Removed " + path

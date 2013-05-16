@@ -8,7 +8,7 @@ import hashlib
 import os
 import datetime
 import base64
-import utils
+from utils import *
 
 
 CHUNK_SIZE=64000
@@ -24,8 +24,6 @@ def fix_directory_path(directory):
 
 class File:
     def __init__(self, full_path, client, file_id=None):
-        print full_path
-        print "aqui"
         self.set_full_path(full_path)
         self.parse_name()
         self._file_id=file_id
@@ -39,7 +37,7 @@ class File:
                   'user': self.client.get_email()
                   }
         
-        response = utils.json_request(url, values)
+        response = json_request(url, values)
         
         if (response['result'] == 'ok'):
             self.key = response['key']
@@ -57,13 +55,20 @@ class File:
             self.set_name(re.search(file_extension_pattern,full_path).group(0))
         except:
             raise InvalidPathError
-            
-    def generate_file_id(self):
+    
+    def get_modification_date(self):
         full_path=self.get_full_path()
-        file_id=hashlib.sha256(full_path).hexdigest()
+        t = os.path.getmtime(full_path)
+        return str(datetime.datetime.fromtimestamp(t))
+        
+    def generate_file_id(self):
+        modification_date=self.get_modification_date()
+        full_path=self.get_full_path()
+        computer_name=get_computer_name()
+        file_id=hashlib.sha256(full_path+modification_date+computer_name+self.client.get_email()).hexdigest()
         self.set_file_id(file_id)
         return file_id
-    
+
     def generate_chunks(self, directory=""):
         f=open(self._full_path, "rb")
         directory=fix_directory_path(directory)
@@ -120,6 +125,8 @@ class File:
                         
         return chunks"""
  
+    def get_relative_path(self):
+        return self.relative_path
   
     def set_full_path(self,full_path):
         self._full_path=full_path
