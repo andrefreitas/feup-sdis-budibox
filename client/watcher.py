@@ -61,11 +61,27 @@ class Watcher:
             
             response = json_request(url, values)
             
-            
+            if (response['result'] != 'ok'):
+                print "Error sending information about file!"
+                return
+                
             print response
             
-            # Change path to create chunks
-            f.generate_chunks(self.path_to_watch)
+            url = self.api+'files/getId.php'
+            values = {'apikey': '12',
+                      'path': relative_path,
+                      'user': client.get_email(),
+                      }
+            
+            response = json_request(url, values)
+            
+            if (response['result'] != 'ok'):
+                print "Error getting fileId!"
+                return
+            
+            # Send information about chunks to server
+            db_file_id = response['id']
+            f.generate_chunks(db_file_id)
         
     def removed(self, path, client):
         print "Removed " + path
