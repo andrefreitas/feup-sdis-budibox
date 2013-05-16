@@ -63,7 +63,7 @@ class Watcher:
         print response
         
         # Change path to create chunks
-        #f.generate_chunks(self.path_to_watch)
+        f.generate_chunks(self.path_to_watch)
         
     def removed(self, path, client):
         print "Removed " + path

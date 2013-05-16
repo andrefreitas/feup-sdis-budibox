@@ -6,7 +6,7 @@ require_once("files.php");
 chdir("..");
 require_once("configuration.php");
 
-/*
+/**
  * Example usage: ?path=/ola.txt&user=p.andrefreitas@gmail.com&modification=123&apikey=12
  */
 

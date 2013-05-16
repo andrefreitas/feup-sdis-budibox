@@ -76,6 +76,7 @@ class File:
         print self._name
         i=0
         while True:
+            # Parses file to generate chunks to send
             chunk = f.read(CHUNK_SIZE)
             if (chunk!=""): 
                 chunk_file=open(directory+self._name.split(".")[0]+"_"+str(i)+".chunk", "wb")
@@ -84,6 +85,19 @@ class File:
                 chunk_encrypted = base64.b64encode(chunk)
                 chunk_file.write(chunk_encrypted)
                 chunk_file.close()
+                
+                # Creates request for a chunk
+                url = self.api+'files/create.php'
+                values = {'apikey': '12',
+                          'fileId': self._file_id ,
+                          'modification': self._file_id,
+                          'body': chunk_encrypted,
+                          'number': i
+                          }
+                response = json_request(url, values)
+                
+                print response + " " + str(i)
+                
                 i+=1
             else:
                 break
@@ -132,19 +146,19 @@ class File:
         self._full_path=full_path
 
     def get_full_path(self):
-            return self._full_path
+        return self._full_path
     
     def set_name(self,name):
-            self._name=name
+        self._name=name
     
     def get_name(self):
-            return self._name
+        return self._name
     
     def set_file_id(self,file_id):
-            self._file_id=file_id
+        self._file_id=file_id
     
     def get_file_id(self):
-            return self._file_id
+        return self._file_id
         
         
 
