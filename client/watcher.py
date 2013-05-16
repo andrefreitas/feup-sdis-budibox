@@ -49,15 +49,16 @@ class Watcher:
             f.generate_file_id()
             
             # Gets relative_path location
-            relative_path = path.split(self.path_to_watch)[1]
+            relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
             
             # Sends request to server with information about the new file
             url = self.api+'files/create.php'
             values = {'apikey': '12',
-                      'path': relative_path ,
+                      'path': relative_path,
                       'user': client.get_email(),
                       'modification': f.get_file_id()
                       }
+            
             response = json_request(url, values)
             
             

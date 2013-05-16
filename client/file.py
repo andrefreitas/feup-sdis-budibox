@@ -79,24 +79,23 @@ class File:
             # Parses file to generate chunks to send
             chunk = f.read(CHUNK_SIZE)
             if (chunk!=""): 
-                chunk_file=open(directory+self._name.split(".")[0]+"_"+str(i)+".chunk", "wb")
                 key = "".join(["/x%02x" % ord(char) for char in self.key])
                 chunk += key
                 chunk_encrypted = base64.b64encode(chunk)
-                chunk_file.write(chunk_encrypted)
-                chunk_file.close()
                 
                 # Creates request for a chunk
-                url = self.api+'files/create.php'
+                url = self.api+'chunks/put.php'
                 values = {'apikey': '12',
-                          'fileId': self._file_id ,
+                          'fileId': self._file_id,
                           'modification': self._file_id,
                           'body': chunk_encrypted,
-                          'number': i
+                          'number': str(i)
                           }
+
                 response = json_request(url, values)
                 
-                print response + " " + str(i)
+                print response
+                print i
                 
                 i+=1
             else:
