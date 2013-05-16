@@ -64,7 +64,7 @@ class LoginBox:
                     print 'Notified'
         
         else:
-            Mbox("Budibox", "Credentials undefined or incorrect. Please login again.", 0)
+            Mbox("Budibox", "Credentials undefined or incorrect. Please login again.", 0) 
             
             # Create the QML user interface.
             view = QDeclarativeView()
