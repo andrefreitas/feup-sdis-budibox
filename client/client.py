@@ -33,7 +33,7 @@ class Client:
         
         # Set Location
         if (response['result'] == 'ok'):
-            location = utils.get_location()
+            location = get_location()
             url = self.api+'computers/setLocation.php'
             values = {'user': self.email,
                       'computer': socket.gethostname(),
@@ -41,6 +41,6 @@ class Client:
                       'lon': str(location[1])
                       }
             print values
-            result = utils.json_request(url, values)
+            result = json_request(url, values)
             print result
             return result['result'] == 'ok'

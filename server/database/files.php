@@ -7,7 +7,7 @@
 *     path : <file path>,
 *     modification : <modification sha256>,
 *     user : <user email>,
-*     status : <status of the file: {pending, active}>,
+*     status : <status of the file: {pending, active, deleted}>,
 *     chunks : [
 *                  [ <computer id>, <computer id> ], // chunk 0
 *                  [ <computer id>, <computer id>, <computer id>], // chunk 1
