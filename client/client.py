@@ -1,5 +1,5 @@
 
-import utils
+from utils import *
 import socket
 import json
 
@@ -18,8 +18,7 @@ class Client:
         values = {'email': self.email,
                   'password': self.password
                   }
-        
-        response = utils.json_request(url, values)
+        response = json_request(url, values)
         print response      
         return response
     
@@ -27,9 +26,9 @@ class Client:
         # Notify Startup
         url = self.api+'computers/notifyStartup.php'
         values= {'user': self.email,
-                  'computer': socket.gethostname()
+                  'computer': get_computer_name()
                  }
-        response = utils.json_request(url, values)
+        response = json_request(url, values)
         print response
         
         # Set Location
@@ -38,17 +37,10 @@ class Client:
             url = self.api+'computers/setLocation.php'
             values = {'user': self.email,
                       'computer': socket.gethostname(),
-                      'lat': str(json.loads(location)['latitude']),
-                      'lon': str(json.loads(location)['longitude'])
+                      'lat': str(location[0]),
+                      'lon': str(location[1])
                       }
             print values
             result = utils.json_request(url, values)
             print result
-            if (result['result'] == 'ok'):
-                return True
-            else:
-                return False
-        
-        return False
-
-        
+            return result['result'] == 'ok'
