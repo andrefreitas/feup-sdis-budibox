@@ -28,7 +28,12 @@ function createComputer($user, $name){
 
 function setComputerStatus($user, $name, $status){
 	global $computers;
-	$newData = array('$set' => array("status" => $status));
+	$params = array("status" => $status);
+	if($status == 'on'){
+	    echo "lasttime alive";
+	    $params["lastTimeAlive"] = new MongoDate();
+	}
+	$newData = array('$set' => $params);
 	$computers->update(array("user" => $user, "name" => $name), $newData);
 }
 
@@ -62,4 +67,5 @@ function setComputerLocation($user, $name, $lat, $lon){
     $newData = array('$set' => array("location" => array("lat" => $lat, "lon" => $lon)));
     $computers->update(array("user" => $user, "name" => $name), $newData);
 }
+
 ?>
