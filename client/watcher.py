@@ -43,27 +43,28 @@ class Watcher:
         # Prints message of file added
         print "Added: " + path
         
-        # Creates file information
-        f = File(path, client)
-        f.generate_file_id()
-        
-        # Gets relative_path location
-        relative_path = path.split(self.path_to_watch)[1]
-        
-        # Sends request to server with information about the new file
-        url = self.api+'files/create.php'
-        values = {'apikey': '12',
-                  'path': relative_path ,
-                  'user': client.get_email(),
-                  'modification': f.get_file_id()
-                  }
-        response = json_request(url, values)
-        
-        
-        print response
-        
-        # Change path to create chunks
-        f.generate_chunks(self.path_to_watch)
+        if (os.path.isfile(path)):
+            # Creates file information
+            f = File(path, client)
+            f.generate_file_id()
+            
+            # Gets relative_path location
+            relative_path = path.split(self.path_to_watch)[1]
+            
+            # Sends request to server with information about the new file
+            url = self.api+'files/create.php'
+            values = {'apikey': '12',
+                      'path': relative_path ,
+                      'user': client.get_email(),
+                      'modification': f.get_file_id()
+                      }
+            response = json_request(url, values)
+            
+            
+            print response
+            
+            # Change path to create chunks
+            f.generate_chunks(self.path_to_watch)
         
     def removed(self, path, client):
         print "Removed " + path
