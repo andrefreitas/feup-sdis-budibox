@@ -9,7 +9,6 @@ import os
 import datetime
 import base64
 import utils
-from Crypto.Cipher import ARC4 
 
 
 CHUNK_SIZE=64000
@@ -24,13 +23,13 @@ def fix_directory_path(directory):
 
 
 class File:
-    def __init__(self, full_path, key, client, file_id=None):
-        self.set_full_path(full_path)
+    def __init__(self, full_path, client, file_id=None):
+        self.set_full_path(full_path[0])
         self.parse_name()
         self._file_id=file_id
+        self.api = "http://apolo.budibox.com/api/"
         self.client = client
-        self.encoder = ARC4.new(key)
-        self.decoder = ARC4.new(key)
+        self.get_salt()
         
     def get_salt(self):
         url = self.api+'users/getKey.php'
@@ -45,9 +44,11 @@ class File:
             
         else:
             print "ERROR in getting salt"
+            
+        print self.key
         
     def parse_name(self):
-        file_extension_pattern="[a-zA-Z0-9_\-]+\.[a-zA-Z0-9]+$"
+        file_extension_pattern="[a-zA-Z0-9 _\-]+\.[a-zA-Z0-9]+$"
         full_path=self.get_full_path()
         try:
             self.set_name(re.search(file_extension_pattern,full_path).group(0))
@@ -69,7 +70,7 @@ class File:
             if (chunk!=""): 
                 chunk_file=open(directory+self._name.split(".")[0]+"_"+str(i)+".chunk", "wb")
                 chunk_file+=self.key
-                chunk_encrypted= self.encoder.encrypt(chunk)
+                chunk_encrypted = base64.b64encode(chunk_file)
                 chunk_file.write(chunk_encrypted)
                 chunk_file.close()
                 i+=1
@@ -78,7 +79,7 @@ class File:
         f.close()        
         return i
     
-    def restore_file(self, chunks_directory, destination_directory,expected_chunks):
+    """def restore_file(self, chunks_directory, destination_directory,expected_chunks):
         chunks_directory=fix_directory_path(chunks_directory)
         destination_directory=fix_directory_path(destination_directory)
                 
@@ -111,7 +112,7 @@ class File:
             if (match):
                 chunks[int(match.group(1))] = file_name
                         
-        return chunks
+        return chunks"""
  
   
     def set_full_path(self,full_path):

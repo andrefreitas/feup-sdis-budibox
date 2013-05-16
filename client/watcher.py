@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os, sys, time
+from file import File
 
 class Watcher:
     
@@ -25,7 +26,11 @@ class Watcher:
                     if os.path.getmtime(f) != before.get(f):
                         modified.append(f)
     
-            if added: print "Added: ", ", ".join(added)
+            if added: 
+                print "Added: ", ", ".join(added)
+                f = File(added, client)
+                #f.generate_chunks()
+                
             if removed: print "Removed: ", ", ".join(removed)
             if modified: print "Modified ", ", ".join(modified)
     
