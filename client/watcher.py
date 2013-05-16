@@ -16,27 +16,37 @@ class Watcher:
         while 1:
             time.sleep (1)
             after = self.files_to_timestamp(self.path)
-    
             added = [f for f in after.keys() if not f in before.keys()]
             removed = [f for f in before.keys() if not f in after.keys()]
             modified = []
-    
             for f in before.keys():
                 if not f in removed:
                     if os.path.getmtime(f) != before.get(f):
                         modified.append(f)
-    
+            # Handle Events
             if added: 
-                print "Added: ", ", ".join(added)
-                f = File(added, client)
-                f.generate_chunks(self.path)
+               for path in added:
+                   self.added(path)
                 
-            if removed: print "Removed: ", ", ".join(removed)
-            if modified: print "Modified ", ", ".join(modified)
+            if removed:
+                 for path in removed:
+                   self.removed(path)
+                   
+            if modified:
+                for path in modified:
+                    self.modified(path)
     
             before = after
         
-
+    def added(self, path):
+        print "Added: " + path
+        
+    def removed(self, path):
+        print "Removed " + path
+        
+    def modified(self, path):
+        print "Modified " +  path
+        
     def files_to_timestamp(self, path):
         files = [os.path.join(path, f) for f in os.listdir(path)]
         i = 0
