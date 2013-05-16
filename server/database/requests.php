@@ -24,7 +24,7 @@ $requests = $db->requests;
 function requestStoreChunk($who, $fileId, $modification, $chunkNumber){
     global $requests;
     $requests->insert(array("action" => "storeChunk",
-                            "who" => new MongoId($who),
+                            "who" => $who,
                             "fileId" => $fileId,
                             "modification" => $modification,
                             "chunkNumber" => $chunkNumber

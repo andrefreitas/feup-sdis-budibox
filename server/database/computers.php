@@ -36,7 +36,7 @@ function setComputerStatus($user, $name, $status){
 	$computers->update(array("user" => $user, "name" => $name), $newData);
 }
 
-function getHostStatus($user, $name){
+function getComputerStatus($user, $name){
 	global $computers;
 	$data = $computers->findOne(array("user" => $user, "name" => $name), array("status" => true));
 	if($data)
@@ -63,8 +63,30 @@ function computerExists($user, $name){
 
 function setComputerLocation($user, $name, $lat, $lon){
     global $computers;
-    $newData = array('$set' => array("location" => array("lat" => $lat, "lon" => $lon)));
+    $newData = array('$set' => array("location" => array("type" => "Point", "coordinates" => array($lon, $lat))));
     $computers->update(array("user" => $user, "name" => $name), $newData);
+}
+
+function getComputerLocationById($computerId){
+    global $computers;
+    $computer = $computers->findOne(array("_id" => new MongoId($computerId)), array("location" => true));
+    if ($computer){
+        $location = $computer["location"]["coordinates"];
+        $lon = $location[0];
+        $lat = $location[1];
+        return array("lon" => $lon, "lat" => $lat);
+    }
+}
+function getBestComputers($lat, $lon){
+    global $computers;
+    $geometry = array('$geometry' => array("type" => "Point", "coordinates" => array($lon, $lat)));
+    $statement = array("location" => array('$near' => $geometry), "status" => "on");
+    $cursor =  $computers->find($statement);
+    $data = array();
+    foreach($cursor as $doc){
+        $data[] = (string) $doc["_id"];
+    }
+    return $data;
 }
 
 ?>
