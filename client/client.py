@@ -7,7 +7,10 @@ class Client:
     def __init__(self, email, password):
         self.email = email
         self.password = password
-        self.api = "http://master.budibox.com/api/"
+        self.api = "http://apolo.budibox.com/api/"
+        
+    def get_email(self):
+        return self.email
     
     def login(self):
         # Login 
@@ -17,23 +20,22 @@ class Client:
                   }
         
         response = utils.json_request(url, values)
-        print response        
+        print response      
         return response
     
     def notify_startup(self):
         # Notify Startup
-        url = self.api+'/computers/notifyStartup.php'
+        url = self.api+'computers/notifyStartup.php'
         values= {'user': self.email,
                   'computer': socket.gethostname()
                  }
-        
         response = utils.json_request(url, values)
         print response
         
         # Set Location
         if (response['result'] == 'ok'):
             location = utils.get_location()
-            url = self.api+'/computers/setLocation.php'
+            url = self.api+'computers/setLocation.php'
             values = {'user': self.email,
                       'computer': socket.gethostname(),
                       'lat': str(json.loads(location)['latitude']),

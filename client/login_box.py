@@ -12,6 +12,7 @@ import base64
 import ctypes
 
 app = QApplication(sys.argv)
+client = None
 
 def Mbox(title, text, style):
         ctypes.windll.user32.MessageBoxA(0, text, title, style)
@@ -23,15 +24,16 @@ class Receive_data( QtCore.QObject ):
 
     @QtCore.Slot('QString', 'QString')
     def execute(self,email,password):
-        c = Client(email, password)
-        response = c.login()
+        global client
+        client = Client(email, password)
+        response = client.login()
         print email
         print password
         if (response['result'] == 'missingParams'):
             Mbox('Budibox', 'Username or password incorrect. Please try again or register at http://www.budibox.com!', 0)
         else:
             if (response['result'] == 'ok'):
-                startup = c.notify_startup()
+                startup = client.notify_startup()
                 if (not startup):
                     print 'ERROR'
                 else:
@@ -50,14 +52,15 @@ class LoginBox:
         self.password = self.data.getPropertyValue("password")
         
     def start(self):
+        global client
         if (len(self.email) > 0 and len(self.password) > 0):
             self.email = str(self.email[0])
             self.password = str(base64.b64decode(self.password[0]))
-            c = Client(self.email, self.password)
-            response = c.login()
+            client = Client(self.email, self.password)
+            response = client.login()
         
             if (response['result'] == 'ok'):
-                startup = c.notify_startup()
+                startup = client.notify_startup()
                 if (not startup):
                     print 'ERROR'
                 else:

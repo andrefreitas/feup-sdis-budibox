@@ -7,7 +7,9 @@ import re
 import hashlib
 import os
 import datetime
-from Crypto.Cipher import ARC4 
+import base64
+import utils
+
 
 CHUNK_SIZE=64000
 
@@ -21,15 +23,32 @@ def fix_directory_path(directory):
 
 
 class File:
-    def __init__(self, full_path, key, file_id=None):
-        self.set_full_path(full_path)
+    def __init__(self, full_path, client, file_id=None):
+        self.set_full_path(full_path[0])
         self.parse_name()
         self._file_id=file_id
-        self.encoder = ARC4.new(key)
-        self.decoder = ARC4.new(key)
+        self.api = "http://apolo.budibox.com/api/"
+        self.client = client
+        self.get_salt()
+        
+    def get_salt(self):
+        url = self.api+'users/getKey.php'
+        values = {'apikey': '12',
+                  'user': self.client.get_email()
+                  }
+        
+        response = utils.json_request(url, values)
+        
+        if (response['result'] == 'ok'):
+            self.key = response['key']
+            
+        else:
+            print "ERROR in getting salt"
+            
+        print self.key
         
     def parse_name(self):
-        file_extension_pattern="[a-zA-Z0-9_\-]+\.[a-zA-Z0-9]+$"
+        file_extension_pattern="[a-zA-Z0-9 _\-]+\.[a-zA-Z0-9]+$"
         full_path=self.get_full_path()
         try:
             self.set_name(re.search(file_extension_pattern,full_path).group(0))
@@ -45,12 +64,15 @@ class File:
     def generate_chunks(self, directory=""):
         f=open(self._full_path, "rb")
         directory=fix_directory_path(directory)
+        print directory
+        print self._name
         i=0
         while True:
             chunk = f.read(CHUNK_SIZE)
             if (chunk!=""): 
                 chunk_file=open(directory+self._name.split(".")[0]+"_"+str(i)+".chunk", "wb")
-                chunk_encrypted= self.encoder.encrypt(chunk)
+                #chunk+=self.key
+                chunk_encrypted = base64.b64encode(chunk)
                 chunk_file.write(chunk_encrypted)
                 chunk_file.close()
                 i+=1
@@ -59,7 +81,7 @@ class File:
         f.close()        
         return i
     
-    def restore_file(self, chunks_directory, destination_directory,expected_chunks):
+    """def restore_file(self, chunks_directory, destination_directory,expected_chunks):
         chunks_directory=fix_directory_path(chunks_directory)
         destination_directory=fix_directory_path(destination_directory)
                 
@@ -92,7 +114,7 @@ class File:
             if (match):
                 chunks[int(match.group(1))] = file_name
                         
-        return chunks
+        return chunks"""
  
   
     def set_full_path(self,full_path):
