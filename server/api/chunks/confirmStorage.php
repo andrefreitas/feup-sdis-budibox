@@ -6,9 +6,12 @@ require_once("files.php");
 chdir("..");
 require_once("configuration.php");
 
-/*
- * Example: api/chunks/confirmStorage.php?fileId=5194dbafbd112c981a000017&apikey=12&number=20&computerId=1234
+/**
+ * DESCRIPTION: Confirm's a chunk storage from a computer
+ * PARAMETERS: api/chunks/confirmStorage.php <apikey> <fileId> <number> <computerId>
+ * NOTES: The fileId is the "_id" from the files collection.
  */
+
 if (isset($_GET['apikey']) and
     isset($_GET['fileId']) and
     isset($_GET['number']) and

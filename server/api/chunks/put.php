@@ -5,8 +5,11 @@ chdir("database");
 require_once("chunks.php");
 chdir("..");
 require_once("configuration.php");
+
 /**
- * Example usage: api/chunks/put.php?apikey=12&fileId=1234&modification=looolll000l&body=olabomdia&number=0&lat=0&lon=0
+ * DESCRIPTION: This API put's a chunk in the temporary collection to be used to backup across the network
+ * PARAMETERS: api/chunks/put.php <apikey> <fileId> <modification> <body> <number> <lat> <lon>
+ * NOTES: The fileId is the "_id" from the files collection and the modification is the sha256.
  */
 
 if (isset($_GET['apikey']) and

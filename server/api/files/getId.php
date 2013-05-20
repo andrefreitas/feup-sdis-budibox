@@ -7,9 +7,9 @@ chdir("..");
 require_once("configuration.php");
 
 /**
- * Example usage: ?path=/ola.txt&user=p.andrefreitas@gmail.com&modification=123&apikey=12
+ * DESCRIPTION: Gets the file id from the database
+ * PARAMETERS: api/files/getId.php <apikey> <path> <user>
  */
-
 if (isset($_GET['apikey']) and
     isset($_GET['path']) and
     isset($_GET['user'])

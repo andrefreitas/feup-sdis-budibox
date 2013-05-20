@@ -7,9 +7,9 @@ chdir("..");
 require_once("configuration.php");
 
 /**
- * Example usage: ?path=/ola.txt&user=p.andrefreitas@gmail.com&modification=uiui&apikey=12
+ * DESCRIPTION: Updates the modification value from a file
+ * PARAMETERS: api/files/modify.php <apikey> <path> <user> <modification>
  */
-
 if (isset($_GET['apikey']) and
     isset($_GET['path']) and
     isset($_GET['user']) and

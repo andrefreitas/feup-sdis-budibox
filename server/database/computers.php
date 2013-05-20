@@ -52,7 +52,7 @@ function getComputerID($user, $name){
     global $computers;
     $result = $computers->findOne(array("user" => $user, "name" => $name), array("_id" => true));
     if($result)
-        return $result["_id"];
+        return (string)$result["_id"];
 }
 
 function computerExists($user, $name){

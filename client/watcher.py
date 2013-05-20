@@ -44,6 +44,7 @@ class Watcher:
         print "Added: " + path
         
         if (os.path.isfile(path)):
+            
             # Creates file information
             f = File(path, client)
             f.generate_file_id()

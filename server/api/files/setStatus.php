@@ -6,7 +6,10 @@ require_once("files.php");
 chdir("..");
 require_once("configuration.php");
 
-
+/**
+ * DESCRIPTION: Updates the file status
+ * PARAMETERS: api/files/setStatus.php <apikey> <path> <user> <status>
+ */
 if (isset($_GET['apikey']) and
     isset($_GET['path']) and
     isset($_GET['user']) and

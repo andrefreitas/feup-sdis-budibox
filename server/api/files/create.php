@@ -7,7 +7,8 @@ chdir("..");
 require_once("configuration.php");
 
 /**
- * Example usage: ?path=/ola.txt&user=p.andrefreitas@gmail.com&modification=123&apikey=12
+ * DESCRIPTION: Creates a new file in the database
+ * PARAMETERS: api/files/create.php <apikey> <path> <user> <modification>
  */
 
 if (isset($_GET['apikey']) and
