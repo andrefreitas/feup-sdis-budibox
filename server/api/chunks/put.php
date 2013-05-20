@@ -28,7 +28,7 @@ if (isset($_GET['apikey']) and
         $fileId = (string) $_GET['fileId'];
         $modification = (string) $_GET['modification'];
         $body = (string) $_GET['body'];
-        $number = (string) $_GET['number'];
+        $number = intval($_GET['number']);
         $lat = floatval($_GET['lat']);
         $lon = floatval($_GET['lon']);
         
