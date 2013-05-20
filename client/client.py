@@ -32,20 +32,17 @@ class Client:
         response = json_request(url, values)
         print response
         
-        return 'ok'
-        
-        # Set Location
-        #=======================================================================
-        # if (response['result'] == 'ok'):
-        #     location = get_location()
-        #     url = self.api+'computers/setLocation.php'
-        #     values = {'apikey': '12',
-        #               'user': self.email,
-        #               'computer': get_computer_name(),
-        #               'lat': str(location[0]),
-        #               'lon': str(location[1])
-        #               }
-        #     print values
-        #     result = json_request(url, values)
-        #     return result['result'] == 'ok'
-        #=======================================================================
+
+        #Set Location
+        if (response['result'] == 'ok'):
+            location = get_location()
+            url = self.api+'computers/setLocation.php'
+            values = {'apikey': '12',
+                      'user': str(self.email),
+                      'computer': get_computer_name(),
+                      'lat': str(location[0]),
+                      'lon': str(location[1])
+                      }
+            print values
+            result = json_request(url, values)
+            return result['result'] == 'ok'
