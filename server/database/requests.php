@@ -62,7 +62,7 @@ function storeChunkDone($computerId, $fileId, $modification, $chunkNumber){
     // If request is completely done
     if(storeChunkIsComplete($fileId, $modification, $chunkNumber)){
         // Remove Request
-        $requests->delete(array("action" => "storeChunk",
+        $requests->remove(array("action" => "storeChunk",
                                 "fileId" => $fileId,
                                 "modification" => $modification,
                                 "chunkNumber" => $chunkNumber));

@@ -47,6 +47,6 @@ function getChunkBody($fileId, $modification, $number){
 function deleteChunk($fileId, $modification, $number){
     global $chunks;
     $fileId = new MongoId($fileId);
-    $chunk = $chunks->delete(array("file_id" => $fileId, "modification" => $modification, "number" => $number));
+    $chunk = $chunks->remove(array("file_id" => $fileId, "modification" => $modification, "number" => $number));
 }
 ?>
