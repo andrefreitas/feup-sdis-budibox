@@ -10,6 +10,8 @@
 * }
 */
 require_once("connection.php");
+require_once("chunks.php");
+require_once("files.php");
 
 /* Set requests collection */
 $requests = $db->requests;
@@ -67,6 +69,11 @@ function storeChunkDone($computerId, $fileId, $modification, $chunkNumber){
         // Delete Chunk 
         deleteChunk($fileId, $modification, $number);
         
+        // If all the chunks where stored
+        if(!fileHaveStoreRequests($fileId, $modification)){
+            setFileStatusById($fileId, "active");
+        }
+        
     }
 }
 
@@ -80,5 +87,15 @@ function storeChunkIsComplete($fileId, $modification, $chunkNumber){
                                     "who" => array()
     ));
     
+}
+
+function fileHaveStoreRequests($fileId, $modification){
+    global $requests;
+    $request = new MongoId($fileId);
+    return $requests->findOne(array("action" => "storeChunk",
+            "fileId" => $fileId,
+            "modification" => $modification
+    ));
+    return $request;
 }
 ?>

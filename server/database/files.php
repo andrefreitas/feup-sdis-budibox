@@ -68,6 +68,13 @@ function setFileStatus($path, $user, $status){
     $files->update(array("path" => $path, "user" => $user),$newData);
 }
 
+function setFileStatusById($fileId, $status){
+    global $files;
+    $fileId = new MongoId($fileId);
+    $newData = array('$set' => array("status" => $status));
+    $files->update(array("_id" => $fileId),$newData);
+}
+
 function getFileStatus($path, $user){
     global $files;
     $result = $files->findOne(array("path" => $path, "user" => $user),array("status" => true));
