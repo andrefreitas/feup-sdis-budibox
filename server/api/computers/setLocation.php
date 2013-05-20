@@ -1,5 +1,5 @@
 <?php
-header('Content-type: application/json');
+//header('Content-type: application/json');
 chdir("../..");
 chdir("database");
 require_once("computers.php");
@@ -17,10 +17,10 @@ if (isset($_GET["apikey"]) and isset($_GET["user"]) and isset($_GET["computer"])
     else {
         $user = (string) $_GET["user"];
         $computer = (string) $_GET["computer"];
-        $lon = (string) $_GET["lon"];
-        $lat = (string) $_GET["lat"];
+        $lon = floatval ($_GET["lon"]);
+        $lat = floatval ($_GET["lat"]);
         if (computerExists($user, $computer)) {
-            setComputerLocation($user, $computer , $lat, $lon);
+            setComputerLocation($user ,  $computer , $lon, $lat);
             echo json_encode(array("result" => "ok"));
         } else {
             echo json_encode(array("result" => "error"));
