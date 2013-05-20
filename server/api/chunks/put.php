@@ -31,7 +31,14 @@ if (isset($_GET['apikey']) and
         $number = (string) $_GET['number'];
         $lat = floatval($_GET['lat']);
         $lon = floatval($_GET['lon']);
-        addChunk( $fileId, $modification, $number, $body, $lat, $lon);
+        
+        putChunk($fileId, $modification, $number, $body, $lat, $lon);
+        $computers = getBestComputers($lat, $lon);
+        $computersIds = array();
+        foreach($computers as $computer){
+            $computers_ids[] = new MongoId($computer);
+        }
+
         echo json_encode(array("result" => "ok"));
     }
     

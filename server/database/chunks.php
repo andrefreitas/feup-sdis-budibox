@@ -17,7 +17,7 @@ require_once("requests.php");
 /* Set chunks collection */
 $chunks = $db->chunks; 
 
-function addChunk($fileId, $modification, $number, $body, $lat, $lon){
+function putChunk($fileId, $modification, $number, $body, $lat, $lon){
     global $chunks;
     
     // (1) Add chunk
