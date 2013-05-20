@@ -25,7 +25,7 @@ function requestStoreChunk($who, $fileId, $modification, $chunkNumber){
     global $requests;
     $requests->insert(array("action" => "storeChunk",
                             "who" => $who,
-                            "fileId" => $fileId,
+                            "fileId" => new MongoId($fileId),
                             "modification" => $modification,
                             "chunkNumber" => $chunkNumber
                       ));
@@ -42,5 +42,19 @@ function getComputerRequests($computerId){
         $data[] = $doc;
     }
     return $data;
+}
+
+/**
+ * Computer confirms thar done the storechunkdone request and its id is removed from the list
+ */
+function storeChunkDone($computerId, $fileId, $modification, $chunkNumber){
+    $computerId = new MongoId($computerId);
+    $fileId = new MongoId($fileId);
+    global $requests;
+    $requests->update(array("action" => "storeChunk", 
+                            "fileId" => $fileId, 
+                            "modification" => $modification, 
+                            "chunkNumber" => $chunkNumber),
+                             array('$pull' => array("who" => $computerId)));
 }
 ?>
