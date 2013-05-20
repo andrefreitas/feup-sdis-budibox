@@ -1,5 +1,5 @@
 <?php
-header('Content-type: application/json');
+//header('Content-type: application/json');
 chdir("../..");
 chdir("database");
 require_once("chunks.php");
@@ -31,14 +31,7 @@ if (isset($_GET['apikey']) and
         $number = intval($_GET['number']);
         $lat = floatval($_GET['lat']);
         $lon = floatval($_GET['lon']);
-        
         putChunk($fileId, $modification, $number, $body, $lat, $lon);
-        $computers = getBestComputers($lat, $lon);
-        $computersIds = array();
-        foreach($computers as $computer){
-            $computers_ids[] = new MongoId($computer);
-        }
-
         echo json_encode(array("result" => "ok"));
     }
     
