@@ -82,12 +82,15 @@ class File:
                 chunk_encrypted = base64.b64encode(chunk)
                 
                 # Creates request for a chunk
+                location = get_location()
                 url = self.api+'chunks/put.php'
                 values = {'apikey': '12',
                           'fileId': db_file_id,
                           'modification': self._file_id,
                           'body': chunk_encrypted,
-                          'number': str(i)
+                          'number': str(i),
+                          'lat': str(location[0]),
+                          'lon': str(location[1])
                           }
 
                 response = json_request(url, values)
