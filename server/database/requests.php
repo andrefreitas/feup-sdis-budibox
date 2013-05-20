@@ -67,7 +67,7 @@ function storeChunkDone($computerId, $fileId, $modification, $chunkNumber){
                                 "modification" => $modification,
                                 "chunkNumber" => $chunkNumber));
         // Delete Chunk 
-        deleteChunk($fileId, $modification, $number);
+        deleteChunk($fileId, $modification, $chunkNumber);
         
         // If all the chunks where stored
         if(!fileHaveStoreRequests($fileId, $modification)){
