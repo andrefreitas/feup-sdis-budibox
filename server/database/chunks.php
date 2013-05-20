@@ -43,4 +43,10 @@ function getChunkBody($fileId, $modification, $number){
     $chunk = $chunks->findOne(array("file_id" => $fileId, "modification" => $modification, "number" => $number), array("body" => true));
     if($chunk) return $chunk["body"];
 }
+
+function deleteChunk($fileId, $modification, $number){
+    global $chunks;
+    $fileId = new MongoId($fileId);
+    $chunk = $chunks->delete(array("file_id" => $fileId, "modification" => $modification, "number" => $number));
+}
 ?>

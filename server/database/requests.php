@@ -56,5 +56,29 @@ function storeChunkDone($computerId, $fileId, $modification, $chunkNumber){
                             "modification" => $modification, 
                             "chunkNumber" => $chunkNumber),
                              array('$pull' => array("who" => $computerId)));
+    
+    // If request is completely done
+    if(storeChunkIsComplete($fileId, $modification, $chunkNumber)){
+        // Remove Request
+        $requests->delete(array("action" => "storeChunk",
+                                "fileId" => $fileId,
+                                "modification" => $modification,
+                                "chunkNumber" => $chunkNumber));
+        // Delete Chunk 
+        deleteChunk($fileId, $modification, $number);
+        
+    }
+}
+
+function storeChunkIsComplete($fileId, $modification, $chunkNumber){
+    global $requests;
+    $fileId = new MongoId($fileId);
+    return $requests->findOne(array("action" => "storeChunk",  
+                                    "fileId" => $fileId,  
+                                    "modification" => $modification, 
+                                    "chunkNumber" => $chunkNumber,
+                                    "who" => array()
+    ));
+    
 }
 ?>
