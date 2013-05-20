@@ -24,7 +24,7 @@ if (isset($_GET['apikey']) and
     else {
         $fileId = (string) $_GET['fileId'];
         $modification = (string) $_GET['modification'];
-        $number = (string) $_GET['number'];
+        $number = intval( $_GET['number']);
         $chunkBody = getChunkBody($fileId, $modification, $number);
         echo json_encode(array("result" => "ok", "chunk" => $chunkBody));
     }
