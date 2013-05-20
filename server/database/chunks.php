@@ -35,4 +35,12 @@ function putChunk($fileId, $modification, $number, $body, $lat, $lon){
     }
     requestStoreChunk($who, $fileId, $modification, $number);
 }
+
+
+function getChunkBody($fileId, $modification, $number){
+    global $chunks;
+    $fileId = new MongoId($fileId);
+    $chunk = $chunks->findOne(array("file_id" => $fileId, "modification" => $modification, "number" => $number), array("body" => true));
+    if($chunk) return $chunk["body"];
+}
 ?>
