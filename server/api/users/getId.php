@@ -5,6 +5,12 @@ chdir("database");
 require_once("users.php");
 chdir("..");
 require_once("configuration.php");
+
+/**
+ * DESCRIPTION: Gets the user id
+ * PARAMETERS: api/users/getId.php <apikey> <user>
+ */
+
 if(isset($_GET['apikey']) and isset($_GET['user'])){
     $auth = (string) $_GET['apikey'];
     $user = (string) $_GET['user'];

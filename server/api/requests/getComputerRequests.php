@@ -6,6 +6,10 @@ require_once("requests.php");
 chdir("..");
 require_once("configuration.php");
 
+/**
+ * DESCRIPTION: Gets the requests from a computer
+ * PARAMETERS: api/requests/getComputerRequests.php <apikey> <computerId>
+ */
 
 if (isset($_GET['apikey']) and
     isset($_GET['computerId'])
