@@ -91,7 +91,7 @@ class Watcher:
             
     def removed(self, path, client):
         path = path.replace("\\", "/")
-        print "Removed" +  path
+        print "Removed " +  path
         
     def modified(self, path, client):
         path = path.replace("\\", "/")
@@ -100,7 +100,7 @@ class Watcher:
         # Checks if folder is chunks, only if it isn't it will send notifications
         if (re.search(file_extension_pattern,path) != None):
             print "Removed Modified " + path
-        else:
+            
             if (os.path.isfile(path)):
                 print "Modified " +  path
         

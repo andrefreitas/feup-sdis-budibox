@@ -24,6 +24,7 @@ def fix_directory_path(directory):
 
 class File:
     def __init__(self, full_path, client, file_id=None):
+        full_path = full_path.replace("\\", "/")
         self.set_full_path(full_path)
         self.parse_name()
         self._file_id=file_id
@@ -48,7 +49,7 @@ class File:
         print self.key
         
     def parse_name(self):
-        file_extension_pattern="[a-zA-Z0-9_\-]+\.[a-zA-Z0-9]+$"
+        file_extension_pattern="[a-zA-Z0-9_\-/\s]+\.[a-zA-Z0-9\s]+$"
         full_path=self.get_full_path()
         print self.get_full_path()
         try:
