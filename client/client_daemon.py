@@ -14,9 +14,6 @@ class ClientDaemon:
         self.login = LoginBox()
         self.watcher = Watcher(self.budibox_home)
         
-        # Change this directory lately
-        self.store_chunks_dir = expanduser('~') + "/box"
-        
         
     def init_home_dir(self):
         # Searchs for user home folder and creates budibox folder
@@ -86,7 +83,7 @@ class ClientDaemon:
             return False
         print response
         
-        chunk_file = open(self.store_chunks_dir+modification+"_"+str(chunkNumber)+".chunk", "wb")
+        chunk_file = open(self.budibox_home+"/chunks/"+modification+"_"+str(chunkNumber)+".chunk", "wb")
         chunk_file.write(chunk_body)
         chunk_file.close()
         

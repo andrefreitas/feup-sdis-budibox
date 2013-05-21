@@ -9,7 +9,7 @@ class Watcher:
     def __init__(self, path_to_watch):
         print "Watching " + path_to_watch
         self.api = "http://apolo.budibox.com/api/"
-        self.path_to_watch = path_to_watch
+        self.path_to_watch = path_to_watch.replace("\\", "/")
         
     def start(self, client):
         before = self.files_to_timestamp(self.path_to_watch)
@@ -40,55 +40,69 @@ class Watcher:
             before = after
         
     def added(self, path, client):
-        # Prints message of file added
-        print "Added: " + path
+        path = path.replace("\\", "/")
+        file_extension_pattern=self.path_to_watch+"/chunks/"
         
-        if (os.path.isfile(path)):
+        # Checks if folder is chunks, only if it isn't it will send modifications
+        if (re.search(file_extension_pattern,path) == None):
+            # Prints message of file added
+            print "Added: " + path
             
-            # Creates file information
-            f = File(path, client)
-            f.generate_file_id()
-            
-            # Gets relative_path location
-            relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
-            
-            # Sends request to server with information about the new file
-            url = self.api+'files/create.php'
-            values = {'apikey': '12',
-                      'path': relative_path,
-                      'user': client.get_email(),
-                      'modification': f.get_file_id()
-                      }
-            
-            response = json_request(url, values)
-            
-            if (response['result'] != 'ok'):
-                print "Error sending information about file!"
-                return
+            if (os.path.isfile(path)):
+
+                # Creates file information
+                f = File(path, client)
+                f.generate_file_id()
                 
-            print response
+                # Gets relative_path location
+                relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
+                
+                # Sends request to server with information about the new file
+                url = self.api+'files/create.php'
+                values = {'apikey': '12',
+                          'path': relative_path,
+                          'user': client.get_email(),
+                          'modification': f.get_file_id()
+                          }
+                
+                response = json_request(url, values)
+                
+                if (response['result'] != 'ok'):
+                    print "Error sending information about file!"
+                    return
+                    
+                print response
+                
+                url = self.api+'files/getId.php'
+                values = {'apikey': '12',
+                          'path': relative_path,
+                          'user': client.get_email(),
+                          }
+                
+                response = json_request(url, values)
+                
+                if (response['result'] != 'ok'):
+                    print "Error getting fileId!"
+                    return
+                
+                # Send information about chunks to server
+                db_file_id = response['id']
+                f.generate_chunks(db_file_id)
             
-            url = self.api+'files/getId.php'
-            values = {'apikey': '12',
-                      'path': relative_path,
-                      'user': client.get_email(),
-                      }
-            
-            response = json_request(url, values)
-            
-            if (response['result'] != 'ok'):
-                print "Error getting fileId!"
-                return
-            
-            # Send information about chunks to server
-            db_file_id = response['id']
-            f.generate_chunks(db_file_id)
-        
     def removed(self, path, client):
-        print "Removed " + path
+        path = path.replace("\\", "/")
+        print "Removed" +  path
         
     def modified(self, path, client):
-        print "Modified " +  path
+        path = path.replace("\\", "/")
+        file_extension_pattern=self.path_to_watch+"/chunks/"
+        
+        # Checks if folder is chunks, only if it isn't it will send notifications
+        if (re.search(file_extension_pattern,path) != None):
+            print "Removed Modified " + path
+        else:
+            if (os.path.isfile(path)):
+                print "Modified " +  path
         
     def files_to_timestamp(self, path):
         files = [os.path.join(path, f) for f in os.listdir(path)]
