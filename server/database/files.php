@@ -191,12 +191,15 @@ function getFileComputers($path, $user){
     global $files;
     $result = $files->findOne(array("path" => $path, "user" => $user));
     $chunks = $result["chunks"];
-    $computersIds = array();
-    foreach($chunks as $computers){
-         $computersIds = array_merge($computersIds, $computers);
+    if(count($chunks) > 0){
+        $computersIds = array();
+        foreach($chunks as $computers){
+             $computersIds = array_merge($computersIds, $computers);
+        }
+        $computersIds = array_unique($computersIds);
+        return $computersIds;
     }
-    $computersIds = array_unique($computersIds);
-    return $computersIds;
+    return array();
 }
 
 

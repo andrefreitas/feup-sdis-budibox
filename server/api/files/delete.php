@@ -1,8 +1,9 @@
 <?php
-header('Content-type: application/json');
+//header('Content-type: application/json');
 chdir("../..");
 chdir("database");
 require_once("files.php");
+require_once("requests.php");
 chdir("..");
 require_once("configuration.php");
 
@@ -22,7 +23,11 @@ if (isset($_GET['apikey']) and
         $path = (string) $_GET['path'];
         $user = (string) $_GET['user'];
         $modification = getFileModification($path, $user);
-        requestFileDelete($modification, $who);
+        $status = getFileStatus($path, $user);
+        if($status!="pending"){
+            $who = getFileComputers($path, $user);
+            requestFileDelete($modification, $who);
+        }
         removeFile($path, $user);
         echo json_encode(array("result" => "ok"));
     }
