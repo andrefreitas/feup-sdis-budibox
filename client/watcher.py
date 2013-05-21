@@ -90,7 +90,18 @@ class Watcher:
                 f.generate_chunks(db_file_id)
             
     def removed(self, path, client):
-        path = path.replace("\\", "/")
+        # Gets relative_path location
+        relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
+        
+        url = self.api+'files/setStatus.php'
+        values = {'apikey': '12',
+                  'path': relative_path,
+                  'user': client.get_email(),
+                  'status': 'deleted'
+                  }
+        
+        response = json_request(url, values)
+        print response
         print "Removed " +  path
         
     def modified(self, path, client):

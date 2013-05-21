@@ -65,7 +65,17 @@ class ClientDaemon:
         for request in requests:
             if (request['action'] == "storeChunk"):
                 self.store_chunk(request['chunkNumber'], request['modification'], request['fileId']) 
-        
+            if (request['action'] == "deleteFile"):
+                self.delete_chunks(request['modification'])
+    
+    def delete_chunks(self, modification):
+        print modification
+        list_dir = os.listdir(self.budibox_home+"/chunks/")
+        for file in list_dir:
+            if (file.startswith(modification)):
+                os.remove(self.budibox_home+"/chunks/"+file)
+                
+    
     def store_chunk(self, chunkNumber, modification, fileId):
         # Gets Information about chunk to Store
         url = self.api+'chunks/get.php'
@@ -82,6 +92,9 @@ class ClientDaemon:
             print "Error trying to get chunk body"
             return False
         print response
+        
+        if(not os.path.exists(self.budibox_home+"/chunks/")):
+            os.makedirs(self.budibox_home+"/chunks/")
         
         chunk_file = open(self.budibox_home+"/chunks/"+modification+"_"+str(chunkNumber)+".chunk", "wb")
         chunk_file.write(chunk_body)
