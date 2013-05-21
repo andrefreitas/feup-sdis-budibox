@@ -12,8 +12,7 @@ require_once("configuration.php");
  */
 if (isset($_GET['apikey']) and
     isset($_GET['path']) and
-    isset($_GET['user']) and
-    isset($_GET['status'])
+    isset($_GET['user'])
 ){
     $auth = (string) $_GET['apikey'];
     if ($auth != $apikey){
@@ -22,8 +21,9 @@ if (isset($_GET['apikey']) and
     else {
         $path = (string) $_GET['path'];
         $user = (string) $_GET['user'];
-        $status = (string) $_GET['status'];
-        setFileStatus($path, $user, $status);
+        $modification = getFileModification($path, $user);
+        requestFileDelete($modification, $who);
+        removeFile($path, $user);
         echo json_encode(array("result" => "ok"));
     }
 

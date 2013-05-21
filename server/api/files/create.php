@@ -3,6 +3,7 @@ header('Content-type: application/json');
 chdir("../..");
 chdir("database");
 require_once("files.php");
+require_once("requests.php");
 chdir("..");
 require_once("configuration.php");
 
@@ -26,6 +27,16 @@ if (isset($_GET['apikey']) and
         $modification = (string) $_GET['modification'];
         if(!fileExists($path, $user))
             createFile($path, $user, $modification);
+        else{
+            $actualModification = getFileModification($path, $user);
+            if($actualModification != $modification){
+                $who = getFileComputers($path, $user);
+                requestFileDelete($actualModification, $who);
+                resetFileChunks($path, $user);
+                setFileModification($path, $user, $modification);
+                setFileStatus($path, $user, "pending");
+            }
+        }
         echo json_encode(array("result" => "ok"));
     }
 

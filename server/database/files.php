@@ -132,7 +132,7 @@ function getFilesFromUser($userEmail){
 function fileExists($path, $user){
     global $files;
     $file = $files->findOne(array("user" => $user, "path" => $path), array("_id" => true));
-    return $file;
+    return isset($file["_id"]);
 }
 /* 
  * Return the files from a given directory. Note: allways use / in the beginning 
@@ -184,5 +184,24 @@ function getDirectoryFolders($userEmail, $directory = "/"){
     }
     $data = array_unique($data);
     return $data;
+}
+
+
+function getFileComputers($path, $user){
+    global $files;
+    $result = $files->findOne(array("path" => $path, "user" => $user));
+    $chunks = $result["chunks"];
+    $computersIds = array();
+    foreach($chunks as $computers){
+         $computersIds = array_merge($computersIds, $computers);
+    }
+    $computersIds = array_unique($computersIds);
+    return $computersIds;
+}
+
+
+function removeFile($path, $user){
+    global $files;
+    $files->remove(array("path" => $path, "user" => $user));
 }
 ?>

@@ -98,4 +98,12 @@ function fileHaveStoreRequests($fileId, $modification){
     ));
     return $request;
 }
+
+function requestFileDelete($actualModification, $who){
+    global $requests;
+    $requests->insert(array("action" => "deleteFile",
+                            "modification" => $actualModification,
+                            "who" => $who));
+
+}
 ?>
