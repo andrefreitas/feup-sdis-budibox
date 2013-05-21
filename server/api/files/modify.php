@@ -3,6 +3,7 @@ header('Content-type: application/json');
 chdir("../..");
 chdir("database");
 require_once("files.php");
+require_once("requests.php");
 chdir("..");
 require_once("configuration.php");
 
@@ -23,21 +24,24 @@ if (isset($_GET['apikey']) and
         $path = (string) $_GET['path'];
         $user = (string) $_GET['user'];
         $modification = (string) $_GET['modification'];
-        
-        /* Delete the old chunks */
-        $actualModification = getFileModification($path, $user);
-        if($modification != $actualModification){
-            $status = getFileStatus($path, $user);
-            if($status != "pending"){
-                $who = getFileComputers($path, $user);
-                requestFileDelete($actualModification, $who);
+        if(!fileExists($path, $user)){
+            echo json_encode(array("result" => "invalidFile"));
+        }else{
+            /* Delete the old chunks */
+            $actualModification = getFileModification($path, $user);
+            if($modification != $actualModification){
+                $status = getFileStatus($path, $user);
+                if($status != "pending"){
+                    $who = getFileComputers($path, $user);
+                    requestFileDelete($actualModification, $who);
+                }
             }
+            
+            setFileModification($path, $user, $modification);
+            resetFileChunks($path, $user);
+            setFileStatus($path, $user, "pending");
+            echo json_encode(array("result" => "ok"));
         }
-        
-        setFileModification($path, $user, $modification);
-        resetFileChunks($path, $user);
-        setFileStatus($path, $user, "pending");
-        echo json_encode(array("result" => "ok"));
     }
 
 
