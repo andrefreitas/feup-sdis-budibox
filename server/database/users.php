@@ -11,6 +11,7 @@
 *     registrationDate : <registration date>,
 *     status : <the user status>,
 *     confirmationKey : <the confirmation key that is emailed>
+*     space : { limit : <maximum space in the cloud> , offer : <space offered to others>, used: <space used in the cloud>}
 * }
 */
 require_once("connection.php");
@@ -31,7 +32,8 @@ function createUser($name, $email, $password){
                          "key" => $key,
                          "registrationDate" => new MongoDate(),
                          "status" => "inactive",
-                         "confirmationKey" => $confirmationKey
+                         "confirmationKey" => $confirmationKey,
+                         "space" => array("limit" => 5242880, "offer" => 5242880, "used" => 0, "offer_used" => 0)
                    ));
 }
 

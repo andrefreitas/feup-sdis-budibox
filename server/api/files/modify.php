@@ -23,6 +23,17 @@ if (isset($_GET['apikey']) and
         $path = (string) $_GET['path'];
         $user = (string) $_GET['user'];
         $modification = (string) $_GET['modification'];
+        
+        /* Delete the old chunks */
+        $actualModification = getFileModification($path, $user);
+        if($modification != $actualModification){
+            $status = getFileStatus($path, $user);
+            if($status != "pending"){
+                $who = getFileComputers($path, $user);
+                requestFileDelete($actualModification, $who);
+            }
+        }
+        
         setFileModification($path, $user, $modification);
         resetFileChunks($path, $user);
         setFileStatus($path, $user, "pending");
