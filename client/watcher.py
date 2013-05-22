@@ -41,8 +41,8 @@ class Watcher:
         
     def added(self, path, client):
         path = path.replace("\\", "/")
-        file_extension_pattern=self.path_to_watch+"/chunks/"
-        if (re.search("Thumsb.db", path) == None):
+        file_extension_pattern=self.path_to_watch+"/chunks"
+        if (re.search("Thumbs.db", path) == None):
             # Checks if folder is chunks, only if it isn't it will send modifications
             if (re.search(file_extension_pattern,path) == None):
                 # Prints message of file added
