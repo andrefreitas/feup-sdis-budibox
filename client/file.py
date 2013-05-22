@@ -49,7 +49,7 @@ class File:
         print self.key
         
     def parse_name(self):
-        file_extension_pattern="[a-zA-Z0-9_\-/\s]+\.[a-zA-Z0-9\s]+$"
+        file_extension_pattern="[a-zA-Z0-9_\-\s]+\.[a-zA-Z0-9\s]+$"
         full_path=self.get_full_path()
         print self.get_full_path()
         try:

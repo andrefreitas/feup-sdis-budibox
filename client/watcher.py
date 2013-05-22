@@ -90,7 +90,18 @@ class Watcher:
                 f.generate_chunks(db_file_id)
             
     def removed(self, path, client):
-        path = path.replace("\\", "/")
+        # Gets relative_path location
+        relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
+        
+        url = self.api+'files/setStatus.php'
+        values = {'apikey': '12',
+                  'path': relative_path,
+                  'user': client.get_email(),
+                  'status': 'deleted'
+                  }
+        
+        response = json_request(url, values)
+        print response
         print "Removed " +  path
         
     def modified(self, path, client):
@@ -100,8 +111,46 @@ class Watcher:
         # Checks if folder is chunks, only if it isn't it will send notifications
         if (re.search(file_extension_pattern,path) != None):
             print "Removed Modified " + path
-            
+        else:   
             if (os.path.isfile(path)):
+                # Creates file information
+                f = File(path, client)
+                f.generate_file_id()
+                
+                # Gets relative_path location
+                relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
+                
+                # Sends request to server with information about the new file
+                url = self.api+'files/modify.php'
+                values = {'apikey': '12',
+                          'path': relative_path,
+                          'user': client.get_email(),
+                          'modification': f.get_file_id()
+                          }
+                
+                response = json_request(url, values)
+                
+                if (response['result'] != 'ok'):
+                    print "Error sending information about file!"
+                    return
+                    
+                print response
+                
+                url = self.api+'files/getId.php'
+                values = {'apikey': '12',
+                          'path': relative_path,
+                          'user': client.get_email(),
+                          }
+                
+                response = json_request(url, values)
+                
+                if (response['result'] != 'ok'):
+                    print "Error getting fileId!"
+                    return
+                
+                # Send information about chunks to server
+                db_file_id = response['id']
+                f.generate_chunks(db_file_id)
                 print "Modified " +  path
         
     def files_to_timestamp(self, path):
