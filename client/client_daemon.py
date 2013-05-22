@@ -7,7 +7,11 @@ import login_box
 import os
 import time
 import sys
+from datetime import datetime
 
+def print_message(message):
+    print  "[" + datetime.now().strftime("%d/%m/%y %H:%M") + "] " + message
+    
 class ClientDaemon:
     def __init__(self):
         self.init_home_dir()
@@ -42,7 +46,7 @@ class ClientDaemon:
                  'computer': get_computer_name()
                  }
         response = json_request(url, values)
-        print response
+        print_message("Getting the computer ID")
         
         if (response['result'] == 'ok'):
             return response['computerId']
@@ -52,13 +56,15 @@ class ClientDaemon:
         
     def listen_requests(self):
         while(True):
-            print "Handling requests to backup..."
+            
             url = self.api+'requests/getComputerRequests.php'
             values= {'apikey': '12',
                      'computerId': self.computerId
                      }
+            
+            print_message("Fetching requests")
             response = json_request(url, values)
-            print response
+            
             if (response['result'] == 'ok'):
                 if (len(response['requests']) > 0):
                     self.handle_request(response['requests'])
