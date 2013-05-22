@@ -56,19 +56,15 @@ class ClientDaemon:
         
     def listen_requests(self):
         while(True):
-            
             url = self.api+'requests/getComputerRequests.php'
             values= {'apikey': '12',
                      'computerId': self.computerId
                      }
-            
-            print_message("Fetching requests")
             response = json_request(url, values)
-            
-            print response
-            
             if (response['result'] == 'ok'):
-                if (len(response['requests']) > 0):
+                total_requests = len(response['requests'])
+                print_message("Requests: " + str(total_requests) )
+                if (total_requests > 0):
                     self.handle_request(response['requests'])
             time.sleep(60)
 
@@ -102,7 +98,6 @@ class ClientDaemon:
         else:
             print "Error trying to get chunk body"
             return False
-        print response
         
         if(not os.path.exists(self.budibox_home+"/chunks/")):
             os.makedirs(self.budibox_home+"/chunks/")
