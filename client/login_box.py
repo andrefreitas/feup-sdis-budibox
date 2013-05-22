@@ -1,6 +1,5 @@
 import sys
-
-from PySide.QtGui import QApplication, QIcon
+from PySide.QtGui import QApplication, QIcon, QMessageBox
 from PySide.QtDeclarative import QDeclarativeView
 from PySide.QtCore import QDateTime, QObject, QUrl
 from PySide import QtCore
@@ -14,8 +13,12 @@ import ctypes
 app = QApplication(sys.argv)
 client = None
 
-def Mbox(title, text, style):
-        ctypes.windll.user32.MessageBoxA(0, text, title, style)
+def Mbox(title, text):
+    msgBox = QMessageBox()
+    msgBox.setText(title)
+    msgBox.setInformativeText(text)
+    msgBox.exec_()
+     
 
 class Receive_data( QtCore.QObject ):
     def __init__( self ):
@@ -30,7 +33,7 @@ class Receive_data( QtCore.QObject ):
         print email
         print password
         if (response['result'] == 'missingParams'):
-            Mbox('Budibox', 'Username or password incorrect. Please try again or register at http://www.budibox.com!', 0)
+            Mbox('Budibox', 'Username or password incorrect. Please try again or register at http://www.budibox.com!')
         else:
             if (response['result'] == 'ok'):
                 startup = client.notify_startup()
@@ -42,7 +45,7 @@ class Receive_data( QtCore.QObject ):
             password = base64.b64encode(password)
             print password
             self.data.addProperty("password", str(password));
-            Mbox('Budibox', 'Login successful!', 0)
+            Mbox('Budibox', 'Login successful!')
             app.exit()
 
 class LoginBox:
@@ -67,7 +70,7 @@ class LoginBox:
                     print 'Notified'
         
         else:
-            Mbox("Budibox", "Credentials undefined or incorrect. Please login again.", 0) 
+            Mbox("Budibox", "Credentials undefined or incorrect. Please login again.") 
             
             # Create the QML user interface.
             view = QDeclarativeView()
