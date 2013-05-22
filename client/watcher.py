@@ -46,10 +46,9 @@ class Watcher:
             # Checks if folder is chunks, only if it isn't it will send modifications
             if (re.search(file_extension_pattern,path) == None):
                 # Prints message of file added
-                print "Added: " + path
+                print_message("Added: " + path)
                 
                 if (os.path.isfile(path)):
-    
                     # Creates file information
                     f = File(path, client)
                     f.generate_file_id()
@@ -68,10 +67,10 @@ class Watcher:
                     response = json_request(url, values)
                     
                     if (response['result'] != 'ok'):
-                        print "Error sending information about file!"
+                        print_message("Error sending information created about file " + path)
                         return
-                        
-                    print response
+                    
+                    print_message("Created file " + path + " successfully")
                     
                     url = self.api+'files/getId.php'
                     values = {'apikey': '12',
@@ -82,8 +81,10 @@ class Watcher:
                     response = json_request(url, values)
                     
                     if (response['result'] != 'ok'):
-                        print "Error getting fileId!"
+                        print_message("Error getting fileId of " + path)
                         return
+                    
+                    print_message("Get fileId of " + path + "successfully")
                     
                     # Send information about chunks to server
                     db_file_id = response['id']
@@ -94,6 +95,7 @@ class Watcher:
         relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
         
         if (re.search("Thumsb.db", path) == None):
+            print_message("Removed " +  path)
             url = self.api+'files/setStatus.php'
             values = {'apikey': '12',
                       'path': relative_path,
@@ -102,8 +104,13 @@ class Watcher:
                       }
             
             response = json_request(url, values)
-            print response
-            print "Removed " +  path
+            
+            if (response['result'] != 'ok'):
+                print_message("Error while trying to change file "+ path +" status")
+                return
+            
+            print_message("Set status of file " + path + " to deleted")
+            
         
     def modified(self, path, client):
         path = path.replace("\\", "/")
@@ -112,9 +119,10 @@ class Watcher:
         if (re.search("Thumbs.db", path) == None):
             # Checks if folder is chunks, only if it isn't it will send notifications
             if (re.search(file_extension_pattern,path) != None):
-                print "Removed Modified " + path
+                print_message("Modified in chunks path: " + path)
             else:   
                 if (os.path.isfile(path)):
+                    print_message("Modified " +  path)
                     # Creates file information
                     f = File(path, client)
                     f.generate_file_id()
@@ -133,10 +141,10 @@ class Watcher:
                     response = json_request(url, values)
                     
                     if (response['result'] != 'ok'):
-                        print "Error sending information about file!"
+                        print_message("Error sending information modify about file " + path)
                         return
                         
-                    print response
+                    print_message("Sent modify message of: " + path)
                     
                     url = self.api+'files/getId.php'
                     values = {'apikey': '12',
@@ -147,13 +155,12 @@ class Watcher:
                     response = json_request(url, values)
                     
                     if (response['result'] != 'ok'):
-                        print "Error getting fileId!"
+                        print_message("Error getting fileId of " + path)
                         return
                     
                     # Send information about chunks to server
                     db_file_id = response['id']
                     f.generate_chunks(db_file_id)
-                    print "Modified " +  path
         
     def files_to_timestamp(self, path):
         files = [os.path.join(path, f) for f in os.listdir(path)]

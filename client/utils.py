@@ -13,11 +13,14 @@ import socket
 import re
 import requests
 
-def json_request(url,params = {}):
-    url += "?"
-    for param in params.keys():
-        url += param + "=" + params[param] + "&"
-    return json.load(urllib.urlopen(url))
+def json_request(url, payload = {}):
+    r = requests.get(url, params=payload)
+    try:
+        json_answer = r.json()
+        return json_answer
+    except:
+        print "Failed JSON Request"
+        return {"result":"error"}
 
 def get_computer_name():
     return platform.node()
@@ -29,3 +32,6 @@ def get_location():
 def json_post_request(url, params= {}):
     r = requests.post(url, data=params)
     return r.json()
+
+def print_message(message):
+    print  "[" + datetime.now().strftime("%d/%m/%y %H:%M") + "] " + message

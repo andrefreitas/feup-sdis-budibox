@@ -87,6 +87,3 @@ class LoginBox:
             view.show()
             
             app.exec_()
-        
-        
-        

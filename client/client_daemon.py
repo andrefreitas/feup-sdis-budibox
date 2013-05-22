@@ -9,9 +9,7 @@ import time
 import sys
 from datetime import datetime
 
-def print_message(message):
-    print  "[" + datetime.now().strftime("%d/%m/%y %H:%M") + "] " + message
-    
+
 class ClientDaemon:
     def __init__(self):
         self.init_home_dir()
@@ -56,19 +54,15 @@ class ClientDaemon:
         
     def listen_requests(self):
         while(True):
-            
             url = self.api+'requests/getComputerRequests.php'
             values= {'apikey': '12',
                      'computerId': self.computerId
                      }
-            
-            print_message("Fetching requests")
             response = json_request(url, values)
-            
-            print response
-            
             if (response['result'] == 'ok'):
-                if (len(response['requests']) > 0):
+                total_requests = len(response['requests'])
+                print_message("Requests: " + str(total_requests) )
+                if (total_requests > 0):
                     self.handle_request(response['requests'])
             time.sleep(60)
 
@@ -100,9 +94,10 @@ class ClientDaemon:
         if (response['result'] == 'ok'):
             chunk_body = response['chunk']
         else:
-            print "Error trying to get chunk body"
+            print_message("Error trying to get chunk body of fileID " + fileId['$id'] + "and chunkNumber " + str(chunkNumber))
             return False
-        print response
+        
+        print_message("Processing request, getting chunk body of " + fileId['$id'] + " and chunkNumber " + str(chunkNumber))
         
         if(not os.path.exists(self.budibox_home+"/chunks/")):
             os.makedirs(self.budibox_home+"/chunks/")
@@ -119,11 +114,12 @@ class ClientDaemon:
                  'modification': modification
                  }
         response = json_request(url, values)
-        print response
+
         if (response['result'] == 'ok'):
+            print_message("Sent confirmation message: fileId " + fileId['$id'] + " and chunkNumber " + str(chunkNumber) + " and computerId " + self.computerId)
             return True
         else:
-            print "Error trying to send confirm message!"
+            print_message("Error trying to send confirm message: fileId " + fileId['$id'] + " and chunkNumber " + str(chunkNumber) + " and computerId " + self.computerId)
             return False
                
 

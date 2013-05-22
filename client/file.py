@@ -42,12 +42,10 @@ class File:
         
         if (response['result'] == 'ok'):
             self.key = response['key']
-            
+            print_message("Get salt successfully")
         else:
-            print "ERROR in getting salt"
+            print_message("Error in getting salt")
             
-        print self.key
-        
     def parse_name(self):
         file_extension_pattern="[a-zA-Z0-9_\-\s]+\.[a-zA-Z0-9\s]+$"
         full_path=self.get_full_path()
@@ -96,8 +94,8 @@ class File:
 
                 response = json_post_request(url, values)
                 
-                print response
-                print i
+                if (response['result'] == 'ok'):
+                    print_message("Putchunk successfully of fileId " + db_file_id + " and chunknumber " + str(i))
                 
                 i+=1
             else:
