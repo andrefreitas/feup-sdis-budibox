@@ -8,9 +8,18 @@ class Client:
         self.email = email
         self.password = password
         self.api = "http://master.budibox.com/api/"
+        location = get_location()
+        self.lat = location[0]
+        self.lon = location[1]
         
     def get_email(self):
         return self.email
+    
+    def get_lat(self):
+        return self.lat
+    
+    def get_lon(self):
+        return self.lon
     
     def login(self):
         # Login 
@@ -35,13 +44,12 @@ class Client:
 
         #Set Location
         if (response['result'] == 'ok'):
-            location = get_location()
             url = self.api+'computers/setLocation.php'
             values = {'apikey': '12',
                       'user': str(self.email),
                       'computer': get_computer_name(),
-                      'lat': str(location[0]),
-                      'lon': str(location[1])
+                      'lat': str(self.lat),
+                      'lon': str(self.lon)
                       }
             print values
             result = json_request(url, values)

@@ -90,8 +90,8 @@ class File:
                           'modification': self._file_id,
                           'body': chunk_encrypted,
                           'number': str(i),
-                          'lat': str(location[0]),
-                          'lon': str(location[1])
+                          'lat': str(self.client.get_lat()),
+                          'lon': str(self.client.get_lon())
                           }
 
                 response = json_post_request(url, values)
