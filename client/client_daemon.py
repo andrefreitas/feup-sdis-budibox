@@ -127,7 +127,3 @@ class ClientDaemon:
 
 teste = ClientDaemon()
 teste.client_start()
-        
-        
-        
-        
