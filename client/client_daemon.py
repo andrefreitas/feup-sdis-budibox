@@ -65,6 +65,8 @@ class ClientDaemon:
             print_message("Fetching requests")
             response = json_request(url, values)
             
+            print response
+            
             if (response['result'] == 'ok'):
                 if (len(response['requests']) > 0):
                     self.handle_request(response['requests'])
