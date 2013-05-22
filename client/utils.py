@@ -25,3 +25,12 @@ def get_computer_name():
 def get_location():
     data =  json_request('http://freegeoip.net/json/')
     return (data['latitude'], data['longitude'])
+
+def http_get_request(url,params = {}):
+    url += "?"
+    for param in params.keys():
+        url += param + "=" + params[param] + "&"
+    answer = urllib.urlopen(url)
+    print answer
+    return answer
+    
