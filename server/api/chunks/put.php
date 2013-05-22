@@ -1,5 +1,5 @@
 <?php
-//header('Content-type: application/json');
+header('Content-type: application/json');
 chdir("../..");
 chdir("database");
 require_once("chunks.php");
@@ -12,25 +12,25 @@ require_once("configuration.php");
  * NOTES: The fileId is the "_id" from the files collection and the modification is the sha256.
  */
 
-if (isset($_GET['apikey']) and
-    isset($_GET['fileId']) and 
-    isset($_GET['modification']) and 
-    isset($_GET['body']) and 
-    isset($_GET['number']) and 
-    isset($_GET['lat']) and
-    isset($_GET['lon'])
+if (isset($_POST['apikey']) and
+    isset($_POST['fileId']) and 
+    isset($_POST['modification']) and 
+    isset($_POST['body']) and 
+    isset($_POST['number']) and 
+    isset($_POST['lat']) and
+    isset($_POST['lon'])
 ){
-    $auth = (string) $_GET['apikey'];
+    $auth = (string) $_POST['apikey'];
     if ($auth != $apikey){
         echo json_encode(array("result" => "permissionDenied"));
     }
     else {
-        $fileId = (string) $_GET['fileId'];
-        $modification = (string) $_GET['modification'];
-        $body = (string) $_GET['body'];
-        $number = intval($_GET['number']);
-        $lat = floatval($_GET['lat']);
-        $lon = floatval($_GET['lon']);
+        $fileId = (string) $_POST['fileId'];
+        $modification = (string) $_POST['modification'];
+        $body = (string) $_POST['body'];
+        $number = intval($_POST['number']);
+        $lat = floatval($_POST['lat']);
+        $lon = floatval($_POST['lon']);
         putChunk($fileId, $modification, $number, $body, $lat, $lon);
         echo json_encode(array("result" => "ok"));
     }

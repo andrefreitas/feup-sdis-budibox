@@ -94,7 +94,7 @@ class File:
                           'lon': str(location[1])
                           }
 
-                response = json_request(url, values)
+                response = json_post_request(url, values)
                 
                 print response
                 print i

@@ -11,6 +11,7 @@ import json
 import platform
 import socket
 import re
+import requests
 
 def json_request(url,params = {}):
     url += "?"
@@ -26,11 +27,6 @@ def get_location():
     data =  json_request('http://freegeoip.net/json/')
     return (data['latitude'], data['longitude'])
 
-def http_get_request(url,params = {}):
-    url += "?"
-    for param in params.keys():
-        url += param + "=" + params[param] + "&"
-    answer = urllib.urlopen(url)
-    print answer
-    return answer
-    
+def json_post_request(url, params= {}):
+    r = requests.post(url, data=params)
+    return r.json()
