@@ -6,6 +6,7 @@ from utils import *
 import login_box
 import os
 import time
+import sys
 
 class ClientDaemon:
     def __init__(self):
@@ -17,7 +18,9 @@ class ClientDaemon:
         
     def init_home_dir(self):
         # Searchs for user home folder and creates budibox folder
+        system_enconding = sys.getfilesystemencoding()
         self.budibox_home = expanduser("~") + "/budibox"
+        self.budibox_home = self.budibox_home.decode(system_enconding)
         
         # Creates budibox folder
         if(not os.path.exists(self.budibox_home)):
@@ -95,7 +98,6 @@ class ClientDaemon:
         
         if(not os.path.exists(self.budibox_home+"/chunks/")):
             os.makedirs(self.budibox_home+"/chunks/")
-        
         chunk_file = open(self.budibox_home+"/chunks/"+modification+"_"+str(chunkNumber)+".chunk", "wb")
         chunk_file.write(chunk_body)
         chunk_file.close()
