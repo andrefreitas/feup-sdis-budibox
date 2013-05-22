@@ -107,7 +107,7 @@ class Watcher:
         
     def modified(self, path, client):
         path = path.replace("\\", "/")
-        file_extension_pattern=self.path_to_watch+"/chunks/"
+        file_extension_pattern=self.path_to_watch+"/chunks"
 
         if (re.search("Thumbs.db", path) == None):
             # Checks if folder is chunks, only if it isn't it will send notifications
