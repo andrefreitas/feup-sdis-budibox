@@ -32,7 +32,7 @@ class Receive_data( QtCore.QObject ):
         response = client.login()
         print email
         print password
-        if (response['result'] == 'missingParams'):
+        if (response['result'] == 'missingParams' or response['result'] == 'invalidLogin'):
             Mbox('Budibox', 'Username or password incorrect. Please try again or register at http://www.budibox.com!')
         else:
             if (response['result'] == 'ok'):

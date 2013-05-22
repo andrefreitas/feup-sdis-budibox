@@ -28,7 +28,7 @@ class Client:
                   'password': self.password
                   }
         response = json_request(url, values)
-        print response      
+        print response
         return response
     
     def notify_startup(self):
