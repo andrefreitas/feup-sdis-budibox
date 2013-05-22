@@ -28,7 +28,7 @@ class Client:
                   'password': self.password
                   }
         response = json_request(url, values)
-        print response
+        
         return response
     
     def notify_startup(self):
@@ -39,7 +39,9 @@ class Client:
                   'computer': get_computer_name()
                  }
         response = json_request(url, values)
-        print response
+        
+        if (response['result'] != 'ok'):
+            print_message("Error trying to notify startup: user " + self.email + " computer " + get_computer_name())
         
 
         #Set Location
@@ -51,6 +53,7 @@ class Client:
                       'lat': str(self.lat),
                       'lon': str(self.lon)
                       }
-            print values
+
             result = json_request(url, values)
+            
             return result['result'] == 'ok'

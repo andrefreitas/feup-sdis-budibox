@@ -9,6 +9,7 @@ from data_manager import DataManager
 
 import base64
 import ctypes
+from utils import *
 
 app = QApplication(sys.argv)
 client = None
@@ -30,17 +31,15 @@ class Receive_data( QtCore.QObject ):
         global client
         client = Client(email, password)
         response = client.login()
-        print email
-        print password
         if (response['result'] == 'missingParams' or response['result'] == 'invalidLogin'):
             Mbox('Budibox', 'Username or password incorrect. Please try again or register at http://www.budibox.com!')
         else:
             if (response['result'] == 'ok'):
                 startup = client.notify_startup()
                 if (not startup):
-                    print 'ERROR'
+                    print_message("Could not startup!")
                 else:
-                    print 'Notified'
+                    print_message("Notified!")
             self.data.addProperty("email", email);
             password = base64.b64encode(password)
             print password
@@ -65,9 +64,9 @@ class LoginBox:
             if (response['result'] == 'ok'):
                 startup = client.notify_startup()
                 if (not startup):
-                    print 'ERROR'
+                    print_message("Could not startup!")
                 else:
-                    print 'Notified'
+                    print_message("Notified!")
         
         else:
             Mbox("Budibox", "Credentials undefined or incorrect. Please login again.") 

@@ -7,7 +7,7 @@ from utils import *
 class Watcher:
     
     def __init__(self, path_to_watch):
-        print "Watching " + path_to_watch
+        print_message("Watching " + path_to_watch)
         self.api = "http://apolo.budibox.com/api/"
         self.path_to_watch = path_to_watch.replace("\\", "/")
         

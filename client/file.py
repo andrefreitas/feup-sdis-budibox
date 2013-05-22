@@ -8,7 +8,10 @@ import hashlib
 import os
 import datetime
 import base64
+import sys
 from utils import *
+
+import datetime
 
 
 CHUNK_SIZE=64000
@@ -49,7 +52,6 @@ class File:
     def parse_name(self):
         file_extension_pattern="[a-zA-Z0-9_\-\s]+\.[a-zA-Z0-9\s]+$"
         full_path=self.get_full_path()
-        print self.get_full_path()
         try:
             self.set_name(re.search(file_extension_pattern,full_path).group(0))
         except:
@@ -64,13 +66,15 @@ class File:
         modification_date=self.get_modification_date()
         full_path=self.get_full_path()
         computer_name=get_computer_name()
-        file_id=hashlib.sha256(full_path+modification_date+computer_name+self.client.get_email()).hexdigest()
+        raw = full_path+modification_date+computer_name+self.client.get_email()
+        system_enconding = sys.getfilesystemencoding()
+        raw = raw.encode(system_enconding)
+        file_id=hashlib.sha256(raw).hexdigest()
         self.set_file_id(file_id)
         return file_id
 
     def generate_chunks(self, db_file_id):
         f=open(self._full_path, "rb")
-        print self._name
         i=0
         while True:
             # Parses file to generate chunks to send
