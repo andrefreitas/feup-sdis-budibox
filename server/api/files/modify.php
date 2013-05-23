@@ -10,7 +10,7 @@ require_once("configuration.php");
 
 /**
  * DESCRIPTION: Updates the modification value from a file
- * PARAMETERS: api/files/modify.php <apikey> <path> <user> <modification>
+ * PARAMETERS: api/files/modify.php <apikey> <path> <user> <modification> <dateModified>
  */
 if (isset($_GET['apikey']) and
     isset($_GET['path']) and
