@@ -41,10 +41,17 @@ function addChunk($path, $user, $computers){
     $files->update(array("path" => $path, "user" => $user),$newData);
 }
 
-function addComputerToChunk($fileId, $chunkNumber,$computer){
+function addComputerToChunk($fileId, $chunkNumber, $computer){
     global $files;
-    $newData = array('$addToSet' => array("chunks." . (string)$chunkNumber => new MongoId($computer)));
-    $files->update(array("_id" => new MongoId($fileId)), $newData);
+    $file = $files->findOne(array("_id" => new MongoId($fileId)));
+    $chunkNumber = intval($chunkNumber);
+    if($file["chunks"][$chunkNumber] == NULL){
+        $newData = array('$set' => array("chunks." . (string)$chunkNumber => array(new MongoId($computer))));
+        $files->update(array("_id" => new MongoId($fileId)), $newData);
+    } else{
+        $newData = array('$addToSet' => array("chunks." . (string)$chunkNumber => new MongoId($computer)));
+        $files->update(array("_id" => new MongoId($fileId)), $newData);
+    }
 }
 
 function getChunkComputers($path,$user,$chunkNumber){
