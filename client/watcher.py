@@ -62,7 +62,8 @@ class Watcher:
                     values = {'apikey': '12',
                               'path': relative_path,
                               'user': client.get_email(),
-                              'modification': f.get_file_id()
+                              'modification': f.get_file_id(),
+                              'dateModified': f.get_modification_date()
                               }
                     
                     response = json_request(url, values)
@@ -146,7 +147,25 @@ class Watcher:
         if (re.search("Thumbs.db", path) == None):
             # Checks if folder is chunks, only if it isn't it will send notifications
             if (re.search(file_extension_pattern,path) != None):
-                print_message("Modified in chunks path: " + path)
+                if (os.path.isfile(path)):
+                    print_message("Modified in chunks path: " + path)
+                    file_name = path.replace(file_extension_pattern, "")
+                    modification = file_name.split("_")[0].replace("/", "")
+                    chunk_number = file_name.split("_")[1].split(".")[0]
+                    url = self.api+'chunks/deleted.php'
+                    values = {'apikey': '12',
+                              'modification': modification,
+                              'number': chunk_number,
+                              'computerId': self.computer_id
+                              }
+                    
+                    response = json_request(url, values)
+                    
+                    if (response['result'] == 'ok'):
+                        print_message("Deleted chunk successfully " + file_name)
+                        
+                    else:
+                        print_message("Error sending delete chunk message of " + file_name)
             else:   
                 if (os.path.isfile(path)):
                     print_message("Modified " +  path)
@@ -162,7 +181,8 @@ class Watcher:
                     values = {'apikey': '12',
                               'path': relative_path,
                               'user': client.get_email(),
-                              'modification': f.get_file_id()
+                              'modification': f.get_file_id(),
+                              'dateModified': f.get_modification_date()
                               }
                     
                     response = json_request(url, values)
