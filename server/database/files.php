@@ -13,7 +13,9 @@
 *                  [ <computer id>, <computer id> ], // chunk 0
 *                  [ <computer id>, <computer id>, <computer id>], // chunk 1
 *                  ... // chunk n
-*              ]
+*              ],
+*     date_modified : <modification date>
+*          
 * }
 */
 require_once("connection.php");
@@ -22,15 +24,36 @@ require_once("computers.php");
 /* Set files collection */
 $files = $db->files;
 
-function createFile($path, $user, $modification){
+function createFile($path, $user, $modification, $dateModified){
     global $files;
+    $dateModified = new MongoDate(strtotime($dateModified));
     $files->insert(array("path" => $path, 
     					 "modification" => $modification,
                          "user" => $user,
                          "status" => "pending",
                          "chunks" => array(),
                          "size" => 0,
+                         "date_modified" => $dateModified
                    ));
+}
+
+function setFileModificationDate($path, $user, $dateModified){
+    global $files;
+    $dateModified = new MongoDate(strtotime($dateModified));
+    $files->update(array("path" => $path, "user" => $user),
+                   array('$set' => array("date_modified" => $dateModified)));                              
+
+}
+
+function getFileModificationDate($path, $user){
+    global $files;
+    $dateModified = new MongoDate(strtotime($dateModified));
+    $file = $files->findOne(array("path" => $path, "user" => $user), array("date_modified" => true));
+    if($file){
+        $date = date("c", $file["date_modified"]->sec);
+        return $date;
+    }
+    return false;
 }
 
 function incrementFileSize($fileId, $size){
@@ -158,7 +181,7 @@ function removeFilesFromUser($userEmail){
 
 function getFilesFromUser($userEmail){
     global $files;
-    $cursor =  $files->find(array("user" => $userEmail), array("path" => true, "status" => true));
+    $cursor =  $files->find(array("user" => $userEmail, "status" =>"active"), array("path" => true, "status" => true));
     $data = array();
     foreach($cursor as $doc){
         $data[] = $doc;

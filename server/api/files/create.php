@@ -26,8 +26,9 @@ if (isset($_GET['apikey']) and
         $path = (string) $_GET['path'];
         $user = (string) $_GET['user'];
         $modification = (string) $_GET['modification'];
+        $dateModified = (string) $_GET['dateModified'];
         if(!fileExists($path, $user))
-            createFile($path, $user, $modification);
+            createFile($path, $user, $modification, $dateModified);
         else{
             $actualModification = getFileModification($path, $user);
             if($actualModification != $modification){

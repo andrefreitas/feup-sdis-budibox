@@ -26,26 +26,27 @@ if (isset($_GET['apikey']) and
         $path = (string) $_GET['path'];
         $user = (string) $_GET['user'];
         $modification = (string) $_GET['modification'];
+        $dateModified = (string) $_GET['dateModified'];
         if(!fileExists($path, $user)){
             echo json_encode(array("result" => "invalidFile"));
         }else{
             /* Delete the old chunks */
             $actualModification = getFileModification($path, $user);
-    
             if($modification != $actualModification){
                 $fileSize = getFileSize($path, $user);
                 addUserSpaceUsage($user, -$fileSize);
                 setFileSize($path, $user, 0);
                 $status = getFileStatus($path, $user);
+                setFileModificationDate($path, $user, $dateModified);
                 if($status != "pending"){
                     $who = getFileComputers($path, $user);
                     requestFileDelete($actualModification, $who);
                 }
+                setFileModification($path, $user, $modification);
+                resetFileChunks($path, $user);
+                setFileStatus($path, $user, "pending");
             }
             
-            setFileModification($path, $user, $modification);
-            resetFileChunks($path, $user);
-            setFileStatus($path, $user, "pending");
             echo json_encode(array("result" => "ok"));
         }
     }
