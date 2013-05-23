@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 //header('Content-type: application/json');
 chdir("../..");
 chdir("database");
