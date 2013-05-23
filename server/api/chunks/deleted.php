@@ -10,7 +10,6 @@ require_once("configuration.php");
 /**
  * DESCRIPTION: Removes a computer storage from a chunk number
  * PARAMETERS: api/chunks/deleted.php <apikey> <modification> <number> <computerId>
- * NOTES: The fileId is the "_id" from the files collection.
  */
 
 if (isset($_GET['apikey']) and
