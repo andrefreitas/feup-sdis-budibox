@@ -118,7 +118,7 @@ class ClientDaemon:
         if (response['result'] == 'ok'):
             print_message("Sent confirmation message: fileId " + fileId['$id'] + " and chunkNumber " + str(chunkNumber) + " and computerId " + self.computerId)
             return True
-        else:
+        else:            
             print_message("Error trying to send confirm message: fileId " + fileId['$id'] + " and chunkNumber " + str(chunkNumber) + " and computerId " + self.computerId)
             return False
                
