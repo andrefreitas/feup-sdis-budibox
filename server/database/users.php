@@ -115,7 +115,7 @@ function getUserSpaceOffer($email) {
 function getUserSpaceLimit($email) {
 	global $users;
 	$data = $users->findOne(array("email" => $email), array("space" => true));
-	if (data) {
+	if ($data) {
 		return $data["space"]["limit"];
 	}
 	else return -1;
@@ -157,9 +157,20 @@ function updateUserSpaceUsed($email, $space) {
 	if ($space <= $limit) {
 		$newdata = array('$set' => array("space.used" => $space));
 		$users->update(array("email" => $email), $newdata);
-		return True;
+		return true;
 	}
-	return False;
+	return false;
+}
+
+function addUserSpaceUsage($email, $space) {
+    global $users;
+    $limit = getUserSpaceLimit($email);
+    if ($space <= $limit) {
+        $newdata = array('$inc' => array("space.used" => $space));
+        $users->update(array("email" => $email), $newdata);
+        return true;
+    }
+    return false;
 }
 
 function updateUserSpaceOfferUsed($email, $space) {
@@ -168,9 +179,9 @@ function updateUserSpaceOfferUsed($email, $space) {
 	if ($space <= $limit) {
 		$newdata = array('$set' => array("space.offer_used" => $space));
 		$users->update(array("email" => $email), $newdata);
-		return True;
+		return true;
 	}
-	return False;
+	return false;
 }
 
 

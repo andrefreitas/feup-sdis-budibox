@@ -8,6 +8,7 @@
 *     modification : <modification sha256>,
 *     user : <user email>,
 *     status : <status of the file: {pending, active, deleted}>,
+*     size : <file size in bytes>,
 *     chunks : [
 *                  [ <computer id>, <computer id> ], // chunk 0
 *                  [ <computer id>, <computer id>, <computer id>], // chunk 1
@@ -27,11 +28,17 @@ function createFile($path, $user, $modification){
     					 "modification" => $modification,
                          "user" => $user,
                          "status" => "pending",
-                         "chunks" => array()
+                         "chunks" => array(),
+                         "size" => 0,
                    ));
 }
 
-
+function incrementFileSize($fileId, $size){
+    global $files;
+    $newData = array('$inc' => array("size" => $size));
+    $fileId = new MongoId($fileId);
+    $files->update(array("_id" => $fileId), $newData);
+}
 function addChunk($path, $user, $computers){
     global $files;
     foreach($computers as &$computer){
@@ -213,5 +220,15 @@ function getFileComputers($path, $user){
 function removeFile($path, $user){
     global $files;
     $files->remove(array("path" => $path, "user" => $user));
+}
+
+function getFileUser($fileId){
+    global $files;
+    $fileId = new MongoId($fileId);
+    $file = $files->findOne(array("_id" => $fileId), array("user" => true));
+    if($file){
+        return $file["user"];
+    }
+    return false;
 }
 ?>

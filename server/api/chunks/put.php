@@ -3,6 +3,8 @@ header('Content-type: application/json');
 chdir("../..");
 chdir("database");
 require_once("chunks.php");
+require_once("files.php");
+require_once("users.php");
 chdir("..");
 require_once("configuration.php");
 
@@ -32,6 +34,12 @@ if (isset($_POST['apikey']) and
         $lat = floatval($_POST['lat']);
         $lon = floatval($_POST['lon']);
         putChunk($fileId, $modification, $number, $body, $lat, $lon);
+        
+        // Update space usage
+        $size = strlen($body);
+        $user = getFileUser($fileId);
+        addUserSpaceUsage($user, $size);
+        incrementFileSize($fileId, $size);
         echo json_encode(array("result" => "ok"));
     }
     
