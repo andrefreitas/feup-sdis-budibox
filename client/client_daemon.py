@@ -34,8 +34,15 @@ class ClientDaemon:
         self.computerId = self.get_computer_id()
         watcher_thread = Thread(target=self.listen_watcher, args=())
         requests_thread = Thread(target=self.listen_requests, args=())
+        keep_alive = Thread(target=self.keep_alive, args=())
+        # Start threads
         watcher_thread.start()
         requests_thread.start()
+        keep_alive.start()
+        # Join threads
+        watcher_thread.join()
+        requests_thread.join()
+        keep_alive.join()
     
     def get_computer_id(self):
         url = self.api+'computers/getComputerId.php'
@@ -48,6 +55,20 @@ class ClientDaemon:
         
         if (response['result'] == 'ok'):
             return response['computerId']
+        
+    def keep_alive(self):
+        while True:
+            url = self.api+'computers/keepAlive.php'
+            values = {'apikey': '12',
+                      'computerId': self.computerId 
+                      }
+            
+            response = json_request(url, values)
+            
+            if (response['result'] != 'ok'):
+                print_message("Error sending message of keepAlive of computerId " + self.computerId)
+            
+            time.sleep(10)
         
     def listen_watcher(self):
         self.watcher.start(login_box.client)
