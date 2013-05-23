@@ -11,7 +11,8 @@ class Watcher:
         self.api = "http://apolo.budibox.com/api/"
         self.path_to_watch = path_to_watch.replace("\\", "/")
         
-    def start(self, client):
+    def start(self, client, computer_id):
+        self.computer_id = computer_id
         before = self.files_to_timestamp(self.path_to_watch)
         
         while 1:
@@ -93,9 +94,35 @@ class Watcher:
     def removed(self, path, client):
         # Gets relative_path location
         relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
+        path = path.replace("\\", "/")
+        file_extension_pattern=self.path_to_watch+"/chunks"
+        
+        if (re.search(file_extension_pattern,path) != None):
+            print_message("Removed " +  path)
+            # Send message of chunk deleted
+            file_name = path.replace(file_extension_pattern, "")
+            modification = file_name.split("_")[0].replace("/", "")
+            chunk_number = file_name.split("_")[1].split(".")[0]
+            url = self.api+'chunks/deleted.php'
+            values = {'apikey': '12',
+                      'modification': modification,
+                      'number': chunk_number,
+                      'computerId': self.computer_id
+                      }
+            
+            response = json_request(url, values)
+            
+            if (response['result'] == 'ok'):
+                print_message("Deleted chunk successfully " + file_name)
+                
+            else:
+                print_message("Error sending delete chunk message of " + file_name)
+                
+
         
         if (re.search("Thumsb.db", path) == None):
             print_message("Removed " +  path)
+            # Modify File Status 
             url = self.api+'files/setStatus.php'
             values = {'apikey': '12',
                       'path': relative_path,
