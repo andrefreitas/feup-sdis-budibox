@@ -101,6 +101,19 @@ class ClientDaemon:
             if (file.startswith(modification)):
                 os.remove(self.budibox_home+"/chunks/"+file)
                 
+        url = self.api+'requests/confirmFileDelete.php'
+        values= {'apikey': '12',
+                 'computerId': self.computerId,
+                 'modification': modification
+                 }
+        response = json_request(url, values)
+        
+        if (response['result'] == 'ok'):
+            print_message("Sent confirm delete message of modification: " + modification)
+            
+        else:
+            print_message("Error confirm delete message of modification: " + modification)
+                
     
     def store_chunk(self, chunkNumber, modification, fileId):
         # Gets Information about chunk to Store
