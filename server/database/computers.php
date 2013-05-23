@@ -98,7 +98,7 @@ function keepComputerAlive($computerId){
 
 function detectOffComputers(){
     global $computers;
-    $precision = 30; // seconds
+    $precision = 20; // seconds
     $now = new MongoDate();
     $now->sec = $now->sec - $precision;
     $newData = array('$set' => array("status" => "off" ));
