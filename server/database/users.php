@@ -173,6 +173,13 @@ function addUserSpaceUsage($email, $space) {
     return false;
 }
 
+
+function incrementUserOfferUsage($email, $space) {
+    global $users;
+    $newdata = array('$inc' => array("space.offer_used" => $space));
+    $users->update(array("email" => $email), $newdata);
+}
+
 function updateUserSpaceOfferUsed($email, $space) {
 	global $users;
 	$limit = getUserSpaceOffer($email);
