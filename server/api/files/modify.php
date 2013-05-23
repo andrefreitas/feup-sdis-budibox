@@ -15,7 +15,8 @@ require_once("configuration.php");
 if (isset($_GET['apikey']) and
     isset($_GET['path']) and
     isset($_GET['user']) and
-    isset($_GET['modification'])
+    isset($_GET['modification']) and 
+    isset($_GET['dateModified'])
 ){
     $auth = (string) $_GET['apikey'];
     if ($auth != $apikey){
