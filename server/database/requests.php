@@ -47,7 +47,7 @@ function getComputerRequests($computerId){
 }
 
 /**
- * Computer confirms thar done the storechunkdone request and its id is removed from the list
+ * Computer confirms that did the storechunk request and its id is removed from the list
  */
 function storeChunkDone($computerId, $fileId, $modification, $chunkNumber){
     $computerId = new MongoId($computerId);
@@ -77,6 +77,23 @@ function storeChunkDone($computerId, $fileId, $modification, $chunkNumber){
     }
 }
 
+/**
+ * Computer confirms that deleted that file modification
+ */
+function deleteFileModificationDone($computerId, $modification){
+    global $requests;
+    $computerId = new MongoId($computerId);
+    $requests->update(
+                      array("action" => "deleteFile", "modification" => $modification),
+                      array('$pull' => array("who" => $computerId))
+                     );
+
+    // If request is completely done
+    if(deleteFileModificationIsComplete($modification)){
+        $requests->remove(array("action" => "deleteFile", "modification" => $modification));
+    }
+}
+
 function storeChunkIsComplete($fileId, $modification, $chunkNumber){
     global $requests;
     $fileId = new MongoId($fileId);
@@ -87,6 +104,11 @@ function storeChunkIsComplete($fileId, $modification, $chunkNumber){
                                     "who" => array()
     ));
     
+}
+
+function deleteFileModificationIsComplete($modification){
+    global $requests;
+    return $requests->findOne(array("action" => "deleteFile", "modification" => $modification, "who" => array()));
 }
 
 function fileHaveStoreRequests($fileId, $modification){
