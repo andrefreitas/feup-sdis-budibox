@@ -78,6 +78,17 @@ function addComputerToChunk($fileId, $chunkNumber, $computer){
     }
 }
 
+function removeComputerFromChunk($modification, $chunkNumber, $computerId){
+    global $files;
+    $file = $files->findOne(array("modification" => $modification));
+    $chunkNumber = intval($chunkNumber);
+    $computerId = new MongoId($computerId);
+    if($file["chunks"][$chunkNumber] != NULL){
+        $newData = array('$pull' => array("chunks." . (string)$chunkNumber => $computerId));
+        $files->update(array("modification" => $modification), $newData);
+    } 
+}
+
 function getChunkComputers($path,$user,$chunkNumber){
 	global $files;
 	$data = $files->findOne(array("path" => $path, "user" => $user));
@@ -87,11 +98,6 @@ function getChunkComputers($path,$user,$chunkNumber){
 	
 }
 
-function removeComputerFromChunk($path,$user,$chunkNumber,$computer){
-	global $files;
-	$newData = array('$pull' => array("chunks." . (string)$chunkNumber => new MongoId($computer)));
-	$files->update(array("path" => $path, "user" => $user),$newData);
-}
 
 function setFileStatus($path, $user, $status){
     global $files;
