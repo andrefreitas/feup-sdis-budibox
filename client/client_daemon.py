@@ -71,7 +71,7 @@ class ClientDaemon:
             time.sleep(10)
         
     def listen_watcher(self):
-        self.watcher.start(login_box.client)
+        self.watcher.start(login_box.client, self.computerId)
         
     def listen_requests(self):
         while(True):
