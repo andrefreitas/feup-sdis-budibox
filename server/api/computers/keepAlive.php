@@ -8,8 +8,8 @@ chdir("..");
 require_once("configuration.php");
 
 /**
- * DESCRIPTION: Gets the requests from a computer
- * PARAMETERS: api/requests/getComputerRequests.php <apikey> <computerId>
+ * DESCRIPTION: Keeps the computer on in the database
+ * PARAMETERS: api/computers/keepAlive.php <apikey> <computerId>
  */
 
 if (isset($_GET['apikey']) and
@@ -21,10 +21,9 @@ if (isset($_GET['apikey']) and
     }
     else {
         $computerId = (string) $_GET['computerId'];
-        $requests = getComputerRequests($computerId);
         keepComputerAlive($computerId);
         detectOffComputers();
-        echo json_encode(array("result" => "ok", "requests" => $requests));
+        echo json_encode(array("result" => "ok"));
     }
 
 }else{

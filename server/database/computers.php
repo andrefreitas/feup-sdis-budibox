@@ -92,7 +92,8 @@ function getBestComputers($lat, $lon){
 function keepComputerAlive($computerId){
     global $computers;
     $computerId = new MongoId($computerId);
-    $computers->update(array("_id" => $computerId, "status" => "on"));
+    $newData = array('$set' => array("status" => "on", "lastTimeAlive" => new MongoDate() ));
+    $computers->update(array("_id" => $computerId),$newData);
 }
 
 function detectOffComputers(){
