@@ -85,6 +85,42 @@ function getUserKey($email){
     return $data["key"];
 }
 
+function getUserSpaceUsed($email) {
+	global $users;
+	$data = $users->findOne(array("email" => $email), array("space" => true));
+	if (data) {
+		return $data["space"]["used"];
+	}
+	else return -1;
+}
+
+function getUserSpaceOfferUsed($email) {
+	global $users;
+	$data = $users->findOne(array("email" => $email), array("space" => true));
+	if (data) {
+		return $data["space"]["offer_used"];
+	}
+	else return -1;
+}
+
+function getUserSpaceOffer($email) {
+	global $users;
+	$data = $users->findOne(array("email" => $email), array("space" => true));
+	if (data) {
+		return $data["space"]["offer"];
+	}
+	else return -1;
+}
+
+function getUserSpaceLimit($email) {
+	global $users;
+	$data = $users->findOne(array("email" => $email), array("space" => true));
+	if (data) {
+		return $data["space"]["limit"];
+	}
+	else return -1;
+}
+
 function checkUserLogin($email, $password){
     global $users;
     $password = hash('sha256', $password);
@@ -112,6 +148,31 @@ function updateUserPasswordByConfirmationKey($confirmationKey, $password){
     $newdata = array('$set' => array("password" => $password));
     $users->update(array("confirmationKey" => $confirmationKey), $newdata);
 }
+
+
+
+function updateUserSpaceUsed($email, $space) {
+	global $users;
+	$limit = getUserSpaceLimit($email);
+	if ($space <= $limit) {
+		$newdata = array('$set' => array("space.used" => $space));
+		$users->update(array("email" => $email), $newdata);
+		return True;
+	}
+	return False;
+}
+
+function updateUserSpaceOfferUsed($email, $space) {
+	global $users;
+	$limit = getUserSpaceOffer($email);
+	if ($space <= $limit) {
+		$newdata = array('$set' => array("space.offer_used" => $space));
+		$users->update(array("email" => $email), $newdata);
+		return True;
+	}
+	return False;
+}
+
 
 function deleteUser($email){
     global $users;
