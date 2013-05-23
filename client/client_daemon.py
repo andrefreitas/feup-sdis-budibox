@@ -151,7 +151,21 @@ class ClientDaemon:
 
         if (response['result'] == 'ok'):
             print_message("Sent confirmation message: fileId " + fileId['$id'] + " and chunkNumber " + str(chunkNumber) + " and computerId " + self.computerId)
-            return True
+            
+            # Adds space of the offer_used
+            url = self.api+'users/incOfferUsage.php'
+            values= {'apikey': '12',
+                     'user': login_box.client.get_email(),
+                     'value': str(len(chunk_body))
+                     }
+            response_space = json_request(url, values)
+            
+            if (response_space['result'] == 'ok'):
+                print_message("Increment offer usage successfully with " + str(len(chunk_body)))
+                return True
+            else:
+                print_message("Error in incrementing offer usage with " + str(len(chunk_body)))
+                return False
         else:            
             print_message("Error trying to send confirm message: fileId " + fileId['$id'] + " and chunkNumber " + str(chunkNumber) + " and computerId " + self.computerId)
             return False
