@@ -100,7 +100,9 @@ class File:
                 
                 if (response['result'] == 'ok'):
                     print_message("Putchunk successfully of fileId " + db_file_id + " and chunknumber " + str(i))
-                
+                else:
+                    print_message("Erro in putchunk fileId " + db_file_id + " and chunknumber " + str(i)+" " + response['result'])
+                    
                 i+=1
             else:
                 break

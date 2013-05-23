@@ -95,11 +95,26 @@ class ClientDaemon:
                 self.delete_chunks(request['modification'])
     
     def delete_chunks(self, modification):
-        print modification
         list_dir = os.listdir(self.budibox_home+"/chunks/")
         for file in list_dir:
             if (file.startswith(modification)):
+                f = open(self.budibox_home+"/chunks/"+file, "rb")
+                file_size = len(f.read())
+                f.close()
                 os.remove(self.budibox_home+"/chunks/"+file)
+                url = self.api+'users/incOfferUsage.php'
+                values= {'apikey': '12',
+                         'user': login_box.client.get_email(),
+                         'value': str(-file_size)
+                         }
+                response = json_request(url, values)
+                
+                if (response['result'] == 'ok'):
+                    print_message("Decremented offer_usage in " + str(file_size))
+                    
+                else:
+                    print_message("Error decrementing offer_usage in " + str(file_size))
+                
                 
         url = self.api+'requests/confirmFileDelete.php'
         values= {'apikey': '12',
