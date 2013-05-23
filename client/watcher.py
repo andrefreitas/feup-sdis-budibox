@@ -63,7 +63,7 @@ class Watcher:
                               'path': relative_path,
                               'user': client.get_email(),
                               'modification': f.get_file_id(),
-                              'dateModified': f.get_modification_date()
+                              'dateModified': f.get_modification_date().replace(" ", "T")
                               }
                     
                     response = json_request(url, values)
@@ -182,7 +182,7 @@ class Watcher:
                               'path': relative_path,
                               'user': client.get_email(),
                               'modification': f.get_file_id(),
-                              'dateModified': f.get_modification_date()
+                              'dateModified': f.get_modification_date().replace(" ", "T")
                               }
                     
                     response = json_request(url, values)
