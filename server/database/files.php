@@ -49,6 +49,13 @@ function getFileSize($path, $user){
     return -1;
 }
 
+function setFileSize($path, $user, $size){
+    global $files;
+    $newData = array('$set' => array("size" => $size));
+    $files->update(array("path" => $path, "user" => $user), $newData);
+}
+
+
 function addChunk($path, $user, $computers){
     global $files;
     foreach($computers as &$computer){

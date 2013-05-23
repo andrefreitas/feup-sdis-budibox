@@ -3,6 +3,7 @@ header('Content-type: application/json');
 chdir("../..");
 chdir("database");
 require_once("files.php");
+require_once("users.php");
 chdir("..");
 require_once("configuration.php");
 
@@ -23,7 +24,16 @@ if (isset($_GET['apikey']) and
         $path = (string) $_GET['path'];
         $user = (string) $_GET['user'];
         $status = (string) $_GET['status'];
+        $oldStatus = getFileStatus($path, $user);
         setFileStatus($path, $user, $status);
+        if($oldStatus =="active" and $status=="deleted"){
+            $fileSize = getFileSize($path, $user);
+            addUserSpaceUsage($user, -$fileSize);
+        }
+        if($oldStatus =="deleted" and $status=="active"){
+            $fileSize = getFileSize($path, $user);
+            addUserSpaceUsage($user, $fileSize);
+        }
         echo json_encode(array("result" => "ok"));
     }
 

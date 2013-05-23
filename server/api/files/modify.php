@@ -4,6 +4,7 @@ chdir("../..");
 chdir("database");
 require_once("files.php");
 require_once("requests.php");
+require_once("users.php");
 chdir("..");
 require_once("configuration.php");
 
@@ -29,7 +30,11 @@ if (isset($_GET['apikey']) and
         }else{
             /* Delete the old chunks */
             $actualModification = getFileModification($path, $user);
+    
             if($modification != $actualModification){
+                $fileSize = getFileSize($path, $user);
+                addUserSpaceUsage($user, -$fileSize);
+                setFileSize($path, $user, 0);
                 $status = getFileStatus($path, $user);
                 if($status != "pending"){
                     $who = getFileComputers($path, $user);

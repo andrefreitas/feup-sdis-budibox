@@ -1,5 +1,5 @@
 <?php
-//header('Content-type: application/json');
+header('Content-type: application/json');
 chdir("../..");
 chdir("database");
 require_once("files.php");
