@@ -4,6 +4,7 @@ chdir("../..");
 chdir("database");
 require_once("files.php");
 require_once("requests.php");
+require_once("users.php");
 chdir("..");
 require_once("configuration.php");
 
@@ -23,11 +24,11 @@ if (isset($_GET['apikey']) and
         $path = (string) $_GET['path'];
         $user = (string) $_GET['user'];
         $modification = getFileModification($path, $user);
-        $status = getFileStatus($path, $user);
-        if($status!="pending"){
-            $who = getFileComputers($path, $user);
+        $who = getFileComputers($path, $user);
+        $size = getFileSize($path, $user);
+        if(count($who) >0)
             requestFileDelete($modification, $who);
-        }
+        addUserSpaceUsage($user, -$size);
         removeFile($path, $user);
         echo json_encode(array("result" => "ok"));
     }

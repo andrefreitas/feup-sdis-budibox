@@ -39,6 +39,16 @@ function incrementFileSize($fileId, $size){
     $fileId = new MongoId($fileId);
     $files->update(array("_id" => $fileId), $newData);
 }
+
+function getFileSize($path, $user){
+    global $files;
+    $file = $files->findOne(array("path" => $path, "user" => $user), array("size" => true));
+    if($file){
+        return $file["size"];
+    }
+    return -1;
+}
+
 function addChunk($path, $user, $computers){
     global $files;
     foreach($computers as &$computer){
