@@ -3,6 +3,7 @@ header('Content-type: application/json');
 chdir("../..");
 chdir("database");
 require_once("requests.php");
+require_once("computers.php");
 chdir("..");
 require_once("configuration.php");
 
@@ -21,6 +22,7 @@ if (isset($_GET['apikey']) and
     else {
         $computerId = (string) $_GET['computerId'];
         $requests = getComputerRequests($computerId);
+        keepComputerAlive($computerId);
         echo json_encode(array("result" => "ok", "requests" => $requests));
     }
 

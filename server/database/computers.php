@@ -89,5 +89,11 @@ function getBestComputers($lat, $lon){
     return $data;
 }
 
+function keepComputerAlive($computerId){
+    global $computers;
+    $computerId = new MongoId($computerId);
+    $computers->update(array("_id" => $computerId, "status" => "on"));
+}
+
 
 ?>
