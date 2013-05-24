@@ -33,7 +33,7 @@ function createUser($name, $email, $password){
                          "registrationDate" => new MongoDate(),
                          "status" => "inactive",
                          "confirmationKey" => $confirmationKey,
-                         "space" => array("limit" => 5242880, "offer" => 5242880, "used" => 0, "offer_used" => 0)
+                         "space" => array("limit" => 5368709120, "offer" => 5368709120, "used" => 0, "offer_used" => 0)
                    ));
 }
 

@@ -9,11 +9,12 @@ import os
 import datetime
 import base64
 import sys
+import math
 from utils import *
 
 import datetime
 
-
+BASE64_CHUNK_FULL_SIZE=85388
 CHUNK_SIZE=64000
 
 class InvalidPathError:
@@ -34,7 +35,18 @@ class File:
         self.api = "http://apolo.budibox.com/api/"
         self.client = client
         self.get_salt()
+    
+    def get_file_size(self):
+        original_file_size = int(os.path.getsize(self._full_path))        
+        salt_size = len(self.key)
+        total_nr_chunks = original_file_size/CHUNK_SIZE
+        size_last_chunk = original_file_size%CHUNK_SIZE
         
+        one_chunk = math.ceil((CHUNK_SIZE+salt_size)/3)*4
+        last_chunk = math.ceil((size_last_chunk+salt_size)/3)*4
+        total = BASE64_CHUNK_FULL_SIZE*total_nr_chunks+last_chunk+300
+        return total
+    
     def get_salt(self):
         url = self.api+'users/getKey.php'
         values = {'apikey': '12',

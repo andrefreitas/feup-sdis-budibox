@@ -8,7 +8,7 @@ require_once("configuration.php");
 
 /**
  * DESCRIPTION: Gets the files from the user
- * PARAMETERS: api/files/getUserFiles.php <apikey> <path> <user>
+ * PARAMETERS: api/files/getUserFiles.php <apikey> <user>
  */
 if (isset($_GET['apikey']) and
     isset($_GET['user'])

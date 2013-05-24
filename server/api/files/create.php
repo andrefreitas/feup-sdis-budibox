@@ -3,20 +3,22 @@ header('Content-type: application/json');
 chdir("../..");
 chdir("database");
 require_once("files.php");
+require_once("users.php");
 require_once("requests.php");
 chdir("..");
 require_once("configuration.php");
 
 /**
  * DESCRIPTION: Creates a new file in the database
- * PARAMETERS: api/files/create.php <apikey> <path> <user> <modification>
+ * PARAMETERS: api/files/create.php <apikey> <path> <user> <modification> <size>
  */
 
 if (isset($_GET['apikey']) and
     isset($_GET['path']) and
     isset($_GET['user']) and
     isset($_GET['modification']) and 
-    isset($_GET['dateModified'])
+    isset($_GET['dateModified']) and 
+    isset($_GET['size'])
 ){
     $auth = (string) $_GET['apikey'];
     if ($auth != $apikey){
@@ -27,6 +29,17 @@ if (isset($_GET['apikey']) and
         $user = (string) $_GET['user'];
         $modification = (string) $_GET['modification'];
         $dateModified = (string) $_GET['dateModified'];
+        $size = intval($_GET['size']);
+        
+        $space_used = getUserSpaceUsed($user);
+        $space_limit = getUserSpaceLimit($user);
+        
+        if ($space_used+$size > $space_limit) {
+        	$space_left = $space_limit-$space_used;
+        	echo json_encode(array("result" => "notEnoughSpace", "spaceLeft" => $space_left));
+        	return;
+        }
+        
         if(!fileExists($path, $user))
             createFile($path, $user, $modification, $dateModified);
         else{
