@@ -8,8 +8,6 @@ import os
 import time
 import sys
 
-
-
 class ClientDaemon:
     def __init__(self):
         self.init_home_dir()
