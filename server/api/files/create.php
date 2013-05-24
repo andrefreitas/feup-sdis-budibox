@@ -39,9 +39,6 @@ if (isset($_GET['apikey']) and
         	return;
         }
         
-        print $space_used+$size;
-        print $space_limit;
-        
         if(!fileExists($path, $user))
             createFile($path, $user, $modification, $dateModified);
         else{
