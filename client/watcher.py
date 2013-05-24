@@ -65,7 +65,8 @@ class Watcher:
                               'path': relative_path,
                               'user': client.get_email(),
                               'modification': f.get_file_id(),
-                              'dateModified': modification_date
+                              'dateModified': modification_date,
+                              'size': file_size
                               }
                     response = json_request(url, values)
                     

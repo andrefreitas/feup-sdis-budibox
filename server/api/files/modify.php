@@ -36,8 +36,10 @@ if (isset($_GET['apikey']) and
                 $fileSize = getFileSize($path, $user);
                 $hadSpace = addUserSpaceUsage($user, -$fileSize);
                 if (!$hadSpace) {
-                	echo json_encode(array("result" => "noSpace"));
+                	echo json_encode(array("result" => "notEnoughSpace"));
+                	return;
                 }
+
                 setFileSize($path, $user, 0);
                 $status = getFileStatus($path, $user);
                 setFileModificationDate($path, $user, $dateModified);
@@ -48,6 +50,7 @@ if (isset($_GET['apikey']) and
                 setFileModification($path, $user, $modification);
                 resetFileChunks($path, $user);
                 setFileStatus($path, $user, "pending");
+                
             }
             
             echo json_encode(array("result" => "ok"));
