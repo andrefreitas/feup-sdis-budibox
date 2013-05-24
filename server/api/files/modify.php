@@ -42,6 +42,7 @@ if (isset($_GET['apikey']) and
 		        $space_limit = getUserSpaceLimit($user);
 		        
 		        if ($space_used+$size > $space_limit) {
+		        	addUserSpaceUsage($user, $fileSize);
 		        	$space_left = $space_limit-$space_used;
 		        	echo json_encode(array("result" => "notEnoughSpace", "spaceLeft" => $space_left));
 		        	return;

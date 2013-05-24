@@ -206,7 +206,7 @@ class Watcher:
                         print_message("Not enough space. Space left to use " + str(response['spaceLeft']))
                         window = Tkinter.Tk()
                         window.wm_withdraw()
-                        
+                         
                         tkMessageBox.showerror(title="Budibox", message="Not enough space! Space left to use " + str(response['spaceLeft']) + "bytes !")
                         return
                     
