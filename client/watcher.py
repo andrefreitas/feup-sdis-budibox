@@ -70,8 +70,6 @@ class Watcher:
                               }
                     response = json_request(url, values)
                     
-                    print values
-                    
                     if (response['result'] != 'ok'):
                         print_message("Error sending information created about file " + path)
                         return
