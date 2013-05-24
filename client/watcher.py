@@ -130,8 +130,6 @@ class Watcher:
                 
             else:
                 print_message("Error sending delete chunk message of " + file_name)
-                
-
         
         if (re.search("Thumsb.db", path) == None):
             print_message("Removed " +  path)
@@ -173,6 +171,8 @@ class Watcher:
                     
                     response = json_request(url, values)
                     
+                    
+                    
                     if (response['result'] == 'ok'):
                         print_message("Deleted chunk successfully " + file_name)
                         
@@ -184,6 +184,8 @@ class Watcher:
                     # Creates file information
                     f = File(path, client)
                     f.generate_file_id()
+                    f.get_salt()
+                    file_size = f.get_file_size()
                     
                     # Gets relative_path location
                     relative_path = path.split(self.path_to_watch)[1].replace("\\", "/") 
@@ -194,10 +196,20 @@ class Watcher:
                               'path': relative_path,
                               'user': client.get_email(),
                               'modification': f.get_file_id(),
-                              'dateModified': modification_date
+                              'dateModified': modification_date,
+                              'size': str(int(file_size))
                               }
                     
                     response = json_request(url, values)
+                    
+                    if (response['result'] == 'notEnoughSpace'):
+                        print_message("Not enough space. Space left to use " + str(response['spaceLeft']))
+                        window = Tkinter.Tk()
+                        window.wm_withdraw()
+                        
+                        tkMessageBox.showerror(title="Budibox", message="Not enough space! Space left to use " + str(response['spaceLeft']) + "bytes !")
+                        return
+                    
                     
                     if (response['result'] != 'ok'):
                         print_message("Error sending information modify about file " + path)
