@@ -57,16 +57,23 @@ class Watcher:
                     # Gets relative_path location
                     relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
                     
+                    print f.get_modification_date().replace(" ", "T").split(".")[0]
+                    raw_input(">>")
+                    
                     # Sends request to server with information about the new file
                     url = self.api+'files/create.php'
                     values = {'apikey': '12',
                               'path': relative_path,
                               'user': client.get_email(),
                               'modification': f.get_file_id(),
-                              'dateModified': f.get_modification_date().replace(" ", "T")
+                              'dateModified': f.get_modification_date().replace(" ", "T").split(".")[0]
                               }
                     
+                    print values
+                    
                     response = json_request(url, values)
+                    
+                    
                     
                     if (response['result'] != 'ok'):
                         print_message("Error sending information created about file " + path)
@@ -176,13 +183,16 @@ class Watcher:
                     # Gets relative_path location
                     relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
                     
+                    
+                    print f.get_modification_date().replace(" ", "T").split(".")[0]
+                    raw_input(">>")
                     # Sends request to server with information about the new file
                     url = self.api+'files/modify.php'
                     values = {'apikey': '12',
                               'path': relative_path,
                               'user': client.get_email(),
                               'modification': f.get_file_id(),
-                              'dateModified': f.get_modification_date().replace(" ", "T")
+                              'dateModified': f.get_modification_date().replace(" ", "T").split(".")[0]
                               }
                     
                     response = json_request(url, values)
