@@ -277,4 +277,47 @@ function getFileUser($fileId){
     }
     return false;
 }
+
+function modificationExists($modification){
+    global $files;
+    $modification = $files->findOne(array("modification" => $modification), array("_id" => true));
+    if ($modification)
+        return true;
+    return false;
+}
+/** 
+ * Gets an array of elements <chunkNumber> (<onlineComputerId>)*
+ * 
+ */
+
+function getOnlineComputersFromChunks($modification){
+    global $files;
+    // Get Offline Computers
+    $offlineComputersIds = getComputersByStatus("off");
+    $file = $files->findOne(array("modification" => $modification), array("chunks" => true));
+    $chunks = $file["chunks"];
+    // For each chunk get computers that are online
+    $chunksOnlineComputers = array();
+    $toString = function ($i){ return (string) $i;};
+    for($i = 0; $i < count($chunks); $i++){
+        $chunkComputers = array_map($toString, $chunks[$i]);
+        $onComputers = array_diff($chunkComputers, $offlineComputersIds);
+        $chunksOnlineComputers[] = $onComputers; 
+    }
+    return  $chunksOnlineComputers;
+}
+
+function getComputersFromChunks($modification){
+    global $files;
+    $file = $files->findOne(array("modification" => $modification), array("chunks" => true));
+    $chunks = $file["chunks"];
+    $chunksComputers = array();
+    $toString = function ($i){ return (string) $i;};
+    for($i = 0; $i < count($chunks); $i++){
+        $chunkComputers = array_map($toString, $chunks[$i]);
+        $chunksComputers[] = $chunkComputers;
+    }
+    return  $chunksComputers;
+}
+
 ?>

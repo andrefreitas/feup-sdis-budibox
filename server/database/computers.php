@@ -105,4 +105,13 @@ function detectOffComputers(){
     $computers->update(array("lastTimeAlive" => array('$lte' => $now)),$newData, array("multiple" => true) );
 }
 
+function getComputersByStatus($status){
+    global $computers;
+    $cursor =  $computers->find(array("status" => $status ));
+    $data = array();
+    foreach($cursor as $doc){
+        $data[] = (string) $doc["_id"];
+    }
+    return $data;
+}
 ?>

@@ -128,4 +128,33 @@ function requestFileDelete($actualModification, $who){
                             "who" => $who));
 
 }
+
+/* Request file restore */
+
+function requestGiveChunk($modification, $chunkNumber, $who, $owner){
+    global $requests;
+    $requests->insert(array("action" => "giveChunk",
+            "modification" => $modification,
+            "chunkNumber" => $chunkNumber,
+            "who" => $who,
+            "owner" => new MongoId($who)
+    ));
+
+}
+
+function toMongoId($item){
+    return new MongoId($item);
+}
+
+function requestRestoreFileModification($modification, $owner){
+    global $requests;
+    // $chunksComputers = getOnlineComputersFromChunks($modification); // Online Computers
+    $chunksComputers = getComputersFromChunks($modification); // All Computers
+    for($i = 0; $i < count($chunksComputers) ; $i++){
+        $chunkNumber = $i;
+        $computersIds = $chunksComputers[$i];
+        $computersIds = array_map("toMongoId", $computersIds);
+        requestGiveChunk($modification, $chunkNumber, $computersIds, $owner);
+    }
+}
 ?>
