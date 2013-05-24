@@ -69,6 +69,10 @@ class Watcher:
                               'size': str(int(file_size))
                               }
                     response = json_request(url, values)
+
+                    if (response['result'] == 'notEnoughSpace'):
+                        print_message("Not enough space. Space left to use " + str(response['spaceLeft']))
+                        return                        
                     
                     if (response['result'] != 'ok'):
                         print_message("Error sending information created about file " + path)
