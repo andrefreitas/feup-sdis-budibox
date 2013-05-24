@@ -8,6 +8,9 @@ import os
 import time
 import sys
 
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 class ClientDaemon:
     def __init__(self):
         self.init_home_dir()
@@ -18,7 +21,7 @@ class ClientDaemon:
         
     def init_home_dir(self):
         # Searchs for user home folder and creates budibox folder
-        system_enconding = sys.getfilesystemencoding()
+        system_enconding = sys.getfilesystemencoding() #mbcs
         self.budibox_home = expanduser("~") + "/budibox"
         self.budibox_home = self.budibox_home.decode(system_enconding)
         

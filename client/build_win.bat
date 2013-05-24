@@ -1,0 +1,1 @@
+cxfreeze client_daemon.py --target-dir dist --include-modules atexit,PySide.QtNetwork --icon qml/budibox.ico
