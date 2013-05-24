@@ -70,7 +70,17 @@ class ClientDaemon:
                 print_message("Error trying to get user files of " + login_box.client.get_email())                
             else:
                 print_message("Total files: " + str(len(response['files'])))
+                self.restore_file(response['files'])
             time.sleep(60)
+            
+    def restore_file(self, files):
+        list_dir = os.listdir(self.budibox_home)
+        for file in files:
+            file = file['path'].replace("/", "")
+            for f in list_dir:
+                if (f == file):
+                    print f + " fez match "
+        
         
     def keep_alive(self):
         while True:
