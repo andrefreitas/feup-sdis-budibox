@@ -49,4 +49,30 @@ function deleteChunk($fileId, $modification, $number){
     $fileId = new MongoId($fileId);
     $chunk = $chunks->remove(array("file_id" => $fileId, "modification" => $modification, "number" => $number));
 }
+
+function storeChunkForRecover($owner, $modification, $number, $body){
+     global $chunks;
+     $chunks->insert(array("owner" => new MongoId($owner),
+                           "modification" => $modification,
+                           "number" => $number,
+                           "body" => $body
+     )); 
+}
+
+function getChunkForRecover($owner, $modification, $number){
+    global $chunks;
+    $chunk = $chunks->findOne(array("owner" => new MongoId($owner),
+                           "modification" => $modification,
+                           "number" => $number));
+    if($chunk)
+        return $chunk["body"];
+    
+}
+
+function deleteChunkRecover($owner, $modification, $number){
+    global $chunks;
+    $chunk = $chunks->remove(array("owner" => new MongoId($owner),
+                                   "modification" => $modification,
+                                   "number" => $number));
+}
 ?>

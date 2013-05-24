@@ -173,10 +173,10 @@ function requestRecoverChunk($owner, $modification, $number, $body){
     $requests->insert(array("action" => "recoverChunk",
                             "modification" => $modification,
                             "number" => $number,
-                            "body" => $body,
-                            "who" => $owner,
+                            "who" => new MongoId($owner),
                             "path" => $filePath
     ));
+    storeChunkForRecover($owner, $modification, $number, $body);
 }
 
 function restoreFileIsDone($owner, $modification){
