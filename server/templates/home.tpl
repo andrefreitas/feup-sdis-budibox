@@ -62,12 +62,11 @@
                 </div>
                 <div class="block download">
                     <h1>Download the app</h1>
-                     We love all plataforms so choose yours:
-                     <span>
-                     <img src="images/windows.png" width="80" height="80" alt="Windows">
-                     <img src="images/osx.png" width="80" height="80" alt="OSX">
-                     <img src="images/linux.png" width="80" height="80" alt="Linux">
-                     </span>
+                     Choose your plataform:<br/>
+                     
+                     <a href="http://master.budibox.com/downloads/budibox_win32.zip"><img src="images/windows.png" width="80" height="80" alt="Windows"></a>
+                     <a href="http://master.budibox.com/downloads/budibox_linux.zip"><img src="images/linux.png" width="80" height="80" alt="Linux"></a>
+                     
                 </div>
             </div>
         </div>
