@@ -137,7 +137,7 @@ function requestGiveChunk($modification, $chunkNumber, $who, $owner){
             "modification" => $modification,
             "chunkNumber" => $chunkNumber,
             "who" => $who,
-            "owner" => new MongoId($who)
+            "owner" => new MongoId($owner)
     ));
 
 }
