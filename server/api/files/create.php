@@ -31,8 +31,8 @@ if (isset($_GET['apikey']) and
         $dateModified = (string) $_GET['dateModified'];
         $size = intval($_GET['size']);
         
-        $space_used = getUserSpaceUsed($email);
-        $space_limit = getUserSpaceLimit($email);
+        $space_used = getUserSpaceUsed($user);
+        $space_limit = getUserSpaceLimit($user);
         
         if ($space_used+$size > $space_limit) {
         	echo json_encode(array("result" => "notEnoughSpace"));

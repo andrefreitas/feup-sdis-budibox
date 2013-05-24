@@ -66,9 +66,11 @@ class Watcher:
                               'user': client.get_email(),
                               'modification': f.get_file_id(),
                               'dateModified': modification_date,
-                              'size': file_size
+                              'size': str(file_size)
                               }
                     response = json_request(url, values)
+                    
+                    print values
                     
                     if (response['result'] != 'ok'):
                         print_message("Error sending information created about file " + path)
