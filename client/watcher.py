@@ -53,7 +53,9 @@ class Watcher:
                     # Creates file information
                     f = File(path, client)
                     f.generate_file_id()
-                    
+                    f.get_salt()
+                    file_size = f.get_file_size()
+
                     # Gets relative_path location
                     relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
                     modification_date = f.get_modification_date().replace(" ", "T").split(".")[0] +"Z"
@@ -65,12 +67,7 @@ class Watcher:
                               'modification': f.get_file_id(),
                               'dateModified': modification_date
                               }
-                    
-                    print values
-                    
                     response = json_request(url, values)
-                    
-                    
                     
                     if (response['result'] != 'ok'):
                         print_message("Error sending information created about file " + path)

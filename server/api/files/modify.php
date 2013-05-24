@@ -34,7 +34,10 @@ if (isset($_GET['apikey']) and
             $actualModification = getFileModification($path, $user);
             if($modification != $actualModification){
                 $fileSize = getFileSize($path, $user);
-                addUserSpaceUsage($user, -$fileSize);
+                $hadSpace = addUserSpaceUsage($user, -$fileSize);
+                if (!$hadSpace) {
+                	echo json_encode(array("result" => "noSpace"));
+                }
                 setFileSize($path, $user, 0);
                 $status = getFileStatus($path, $user);
                 setFileModificationDate($path, $user, $dateModified);
