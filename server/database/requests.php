@@ -142,6 +142,15 @@ function requestGiveChunk($modification, $chunkNumber, $who, $owner){
 
 }
 
+function removeGiveChunkRequest($modification, $chunkNumber, $owner){
+    global $requests;
+    $requests->remove(array("action" => "giveChunk",
+                            "modification" => $modification,
+                            "chunkNumber" => $chunkNumber,
+                            "owner" => new MongoId($owner)
+    ));
+}
+
 function toMongoId($item){
     return new MongoId($item);
 }
@@ -156,5 +165,17 @@ function requestRestoreFileModification($modification, $owner){
         $computersIds = array_map("toMongoId", $computersIds);
         requestGiveChunk($modification, $chunkNumber, $computersIds, $owner);
     }
+}
+
+function requestRecoverChunk($owner, $modification, $number, $body){
+    global $requests;
+    $filePath = getFilePathByModification($modification);
+    $requests->insert(array("action" => "recoverChunk",
+                            "modification" => $modification,
+                            "number" => $number,
+                            "body" => $body,
+                            "who" => $owner,
+                            "path" => $filePath
+    ));
 }
 ?>

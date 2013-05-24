@@ -45,6 +45,13 @@ function setFileModificationDate($path, $user, $dateModified){
 
 }
 
+function getFilePathByModification($modification){
+    global $files;
+    $file = $files->findOne(array("modification" => $modification), array("path" => true));
+    if($file)
+        return $file["path"];
+} 
+
 function getFileModificationDate($path, $user){
     global $files;
     $dateModified = new MongoDate(strtotime($dateModified));
