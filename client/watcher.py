@@ -56,17 +56,14 @@ class Watcher:
                     
                     # Gets relative_path location
                     relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
-                    
-                    print f.get_modification_date().replace(" ", "T").split(".")[0]
-                    raw_input(">>")
-                    
+                    modification_date = f.get_modification_date().replace(" ", "T").split(".")[0] +"Z"
                     # Sends request to server with information about the new file
                     url = self.api+'files/create.php'
                     values = {'apikey': '12',
                               'path': relative_path,
                               'user': client.get_email(),
                               'modification': f.get_file_id(),
-                              'dateModified': f.get_modification_date().replace(" ", "T").split(".")[0]
+                              'dateModified': modification_date
                               }
                     
                     print values
@@ -181,18 +178,15 @@ class Watcher:
                     f.generate_file_id()
                     
                     # Gets relative_path location
-                    relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
-                    
-                    
-                    print f.get_modification_date().replace(" ", "T").split(".")[0]
-                    raw_input(">>")
+                    relative_path = path.split(self.path_to_watch)[1].replace("\\", "/") 
+                    modification_date = f.get_modification_date().replace(" ", "T").split(".")[0] +"Z"    
                     # Sends request to server with information about the new file
                     url = self.api+'files/modify.php'
                     values = {'apikey': '12',
                               'path': relative_path,
                               'user': client.get_email(),
                               'modification': f.get_file_id(),
-                              'dateModified': f.get_modification_date().replace(" ", "T").split(".")[0]
+                              'dateModified': modification_date
                               }
                     
                     response = json_request(url, values)
