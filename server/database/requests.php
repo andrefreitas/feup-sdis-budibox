@@ -178,4 +178,28 @@ function requestRecoverChunk($owner, $modification, $number, $body){
                             "path" => $filePath
     ));
 }
+
+function restoreFileIsDone($owner, $modification){
+    global $requests;
+    $giveChunk = $requests->findOne(array("action" => "giveChunk",
+                                          "modification" => $modification,
+                                          "owner" => new MongoId($owner)
+    ));
+    
+    $recoverChunk = $requests->findOne(array("action" => "recoverChunk",
+                                             "modification" => $modification,
+                                             "who" => new MongoId($owner)
+    ));
+    // True if there is no givechunk or recover chunk pending
+    return !($giveChunk or $recoverChunk);
+}
+
+function confirmRecoverChunk($owner, $modification, $chunkNumber ){
+    global $requests;
+    $requests->remove(array("action" => "recoverChunk",
+                            "modification" => $modification,
+                            "number" => $chunkNumber,
+                            "who" => new MongoId($owner)
+    ));
+}
 ?>
