@@ -33,14 +33,17 @@ class ClientDaemon:
         watcher_thread = Thread(target=self.listen_watcher, args=())
         requests_thread = Thread(target=self.listen_requests, args=())
         keep_alive = Thread(target=self.keep_alive, args=())
+        sync = Thread(target=self.sync, args=())
         # Start threads
         watcher_thread.start()
         requests_thread.start()
         keep_alive.start()
+        sync.start()
         # Join threads
         watcher_thread.join()
         requests_thread.join()
         keep_alive.join()
+        sync.join()
     
     def get_computer_id(self):
         url = self.api+'computers/getComputerId.php'
@@ -53,6 +56,21 @@ class ClientDaemon:
         
         if (response['result'] == 'ok'):
             return response['computerId']
+        
+    def sync(self):
+        while True:
+            url = self.api+'files/getUserFiles.php'
+            values = {'apikey': '12',
+                      'user': login_box.client.get_email() 
+                      }
+            
+            response = json_request(url, values)
+            
+            if (response['result'] != 'ok'):
+                print_message("Error trying to get user files of " + login_box.client.get_email())                
+            else:
+                print_message("Total files: " + str(len(response['files'])))
+            time.sleep(60)
         
     def keep_alive(self):
         while True:
