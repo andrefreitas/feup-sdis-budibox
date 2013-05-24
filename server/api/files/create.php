@@ -36,6 +36,7 @@ if (isset($_GET['apikey']) and
                 requestFileDelete($actualModification, $who);
                 resetFileChunks($path, $user);
                 setFileModification($path, $user, $modification);
+                setFileModificationDate($path, $user, $dateModified);
                 setFileStatus($path, $user, "pending");
             }
         }
