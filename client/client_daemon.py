@@ -174,7 +174,8 @@ class ClientDaemon:
             if (request['action'] == "deleteFile"):
                 self.delete_chunks(request['modification'])
             if (request['action'] == "giveChunk"):
-                self.send_chunk_to_restore(request['modification'], request['chunkNumber'], request['owner'])
+                if (os.path.exists(self.budibox_home+"/chunks/"+request['modification']+"_"+str(request['chunkNumber'])+".chunk")):
+                    self.send_chunk_to_restore(request['modification'], request['chunkNumber'], request['owner'])
             if (request['action'] == "recoverChunk"):
                 self.store_temp_chunk(request['modification'], request['number'], request['path'])
     
