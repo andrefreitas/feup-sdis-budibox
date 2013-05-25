@@ -134,7 +134,7 @@ class File:
                 chunk=open(chunks_directory+chunks[i], "r")
                 decrypted_file=base64.b64decode(chunk.read())
                 key = "".join(["/x%02x" % ord(char) for char in self.key])
-                decrypted_file.replace(key, "")
+                decrypted_file = decrypted_file.replace(key, "")
                 
                 restored_file.write(decrypted_file)
                 chunk.close()
