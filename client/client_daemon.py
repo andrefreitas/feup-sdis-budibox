@@ -79,11 +79,22 @@ class ClientDaemon:
     def restore_file(self, files):
         list_dir = os.listdir(self.budibox_home)
         for file in files:
-            file = file['path'].replace("/", "")
-            for f in list_dir:
-                if (f == file):
-                    print f + " fez match "
-        
+            print file
+            file = file['path']
+            print self.budibox_home+file
+            if os.path.isfile(self.budibox_home+file):
+                print "Existe " + file
+            
+            else:
+                url = self.api+'files/restoreFile.php'
+                values = {'apikey': '12',
+                          'computerId': self.computerId,
+                          'modification': file['modification'] 
+                          }
+                
+                response = json_request(url, values)
+                print "Send request restore "
+
         
     def keep_alive(self):
         while True:
