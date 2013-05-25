@@ -77,10 +77,10 @@ function getComputerLocationById($computerId){
         return array("lon" => $lon, "lat" => $lat);
     }
 }
-function getBestComputers($lat, $lon){
+function getBestComputers($lat, $lon, $size){
     global $computers;
     $geometry = array('$geometry' => array("type" => "Point", "coordinates" => array($lon, $lat)));
-    $statement = array("location" => array('$near' => $geometry), "status" => "on");
+    $statement = array("location" => array('$near' => $geometry), "status" => "on", "space.offer_remaining" => array('$gte' =>$size));
     $cursor =  $computers->find($statement);
     $data = array();
     foreach($cursor as $doc){

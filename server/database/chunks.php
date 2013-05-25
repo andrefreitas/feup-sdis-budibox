@@ -28,7 +28,8 @@ function putChunk($fileId, $modification, $number, $body, $lat, $lon){
                     ));
     
     // (2) Find the best computers from that location
-    $computersIds = getBestComputers($lat, $lon);
+    $size = strlen($body);
+    $computersIds = getBestComputers($lat, $lon,  $size);
     $who = array();
     foreach($computersIds as $computerId){
         $who[] = new MongoId($computerId);
