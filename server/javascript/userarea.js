@@ -29,7 +29,14 @@ $(document).ready(function(){
 		/* Bind delete event */
 		$('.active .file .actions button.delete').click(function(){
 			var file = $(this).parent().parent();
-			alert(getPath(file));
+			var path = getPath(file, 15),
+				status = "deleted",
+				user = getUserSession()["email"];
+			if (confirm('Are you sure you want to delete '+ path + ' ?')) { 
+					setFileStatus(user, path, status);
+					document.location.reload()
+				}
+		
 		});
 	}		
 	,function(){
@@ -40,6 +47,19 @@ $(document).ready(function(){
 	$('.deleted .file').hover(function(){
 		var actions = '<button type="button" class="restore">Restore</button> <button type="button" class="permanentDelete">Permanent Delete</button>';
 		$(this).children(".actions").html(actions);
+		
+		/* Bind delete event */
+		$('.deleted .file .actions button.restore').click(function(){
+			var file = $(this).parent().parent();
+			var path = getPath(file, 24),
+				status = "active",
+				user = getUserSession()["email"];
+			if (confirm('Are you sure you want to restore '+ path + ' ?')) { 
+					setFileStatus(user, path, status);
+					document.location.reload()
+				}
+		
+		});
 		
 	}		
 	,function(){
@@ -54,10 +74,10 @@ $(document).ready(function(){
 /*
  * Get path
  */
-function getPath(item){
+function getPath(item, removeLast){
 	var basePath = $('.path').text().trim();
 	var path = basePath + $(item).text();
-	return path.substring(0, path.length - 12);
+	return path.substring(0, path.length - removeLast);
 }
 
 /*
