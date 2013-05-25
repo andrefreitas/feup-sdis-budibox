@@ -22,7 +22,7 @@ restore_requests = {}
 class ClientDaemon:
     def __init__(self):
         self.init_home_dir()
-        self.api = "http://apolo.budibox.com/api/" 
+        self.api = "http://master.budibox.com/api/" 
         self.login = LoginBox()
         self.watcher = Watcher(self.budibox_home)
         
