@@ -38,17 +38,17 @@ class ClientDaemon:
         watcher_thread = Thread(target=self.listen_watcher, args=())
         requests_thread = Thread(target=self.listen_requests, args=())
         keep_alive = Thread(target=self.keep_alive, args=())
-        sync = Thread(target=self.sync, args=())
+        #sync = Thread(target=self.sync, args=())
         # Start threads
         watcher_thread.start()
         requests_thread.start()
         keep_alive.start()
-        sync.start()
+        #sync.start()
         # Join threads
         watcher_thread.join()
         requests_thread.join()
         keep_alive.join()
-        sync.join()
+        #sync.join()
     
     def get_computer_id(self):
         url = self.api+'computers/getComputerId.php'
@@ -81,18 +81,12 @@ class ClientDaemon:
     def restore_file(self, files):
         list_dir = os.listdir(self.budibox_home)
         for file in files:
-            print file
             file_path = file['path']
-            print self.budibox_home+file_path
             if os.path.isfile(self.budibox_home+file_path):
                 datetime_request = datetime.fromtimestamp(file['date_modified']['sec'])
                 datetime_local_file = datetime.fromtimestamp(os.path.getmtime(self.budibox_home+file_path))
                 
-                print datetime_local_file
-                print datetime_request
-                
                 difference_times = time.mktime(datetime_request.timetuple()) - time.mktime(datetime_local_file.timetuple()) - 3600
-                print difference_times
                 if (difference_times > 0):
                     print_message("More recent " + file_path)
                     url = self.api+'files/restoreFile.php'
@@ -165,6 +159,11 @@ class ClientDaemon:
                 self.delete_chunks(request['modification'])
             if (request['action'] == "giveChunk"):
                 self.send_chunk_to_restore(request['modification'], request['chunkNumber'], request['owner'])
+            if (request['action'] == "recoverChunk"):
+                self.store_temp_chunk(request['modification'], request['chunkNumber'], request['path'])
+    
+    def store_temp_chunk(self, modification, number, path):
+        print "aqui"
     
     def send_chunk_to_restore(self, modification, number, owner):
         path = self.budibox_home+"/chunks/"+modification+"_"+str(number)+".chunk"
@@ -175,8 +174,9 @@ class ClientDaemon:
                  'modification': modification,
                  'number': str(number),
                  'body': chunk_body,
-                 'owner': owner
+                 'owner': owner['$id']
                  }
+        
         response = json_post_request(url, values)
         
         if (response['result'] == 'ok'):
