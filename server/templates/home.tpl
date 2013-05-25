@@ -66,7 +66,7 @@
                      
                      <a href="http://master.budibox.com/downloads/budibox_win32.zip"><img src="images/windows.png" width="80" height="80" alt="Windows"></a>
                      <a href="http://master.budibox.com/downloads/budibox_linux.zip"><img src="images/linux.png" width="80" height="80" alt="Linux"></a>
-                     meow
+
                 </div>
             </div>
         </div>
