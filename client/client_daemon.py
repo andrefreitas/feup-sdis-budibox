@@ -10,10 +10,13 @@ import os
 import time
 import sys
 
-
+# Enconding
 reload(sys)
 sys.setdefaultencoding("utf-8")
+system_enconding = sys.getfilesystemencoding() #mbcs
 
+# Listen requests
+listen_requests_interval = 10
 restore_requests = {}
 class ClientDaemon:
     def __init__(self):
@@ -25,7 +28,7 @@ class ClientDaemon:
         
     def init_home_dir(self):
         # Searchs for user home folder and creates budibox folder
-        system_enconding = sys.getfilesystemencoding() #mbcs
+        
         self.budibox_home = expanduser("~") + "/budibox"
         self.home = expanduser("~")
         self.budibox_home = self.budibox_home.decode(system_enconding)
@@ -157,7 +160,7 @@ class ClientDaemon:
                 print_message("Requests: " + str(total_requests) )
                 if (total_requests > 0):
                     self.handle_request(response['requests'])
-            time.sleep(60)
+            time.sleep(listen_requests_interval)
 
     def handle_request(self, requests):
         for request in requests:
@@ -176,6 +179,7 @@ class ClientDaemon:
             os.makedirs(temp_dir)
         
         # Creates chunk
+        temp_dir = temp_dir.decode(system_enconding)
         chunk = open(temp_dir+modification+"_"+str(number)+".chunk", "w")
         
         # Gets chunk body
