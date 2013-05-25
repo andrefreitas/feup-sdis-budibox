@@ -48,7 +48,7 @@ $(document).ready(function(){
 		var actions = '<button type="button" class="restore">Restore</button> <button type="button" class="permanentDelete">Permanent Delete</button>';
 		$(this).children(".actions").html(actions);
 		
-		/* Bind delete event */
+		/* Bind restore event */
 		$('.deleted .file .actions button.restore').click(function(){
 			var file = $(this).parent().parent();
 			var path = getPath(file, 24),
@@ -56,6 +56,18 @@ $(document).ready(function(){
 				user = getUserSession()["email"];
 			if (confirm('Are you sure you want to restore '+ path + ' ?')) { 
 					setFileStatus(user, path, status);
+					document.location.reload()
+				}
+		
+		});
+		
+		/* Bind permanent delete event */
+		$('.deleted .file .actions button.permanentDelete').click(function(){
+			var file = $(this).parent().parent();
+			var path = getPath(file, 24),
+				user = getUserSession()["email"];
+			if (confirm('Are you sure you want to permanent delete '+ path + ' ?')) { 
+					permanentDeleteFile(user, path)
 					document.location.reload()
 				}
 		
@@ -115,6 +127,16 @@ function setFileStatus(user, path, status){
 		user: user,
         path: path,
         status: status
+	});
+	$.ajaxSetup( { "async": true } );
+	return $.parseJSON(data["responseText"]);
+}
+
+function permanentDeleteFile(user, path){
+	$.ajaxSetup( { "async": false } );
+	var data = $.getJSON("api/files/delete.php?",{
+		user: user,
+        path: path,
 	});
 	$.ajaxSetup( { "async": true } );
 	return $.parseJSON(data["responseText"]);
