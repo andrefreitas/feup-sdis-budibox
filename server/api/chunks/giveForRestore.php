@@ -12,21 +12,21 @@ require_once("configuration.php");
  * PARAMETERS: api/chunks/giveForRestore.php <apikey> <modification> <number> <body> <owner>
  */
 
-if (isset($_GET['apikey']) and
-    isset($_GET['modification']) and 
-    isset($_GET['number']) and 
-    isset($_GET['body']) and 
-    isset($_GET['owner'])
+if (isset($_POST['apikey']) and
+    isset($_POST['modification']) and 
+    isset($_POST['number']) and 
+    isset($_POST['body']) and 
+    isset($_POST['owner'])
 ){
-    $auth = (string) $_GET['apikey'];
+    $auth = (string) $_POST['apikey'];
     if ($auth != $apikey){
         echo json_encode(array("result" => "permissionDenied"));
     }
     else {
-        $modification = (string) $_GET['modification'];
-        $number = intval($_GET['number']);
-        $body = (string) $_GET['body'];
-        $owner = (string) $_GET['owner'];
+        $modification = (string) $_POST['modification'];
+        $number = intval($_POST['number']);
+        $body = (string) $_POST['body'];
+        $owner = (string) $_POST['owner'];
         removeGiveChunkRequest($modification, $number, $owner);
         requestRecoverChunk($owner, $modification, $number, $body);
         echo json_encode(array("result" => "ok"));

@@ -490,6 +490,20 @@ ul.navigation {
 	
 }
 
+.items .file .actions button.restore{
+	width: 100px;
+	background-color: #3281a9;
+	border: solid 1px #0c4c6d;
+	
+}
+
+.items .file .actions button.permanentDelete{
+	width: 150px;
+	background-color: #c55353;
+	border: solid 1px #5d2828;
+	
+}
+
 .items .file .actions button.delete{
 	width: 100px;
 	background-color: #c55353;
@@ -538,14 +552,13 @@ ul.navigation {
 }
 
 .items .deleted .file{
-	color: #808080;
+	
     background: url('../images/file-deleted.png') no-repeat;
 	background-position: 8px 5px;
 	padding-left: 50px;
 }
 
 .items .pending .file{
-	color: #808080;
 	background: url('../images/file-pending.png') no-repeat;
 	background-position: 8px 5px;
 	padding-left: 50px;

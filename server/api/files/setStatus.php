@@ -6,18 +6,29 @@ require_once("files.php");
 require_once("users.php");
 chdir("..");
 require_once("configuration.php");
+chdir("common");
+require_once("init.php");
 
 /**
  * DESCRIPTION: Updates the file status
  * PARAMETERS: api/files/setStatus.php <apikey> <path> <user> <status>
  */
-if (isset($_GET['apikey']) and
-    isset($_GET['path']) and
+if (isset($_GET['path']) and
     isset($_GET['user']) and
     isset($_GET['status'])
-){
-    $auth = (string) $_GET['apikey'];
-    if ($auth != $apikey){
+){    
+    
+    // --> begin authentication
+    $havePermission = false;
+    if(isset($_GET['apikey'])){
+        $auth = (string) $_GET['apikey'];
+        $havePermission = $auth==$apikey;
+    }else{
+         $havePermission = ($_SESSION["email"] == $_GET['user']);
+    }
+    // --> end authentication
+    
+    if (!$havePermission){
         echo json_encode(array("result" => "permissionDenied"));
     }
     else {
