@@ -311,8 +311,8 @@ ul.navigation {
 	background-position: 50px 15px;
 }
 
-.statsi{
-	background: url("../images/stats.png")  no-repeat;
+.peersi{
+	background: url("../images/pin-location.png")  no-repeat;
 	background-position: 50px 15px;
 }
 
@@ -562,4 +562,9 @@ ul.navigation {
 	background: url('../images/file-pending.png') no-repeat;
 	background-position: 8px 5px;
 	padding-left: 50px;
+}
+
+#map-canvas{
+	width: 100%;
+	height: 500px;
 }

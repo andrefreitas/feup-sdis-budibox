@@ -8,6 +8,9 @@
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
         <script src="javascript/scripts.js"></script>
+        <script type="text/javascript" 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhgL6nowR6e3uTj1RCEaSERFs_cm3tsYA&sensor=false">
+        </script>
         <script src="javascript/userarea.js"></script>
         <script src="javascript/reveal.js"></script>
         <meta charset="UTF-8" />
@@ -18,7 +21,7 @@
                 <ul class="navigation">
                     <li class="boxi">My Box</li>
                     <li class="accounti">My Account</li>
-                    <li class="statsi">Statistics</li>
+                    <li class="peersi">Peers Location</li>
                     <li class="feedbacki">Give Feedback</li>
                     <li class="logouti">Logout</li>
                 </ul>
@@ -83,6 +86,14 @@
                 <button>Send Feedback</button>
 			</form>
 			
+		</div>
+		
+	  <!-- Peers location modal -->
+      <div id="peersLocationModal" class="reveal-modal xlarge">
+			<h1>Peers location</h1>
+			<div id="map-canvas" ></div>
+			
+			<a class="close-reveal-modal">&#215;</a>
 		</div>
     </body>
 </html>

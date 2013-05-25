@@ -129,4 +129,20 @@ function ownerHaveSpaceToOffer($computerId, $size){
     }
     return false;
 }
+
+function getNearestComputers($lat, $lon, $limit=30){
+    global $computers;
+    $geometry = array('$geometry' => array("type" => "Point", "coordinates" => array($lon, $lat)));
+    $statement = array("location" => array('$near' => $geometry));
+    $cursor =  $computers->find($statement)->limit($limit);
+    $data = array();
+    foreach($cursor as $doc){
+        $name =  $doc["name"];
+        $lon =  $doc["location"]["coordinates"][0];
+        $lat =  $doc["location"]["coordinates"][1];
+        $data[] = array("name" => $name, "lon" => $lon, "lat" => $lat);
+       
+    }
+    return $data;
+}
 ?>

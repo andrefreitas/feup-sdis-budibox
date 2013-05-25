@@ -20,7 +20,7 @@ if (isset($_GET["apikey"]) and isset($_GET["user"]) and isset($_GET["computer"])
         $lon = floatval ($_GET["lon"]);
         $lat = floatval ($_GET["lat"]);
         if (computerExists($user, $computer)) {
-            setComputerLocation($user ,  $computer , $lon, $lat);
+            setComputerLocation($user ,  $computer , $lat, $lon);
             echo json_encode(array("result" => "ok"));
         } else {
             echo json_encode(array("result" => "error"));

@@ -17,7 +17,14 @@ $(document).ready(function(){
 		$('#giveFeedbackModal').reveal();
 	});
 	
+	$('.peersi').click(function(){
+		
+		
+		$('#peersLocationModal').reveal();
+		
+	});
 	
+	google.maps.event.addDomListener(window, 'load', showPeersMap);
 
 	/* Items li */
 	$('.directory').click(function(){
@@ -104,8 +111,8 @@ function getPath(item, removeLast){
 }
 
 /*
-* Get gravatar
-*/
+ * Get gravatar
+ */
 function getGravatar(email, size){
 	$.ajaxSetup( { "async": false } );
 	var data = $.getJSON("api/getGravatar.php?",{
@@ -158,6 +165,63 @@ function addFeedback(user, text){
 	var data = $.getJSON("api/addFeedback.php?",{
 		user: user,
         message: text,
+	});
+	$.ajaxSetup( { "async": true } );
+	return $.parseJSON(data["responseText"]);
+}
+
+
+/* Peers location */
+
+function showPeersMap(){
+	
+	/* My Location */
+	var lon = 0;
+	var lat = 0;
+	var computers = getNearestComputers(lat, lon)["computers"];
+	
+	var name = computers[0]["name"];
+	lon = computers[0]["lon"];
+     lat = computers[0]["lat"];
+	/* Create map */
+	var mapOptions = {
+			zoom: 4,
+		    center: mapsLocation(lat,lon),
+		    mapTypeId: google.maps.MapTypeId.ROADMAP
+	}
+	var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+	
+	/* Positions */
+	for (var i = 0; i < computers.length; i++) {
+		var name = computers[i]["name"];
+		var lon = computers[i]["lon"];
+		var lat = computers[i]["lat"];
+		putMapsMarker(map, name, lat, lon);
+	}
+	
+
+	
+
+}
+
+function mapsLocation(lat, lon){
+	return new google.maps.LatLng(lat, lon);
+}
+
+function putMapsMarker(map, text, lat, lon){
+	return new google.maps.Marker({
+	      position: mapsLocation(lat, lon),
+	      map: map,
+	      title: text
+		});
+	
+}
+
+function getNearestComputers(lat, lon){
+	$.ajaxSetup( { "async": false } );
+	var data = $.getJSON("api/computers/getNearestComputers.php?",{
+		lat: lat,
+        lon: lon,
 	});
 	$.ajaxSetup( { "async": true } );
 	return $.parseJSON(data["responseText"]);
