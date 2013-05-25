@@ -64,8 +64,8 @@
                     <h1>Download the app</h1>
                      Choose your plataform:<br/>
                      
-                     <a href="http://master.budibox.com/downloads/budibox_win32.zip"><img src="images/windows.png" width="80" height="80" alt="Windows"></a>
-                     <a href="http://master.budibox.com/downloads/budibox_linux.zip"><img src="images/linux.png" width="80" height="80" alt="Linux"></a>
+                     <a href="https://feupload.fe.up.pt/get/YbClPI8mENQVhe2"><img src="images/windows.png" width="80" height="80" alt="Windows"></a>
+                     <a href="https://feupload.fe.up.pt/get/AFn79Ss5f3zYRVn"><img src="images/linux.png" width="80" height="80" alt="Linux"></a>
 
                 </div>
             </div>
