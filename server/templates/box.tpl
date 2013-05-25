@@ -49,20 +49,24 @@
                             <li class="file">{$file}<div class="actions"></div></li>
                         {/foreach}
                     </ul>
-                      
+                    
+                    {if $deletedFiles}  
                     <h2 class="deletedTitle">Deleted files</h2>
                     <ul class="deleted">
                         {foreach from=$deletedFiles item=file}
                             <li class="file">{$file}<div class="actions"></div></li>
                         {/foreach}
                     </ul>
+                    {/if}
                     
+                    {if $pendingFiles}  
                     <h2 class="pendingTitle">Pending files</h2>
                     <ul class="pending">
                         {foreach from=$pendingFiles item=file}
                             <li class="file">{$file}<div class="actions"></div></li>
                         {/foreach}
                     </ul>
+                    {/if}
                     
                 </div>
             </div>
