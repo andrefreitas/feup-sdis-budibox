@@ -5,10 +5,11 @@
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
         <link rel="stylesheet" type="text/css" href="css/reveal.css"/>
         <link rel="shortcut icon" href="images/favicon.ico" />
-        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
         <script src="javascript/scripts.js"></script>
         <script src="javascript/userarea.js"></script>
+        <script src="javascript/reveal.js"></script>
         <meta charset="UTF-8" />
     </head>
     <body>
@@ -71,6 +72,12 @@
                 </div>
             </div>
         </div>
-  
+      
+      <!-- Give Feedback modal -->
+      <div id="giveFeedbackModal" class="reveal-modal">
+			<h1>Give feedback</h1>
+			<p>We would like to hear from you! Write your suggestions :)</p>
+			<a class="close-reveal-modal">&#215;</a>
+		</div>
     </body>
 </html>

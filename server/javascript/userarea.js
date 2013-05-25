@@ -13,6 +13,11 @@ $(document).ready(function(){
 		window.location.href="box.php";
 	});
 	
+	$('.feedbacki').click(function(){
+		$('#giveFeedbackModal').reveal();
+	});
+	
+	
 
 	/* Items li */
 	$('.directory').click(function(){
