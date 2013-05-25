@@ -3,10 +3,12 @@ from os.path import expanduser
 from watcher import Watcher
 from threading import Thread
 from utils import *
+from datetime import datetime
 import login_box
 import os
 import time
 import sys
+
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -80,11 +82,35 @@ class ClientDaemon:
         list_dir = os.listdir(self.budibox_home)
         for file in files:
             print file
-            file = file['path']
-            print self.budibox_home+file
-            if os.path.isfile(self.budibox_home+file):
-                print "Existe " + file
-            
+            file_path = file['path']
+            print self.budibox_home+file_path
+            if os.path.isfile(self.budibox_home+file_path):
+                datetime_request = datetime.fromtimestamp(file['date_modified']['sec'])
+                datetime_local_file = datetime.fromtimestamp(os.path.getmtime(self.budibox_home+file_path))
+                
+                print datetime_local_file
+                print datetime_request
+                
+                difference_times = time.mktime(datetime_request.timetuple()) - time.mktime(datetime_local_file.timetuple()) - 3600
+                print difference_times
+                if (difference_times > 0):
+                    print_message("More recent " + file_path)
+                    url = self.api+'files/restoreFile.php'
+                    values = {'apikey': '12',
+                              'computerId': self.computerId,
+                              'modification': file['modification'] 
+                              }
+                    
+                    response = json_request(url, values)
+                    
+                    if (response['result'] == 'ok'):
+                        print_message("Sent request of restore file of " + file_path)
+                        
+                    else:
+                        print_message("Error sending request of restore file of " + file_path)
+                else:
+                    print "older or equal"
+
             else:
                 url = self.api+'files/restoreFile.php'
                 values = {'apikey': '12',
@@ -93,9 +119,13 @@ class ClientDaemon:
                           }
                 
                 response = json_request(url, values)
-                print "Send request restore "
+                
+                if (response['result'] == 'ok'):
+                    print_message("Sent request of restore file of " + file_path)
+                    
+                else:
+                    print_message("Error sending request of restore file of " + file_path)
 
-        
     def keep_alive(self):
         while True:
             url = self.api+'computers/keepAlive.php'
