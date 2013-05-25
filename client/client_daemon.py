@@ -4,6 +4,7 @@ from watcher import Watcher
 from threading import Thread
 from utils import *
 from datetime import datetime
+from file import File
 import login_box
 import os
 import time
@@ -13,6 +14,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
+restore_requests = {}
 class ClientDaemon:
     def __init__(self):
         self.init_home_dir()
@@ -25,6 +27,7 @@ class ClientDaemon:
         # Searchs for user home folder and creates budibox folder
         system_enconding = sys.getfilesystemencoding() #mbcs
         self.budibox_home = expanduser("~") + "/budibox"
+        self.home = expanduser("~")
         self.budibox_home = self.budibox_home.decode(system_enconding)
         
         # Creates budibox folder
@@ -38,17 +41,17 @@ class ClientDaemon:
         watcher_thread = Thread(target=self.listen_watcher, args=())
         requests_thread = Thread(target=self.listen_requests, args=())
         keep_alive = Thread(target=self.keep_alive, args=())
-        #sync = Thread(target=self.sync, args=())
+        sync = Thread(target=self.sync, args=())
         # Start threads
         watcher_thread.start()
         requests_thread.start()
         keep_alive.start()
-        #sync.start()
+        sync.start()
         # Join threads
         watcher_thread.join()
         requests_thread.join()
         keep_alive.join()
-        #sync.join()
+        sync.join()
     
     def get_computer_id(self):
         url = self.api+'computers/getComputerId.php'
@@ -80,15 +83,37 @@ class ClientDaemon:
             
     def restore_file(self, files):
         list_dir = os.listdir(self.budibox_home)
+        global restore_requests
         for file in files:
             file_path = file['path']
             if os.path.isfile(self.budibox_home+file_path):
-                datetime_request = datetime.fromtimestamp(file['date_modified']['sec'])
+                timestamp = int (file['date_modified']['sec'])
+                datetime_request = datetime.fromtimestamp(timestamp)
                 datetime_local_file = datetime.fromtimestamp(os.path.getmtime(self.budibox_home+file_path))
                 
                 difference_times = time.mktime(datetime_request.timetuple()) - time.mktime(datetime_local_file.timetuple()) - 3600
                 if (difference_times > 0):
-                    print_message("More recent " + file_path)
+                    if not (file_path in restore_requests):   
+                        print_message("More recent " + file_path)
+                        url = self.api+'files/restoreFile.php'
+                        values = {'apikey': '12',
+                                  'computerId': self.computerId,
+                                  'modification': file['modification'] 
+                                  }
+                        
+                        response = json_request(url, values)
+                        
+                        if (response['result'] == 'ok'):
+                            print_message("Sent request of restore file of " + file_path)
+                            restore_requests[file_path] = False
+                            
+                        else:
+                            print_message("Error sending request of restore file of " + file_path)
+                else:
+                    print "older or equal"
+
+            else:
+                if not (file_path in restore_requests):
                     url = self.api+'files/restoreFile.php'
                     values = {'apikey': '12',
                               'computerId': self.computerId,
@@ -96,29 +121,12 @@ class ClientDaemon:
                               }
                     
                     response = json_request(url, values)
-                    
+                    restore_requests[file_path] = False
                     if (response['result'] == 'ok'):
                         print_message("Sent request of restore file of " + file_path)
                         
                     else:
                         print_message("Error sending request of restore file of " + file_path)
-                else:
-                    print "older or equal"
-
-            else:
-                url = self.api+'files/restoreFile.php'
-                values = {'apikey': '12',
-                          'computerId': self.computerId,
-                          'modification': file['modification'] 
-                          }
-                
-                response = json_request(url, values)
-                
-                if (response['result'] == 'ok'):
-                    print_message("Sent request of restore file of " + file_path)
-                    
-                else:
-                    print_message("Error sending request of restore file of " + file_path)
 
     def keep_alive(self):
         while True:
@@ -160,11 +168,88 @@ class ClientDaemon:
             if (request['action'] == "giveChunk"):
                 self.send_chunk_to_restore(request['modification'], request['chunkNumber'], request['owner'])
             if (request['action'] == "recoverChunk"):
-                self.store_temp_chunk(request['modification'], request['chunkNumber'], request['path'])
+                self.store_temp_chunk(request['modification'], request['number'], request['path'])
     
     def store_temp_chunk(self, modification, number, path):
-        print "aqui"
-    
+        temp_dir = self.home+"/chunks_restore/temp/"
+        if(not os.path.exists(temp_dir)):
+            os.makedirs(temp_dir)
+        
+        # Creates chunk
+        chunk = open(temp_dir+modification+"_"+str(number)+".chunk", "w")
+        
+        # Gets chunk body
+        url = self.api+'chunks/getRecover.php'
+        values= {'apikey': '12',
+                 'owner': self.computerId,
+                 'number': str(number),
+                 'modification': modification
+                 }
+
+        response = json_request(url, values)
+        
+        if (response['result'] == 'ok'):
+            chunk_body = response['chunk']
+            chunk.write(chunk_body)
+            chunk.close()
+            print_message("Chunk of " + modification + " and number " + str(number) + " writed!")
+        else:
+            chunk.close()
+            print_message("Error getting chunk of " + modification + " and number " + str(number) + " writed!")
+            
+        # Delete chunk recover
+        url = self.api+'chunks/deleteChunkRecover.php'
+        values= {'apikey': '12',
+                 'owner': self.computerId,
+                 'modification': modification,
+                 'number': str(number)
+                 }
+
+        response = json_request(url, values)
+        
+        if (response['result'] == 'ok'):
+            print_message("Deleted chunk recover !")
+        
+        else:
+            print_message("Error deleting chunk recover!")
+            return
+        
+        # Confirm chunk recover 
+        url = self.api+'requests/confirmRecoverChunk.php'
+        values= {'apikey': '12',
+                 'computerId': self.computerId,
+                 'modification': modification,
+                 'chunkNumber': str(number)
+                 }
+
+        response = json_request(url, values)
+        
+        if (response['result'] == 'ok'):
+            print_message("Confirmed chunk recover !")
+        
+        else:
+            print_message("Error confirming chunk recover!")
+            return
+        
+        # Checks if received all chunks
+        url = self.api+'files/restoreFileIsDone.php'
+        values= {'apikey': '12',
+                 'computerId': self.computerId,
+                 'modification': modification
+                 }
+
+        response = json_request(url, values)
+        
+        if (response['result'] == 'ok'):
+            if (response['isDone'] == True):
+                print_message("Restore file " + path + " is done!")
+                f = File(self.budibox_home+path, login_box.client, modification)
+                f.restore_file(temp_dir, self.budibox_home+path)
+                global restore_requests
+                del restore_requests[path]
+                print "Feito"
+                
+
     def send_chunk_to_restore(self, modification, number, owner):
         path = self.budibox_home+"/chunks/"+modification+"_"+str(number)+".chunk"
         chunk = open(path, "rb")
