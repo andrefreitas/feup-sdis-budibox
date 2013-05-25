@@ -83,9 +83,15 @@ $(document).ready(function(){
 		$(this).children(".actions").html("");
 	});
 	
-/*
- *  <button type="button" class="download">Download</button> <button type="button" class="delete">Delete</button>
- */
+	
+	/* Give Feedback */
+	$(".giveFeedback button").click(function(){
+		var text = $(".giveFeedback textarea").val();
+		user = getUserSession()["email"];
+		if(text.length > 1)
+			addFeedback(user, text);
+	});
+
 });
 
 /*
@@ -142,6 +148,16 @@ function permanentDeleteFile(user, path){
 	var data = $.getJSON("api/files/delete.php?",{
 		user: user,
         path: path,
+	});
+	$.ajaxSetup( { "async": true } );
+	return $.parseJSON(data["responseText"]);
+}
+
+function addFeedback(user, text){
+	$.ajaxSetup( { "async": false } );
+	var data = $.getJSON("api/addFeedback.php?",{
+		user: user,
+        message: text,
 	});
 	$.ajaxSetup( { "async": true } );
 	return $.parseJSON(data["responseText"]);

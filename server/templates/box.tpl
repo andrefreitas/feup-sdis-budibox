@@ -78,6 +78,11 @@
 			<h1>Give feedback</h1>
 			<p>We would like to hear from you! Write your suggestions :)</p>
 			<a class="close-reveal-modal">&#215;</a>
+			<form class="giveFeedback">
+    			<textarea rows="10" cols="62"></textarea>
+                <button>Send Feedback</button>
+			</form>
+			
 		</div>
     </body>
 </html>
