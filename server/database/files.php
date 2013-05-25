@@ -188,7 +188,7 @@ function removeFilesFromUser($userEmail){
 
 function getFilesFromUser($userEmail){
     global $files;
-    $cursor =  $files->find(array("user" => $userEmail, "status" =>"active"), array("path" => true, "status" => true, "date_modified" => true));
+    $cursor =  $files->find(array("user" => $userEmail, "status" =>"active"), array("path" => true, "status" => true, "date_modified" => true, "modification" => true));
     $data = array();
     foreach($cursor as $doc){
         $data[] = $doc;
