@@ -121,22 +121,21 @@ class File:
         f.close()        
         return i
     
-    """def restore_file(self, chunks_directory, destination_directory,expected_chunks):
-        chunks_directory=fix_directory_path(chunks_directory)
-        destination_directory=fix_directory_path(destination_directory)
-                
-        if (os.path.exists(destination_directory+self._name)):
-            os.remove(destination_directory+self._name)
-                
-        restored_file=open(destination_directory+self._name, "ab")
+    
+    def restore_file(self, chunks_directory, destination_directory):
+        if (os.path.exists(destination_directory)):
+            os.remove(destination_directory)
+
+        restored_file=open(destination_directory, "ab")
         chunks = self.fetch_chunks_restore(chunks_directory, self._file_id)
-        if(not (len(chunks)==expected_chunks)):
-                return False
             
         # Write chunks to file
         for i in range(len(chunks)):
-                chunk=open(chunks_directory+chunks[i], "rb")
-                decrypted_file=self.decoder.decrypt(chunk.read())
+                chunk=open(chunks_directory+chunks[i], "r")
+                decrypted_file=base64.b64decode(chunk.read())
+                key = "".join(["/x%02x" % ord(char) for char in self.key])
+                decrypted_file.replace(key, "")
+                
                 restored_file.write(decrypted_file)
                 chunk.close()
                 
@@ -154,7 +153,7 @@ class File:
             if (match):
                 chunks[int(match.group(1))] = file_name
                         
-        return chunks"""
+        return chunks
  
     def get_relative_path(self):
         return self.relative_path

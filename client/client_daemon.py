@@ -4,6 +4,7 @@ from watcher import Watcher
 from threading import Thread
 from utils import *
 from datetime import datetime
+from file import File
 import login_box
 import os
 import time
@@ -86,7 +87,8 @@ class ClientDaemon:
         for file in files:
             file_path = file['path']
             if os.path.isfile(self.budibox_home+file_path):
-                datetime_request = datetime.fromtimestamp(file['date_modified']['sec'])
+                timestamp = int (file['date_modified']['sec'])
+                datetime_request = datetime.fromtimestamp(timestamp)
                 datetime_local_file = datetime.fromtimestamp(os.path.getmtime(self.budibox_home+file_path))
                 
                 difference_times = time.mktime(datetime_request.timetuple()) - time.mktime(datetime_local_file.timetuple()) - 3600
@@ -238,7 +240,14 @@ class ClientDaemon:
 
         response = json_request(url, values)
         
-        print response
+        if (response['result'] == 'ok'):
+            if (response['isDone'] == True):
+                print_message("Restore file " + path + " is done!")
+                f = File(self.budibox_home+path, login_box.client, modification)
+                f.restore_file(temp_dir, self.budibox_home+path)
+                global restore_requests
+                del restore_requests[path]
+                print "Feito"
                 
 
     def send_chunk_to_restore(self, modification, number, owner):
