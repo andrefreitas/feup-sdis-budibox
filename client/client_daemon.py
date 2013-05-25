@@ -26,6 +26,7 @@ class ClientDaemon:
         # Searchs for user home folder and creates budibox folder
         system_enconding = sys.getfilesystemencoding() #mbcs
         self.budibox_home = expanduser("~") + "/budibox"
+        self.home = expanduser("~")
         self.budibox_home = self.budibox_home.decode(system_enconding)
         
         # Creates budibox folder
@@ -168,7 +169,7 @@ class ClientDaemon:
                 self.store_temp_chunk(request['modification'], request['number'], request['path'])
     
     def store_temp_chunk(self, modification, number, path):
-        temp_dir = self.budibox_home+"/chunks/temp/"
+        temp_dir = self.home+"/chunks_restore/temp/"
         if(not os.path.exists(temp_dir)):
             os.makedirs(temp_dir)
         
@@ -176,15 +177,13 @@ class ClientDaemon:
         chunk = open(temp_dir+modification+"_"+str(number)+".chunk", "w")
         
         # Gets chunk body
-        
         url = self.api+'chunks/getRecover.php'
         values= {'apikey': '12',
                  'owner': self.computerId,
                  'number': str(number),
                  'modification': modification
                  }
-        
-        print values
+
         response = json_request(url, values)
         
         if (response['result'] == 'ok'):
@@ -195,6 +194,52 @@ class ClientDaemon:
         else:
             chunk.close()
             print_message("Error getting chunk of " + modification + " and number " + str(number) + " writed!")
+            
+        # Delete chunk recover
+        url = self.api+'chunks/deleteChunkRecover.php'
+        values= {'apikey': '12',
+                 'owner': self.computerId,
+                 'modification': modification,
+                 'number': str(number)
+                 }
+
+        response = json_request(url, values)
+        
+        if (response['result'] == 'ok'):
+            print_message("Deleted chunk recover !")
+        
+        else:
+            print_message("Error deleting chunk recover!")
+            return
+        
+        # Confirm chunk recover 
+        url = self.api+'requests/confirmRecoverChunk.php'
+        values= {'apikey': '12',
+                 'computerId': self.computerId,
+                 'modification': modification,
+                 'chunkNumber': str(number)
+                 }
+
+        response = json_request(url, values)
+        
+        if (response['result'] == 'ok'):
+            print_message("Confirmed chunk recover !")
+        
+        else:
+            print_message("Error confirming chunk recover!")
+            return
+        
+        # Checks if received all chunks
+        url = self.api+'files/restoreFileIsDone.php'
+        values= {'apikey': '12',
+                 'computerId': self.computerId,
+                 'modification': modification
+                 }
+
+        response = json_request(url, values)
+        
+        print response
+                
 
     def send_chunk_to_restore(self, modification, number, owner):
         path = self.budibox_home+"/chunks/"+modification+"_"+str(number)+".chunk"
