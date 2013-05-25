@@ -13,6 +13,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
+restore_requests = {}
 class ClientDaemon:
     def __init__(self):
         self.init_home_dir()
@@ -38,17 +39,17 @@ class ClientDaemon:
         watcher_thread = Thread(target=self.listen_watcher, args=())
         requests_thread = Thread(target=self.listen_requests, args=())
         keep_alive = Thread(target=self.keep_alive, args=())
-        #sync = Thread(target=self.sync, args=())
+        sync = Thread(target=self.sync, args=())
         # Start threads
         watcher_thread.start()
         requests_thread.start()
         keep_alive.start()
-        #sync.start()
+        sync.start()
         # Join threads
         watcher_thread.join()
         requests_thread.join()
         keep_alive.join()
-        #sync.join()
+        sync.join()
     
     def get_computer_id(self):
         url = self.api+'computers/getComputerId.php'
@@ -80,6 +81,7 @@ class ClientDaemon:
             
     def restore_file(self, files):
         list_dir = os.listdir(self.budibox_home)
+        global restore_requests
         for file in files:
             file_path = file['path']
             if os.path.isfile(self.budibox_home+file_path):
@@ -88,7 +90,27 @@ class ClientDaemon:
                 
                 difference_times = time.mktime(datetime_request.timetuple()) - time.mktime(datetime_local_file.timetuple()) - 3600
                 if (difference_times > 0):
-                    print_message("More recent " + file_path)
+                    if not (file_path in restore_requests):   
+                        print_message("More recent " + file_path)
+                        url = self.api+'files/restoreFile.php'
+                        values = {'apikey': '12',
+                                  'computerId': self.computerId,
+                                  'modification': file['modification'] 
+                                  }
+                        
+                        response = json_request(url, values)
+                        
+                        if (response['result'] == 'ok'):
+                            print_message("Sent request of restore file of " + file_path)
+                            restore_requests[file_path] = False
+                            
+                        else:
+                            print_message("Error sending request of restore file of " + file_path)
+                else:
+                    print "older or equal"
+
+            else:
+                if not (file_path in restore_requests):
                     url = self.api+'files/restoreFile.php'
                     values = {'apikey': '12',
                               'computerId': self.computerId,
@@ -96,29 +118,12 @@ class ClientDaemon:
                               }
                     
                     response = json_request(url, values)
-                    
+                    restore_requests[file_path] = False
                     if (response['result'] == 'ok'):
                         print_message("Sent request of restore file of " + file_path)
                         
                     else:
                         print_message("Error sending request of restore file of " + file_path)
-                else:
-                    print "older or equal"
-
-            else:
-                url = self.api+'files/restoreFile.php'
-                values = {'apikey': '12',
-                          'computerId': self.computerId,
-                          'modification': file['modification'] 
-                          }
-                
-                response = json_request(url, values)
-                
-                if (response['result'] == 'ok'):
-                    print_message("Sent request of restore file of " + file_path)
-                    
-                else:
-                    print_message("Error sending request of restore file of " + file_path)
 
     def keep_alive(self):
         while True:
@@ -160,7 +165,7 @@ class ClientDaemon:
             if (request['action'] == "giveChunk"):
                 self.send_chunk_to_restore(request['modification'], request['chunkNumber'], request['owner'])
             if (request['action'] == "recoverChunk"):
-                self.store_temp_chunk(request['modification'], request['chunkNumber'], request['path'])
+                self.store_temp_chunk(request['modification'], request['number'], request['path'])
     
     def store_temp_chunk(self, modification, number, path):
         print "aqui"
