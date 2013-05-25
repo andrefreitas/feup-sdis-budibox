@@ -33,7 +33,11 @@ function createUser($name, $email, $password){
                          "registrationDate" => new MongoDate(),
                          "status" => "inactive",
                          "confirmationKey" => $confirmationKey,
-                         "space" => array("limit" => 5368709120, "offer" => 5368709120, "used" => 0, "offer_used" => 0)
+                         "space" => array("limit" => 5368709120, 
+                                          "used" => 0, 
+                                          "offer" => 5368709120,
+                                          "offer_used" => 0,
+                                          "offer_remaining" => 5368709120)
                    ));
 }
 
@@ -177,6 +181,13 @@ function addUserSpaceUsage($email, $space) {
 function incrementUserOfferUsage($email, $space) {
     global $users;
     $newdata = array('$inc' => array("space.offer_used" => $space));
+    $users->update(array("email" => $email), $newdata);
+    incrementUserOfferRemaining($email, -$space);
+}
+
+function incrementUserOfferRemaining($email, $space) {
+    global $users;
+    $newdata = array('$inc' => array("space.offer_remaining" => $space));
     $users->update(array("email" => $email), $newdata);
 }
 
