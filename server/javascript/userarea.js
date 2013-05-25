@@ -22,7 +22,7 @@ $(document).ready(function(){
 		window.location.href="box.php?dir=" + dir;
 	});
 	
-	$('.file').hover(function(){
+	$('.active .file').hover(function(){
 		var actions = '<button type="button" class="download">Download</button> <button type="button" class="delete">Delete</button>';
 		$(this).children(".actions").html(actions);
 	}		

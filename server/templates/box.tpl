@@ -41,7 +41,7 @@
                     <div class="path">
                     {$dir}
                     </div>
-                    <ul>
+                    <ul class="active">
                         {foreach from=$directories item=directory}
                             <li class="directory">{$directory}</li>
                         {/foreach}
@@ -49,7 +49,20 @@
                             <li class="file">{$file}<div class="actions"></div></li>
                         {/foreach}
                     </ul>
+                      
+                    <h2 class="deletedTitle">Deleted files</h2>
+                    <ul class="deleted">
+                        {foreach from=$deletedFiles item=file}
+                            <li class="file">{$file}<div class="actions"></div></li>
+                        {/foreach}
+                    </ul>
                     
+                    <h2 class="pendingTitle">Pending files</h2>
+                    <ul class="pending">
+                        {foreach from=$pendingFiles item=file}
+                            <li class="file">{$file}<div class="actions"></div></li>
+                        {/foreach}
+                    </ul>
                     
                 </div>
             </div>
