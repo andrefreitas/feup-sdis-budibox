@@ -539,8 +539,14 @@ ul.navigation {
 
 .items .deleted .file{
 	color: #808080;
+    background: url('../images/file-deleted.png') no-repeat;
+	background-position: 8px 5px;
+	padding-left: 50px;
 }
 
 .items .pending .file{
 	color: #808080;
+	background: url('../images/file-pending.png') no-repeat;
+	background-position: 8px 5px;
+	padding-left: 50px;
 }
