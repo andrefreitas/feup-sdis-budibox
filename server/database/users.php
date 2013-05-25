@@ -209,4 +209,12 @@ function deleteUser($email){
     removeFilesFromUser($email);
 }
 
+function userHaveSpaceToOffer($email, $size){
+    global $users;
+    $user = $users->findOne(array("email" => $email, "space.offer_remaining" => array('$gte' => $size)));
+    if($user)
+        return true;
+    return false;
+}
+
 ?>

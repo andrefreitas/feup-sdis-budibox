@@ -12,6 +12,7 @@
  * }
  */
 require_once("connection.php");
+require_once("users.php");
 
 /* Set computers collection */
 $computers = $db->computers; 
@@ -84,7 +85,10 @@ function getBestComputers($lat, $lon, $size){
     $cursor =  $computers->find($statement);
     $data = array();
     foreach($cursor as $doc){
-        $data[] = (string) $doc["_id"];
+        $computerId = (string) $doc["_id"];
+        if(ownerHaveSpaceToOffer($computerId , $size)){
+            $data[] = $computerId ;
+        }
     }
     return $data;
 }
@@ -113,5 +117,16 @@ function getComputersByStatus($status){
         $data[] = (string) $doc["_id"];
     }
     return $data;
+}
+
+function ownerHaveSpaceToOffer($computerId, $size){
+    global $computers;
+    $computerId = new MongoId($computerId);
+    $userEmail = $computers->findOne(array("_id" => $computerId), array("user" => true));
+    if($userEmail){
+        $userEmail = $userEmail["user"];
+        return userHaveSpaceToOffer($userEmail, $size);
+    }
+    return false;
 }
 ?>
