@@ -17,9 +17,11 @@ $(document).ready(function(){
 		$('#giveFeedbackModal').reveal();
 	});
 	
+	$('.accounti').click(function(){
+		$('#giveFeedbackModal').reveal();
+	});
+	
 	$('.peersi').click(function(){
-		
-		
 		$('#peersLocationModal').reveal();
 		
 	});
@@ -185,7 +187,7 @@ function showPeersMap(){
      lat = computers[0]["lat"];
 	/* Create map */
 	var mapOptions = {
-			zoom: 4,
+			zoom: 10,
 		    center: mapsLocation(lat,lon),
 		    mapTypeId: google.maps.MapTypeId.ROADMAP
 	}
@@ -199,9 +201,6 @@ function showPeersMap(){
 		putMapsMarker(map, name, lat, lon);
 	}
 	
-
-	
-
 }
 
 function mapsLocation(lat, lon){
