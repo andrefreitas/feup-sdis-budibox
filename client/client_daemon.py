@@ -168,8 +168,34 @@ class ClientDaemon:
                 self.store_temp_chunk(request['modification'], request['number'], request['path'])
     
     def store_temp_chunk(self, modification, number, path):
-        print "aqui"
-    
+        temp_dir = self.budibox_home+"/chunks/temp/"
+        if(not os.path.exists(temp_dir)):
+            os.makedirs(temp_dir)
+        
+        # Creates chunk
+        chunk = open(temp_dir+modification+"_"+str(number)+".chunk", "w")
+        
+        # Gets chunk body
+        
+        url = self.api+'chunks/getRecover.php'
+        values= {'apikey': '12',
+                 'owner': self.computerId,
+                 'number': str(number),
+                 'modification': modification
+                 }
+        
+        print values
+        response = json_request(url, values)
+        
+        if (response['result'] == 'ok'):
+            chunk_body = response['chunk']
+            chunk.write(chunk_body)
+            chunk.close()
+            print_message("Chunk of " + modification + " and number " + str(number) + " writed!")
+        else:
+            chunk.close()
+            print_message("Error getting chunk of " + modification + " and number " + str(number) + " writed!")
+
     def send_chunk_to_restore(self, modification, number, owner):
         path = self.budibox_home+"/chunks/"+modification+"_"+str(number)+".chunk"
         chunk = open(path, "rb")
