@@ -17,6 +17,7 @@ system_enconding = sys.getfilesystemencoding() #mbcs
 
 # Listen requests
 listen_requests_interval = 10
+sync_files_interval = 20
 restore_requests = {}
 class ClientDaemon:
     def __init__(self):
@@ -82,7 +83,7 @@ class ClientDaemon:
             else:
                 print_message("Total files: " + str(len(response['files'])))
                 self.restore_file(response['files'])
-            time.sleep(60)
+            time.sleep(sync_files_interval)
             
     def restore_file(self, files):
         list_dir = os.listdir(self.budibox_home)
@@ -90,6 +91,10 @@ class ClientDaemon:
         for file in files:
             file_path = file['path']
             if os.path.isfile(self.budibox_home+file_path):
+                if (file['status'] == 'deleted'):
+                    os.remove(self.budibox_home+file_path)
+                    break
+                
                 timestamp = int (file['date_modified']['sec'])
                 datetime_request = datetime.fromtimestamp(timestamp)
                 datetime_local_file = datetime.fromtimestamp(os.path.getmtime(self.budibox_home+file_path))
