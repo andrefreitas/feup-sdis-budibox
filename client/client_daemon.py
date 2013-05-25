@@ -163,6 +163,26 @@ class ClientDaemon:
                 self.store_chunk(request['chunkNumber'], request['modification'], request['fileId']) 
             if (request['action'] == "deleteFile"):
                 self.delete_chunks(request['modification'])
+            if (request['action'] == "giveChunk"):
+                self.send_chunk_to_restore(request['modification'], request['chunkNumber'], request['owner'])
+    
+    def send_chunk_to_restore(self, modification, number, owner):
+        path = self.budibox_home+"/chunks/"+modification+"_"+str(number)+".chunk"
+        chunk = open(path, "rb")
+        chunk_body = chunk.read()
+        url = self.api+'chunks/giveForRestore.php'
+        values= {'apikey': '12',
+                 'modification': modification,
+                 'number': str(number),
+                 'body': chunk_body,
+                 'owner': owner
+                 }
+        response = json_post_request(url, values)
+        
+        if (response['result'] == 'ok'):
+            print_message("Sent chunk for restore of " + path)
+        else:
+            print_message("Error sending chunk for restore of " + path)
     
     def delete_chunks(self, modification):
         list_dir = os.listdir(self.budibox_home+"/chunks/")
