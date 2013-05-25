@@ -121,7 +121,7 @@ class ClientDaemon:
                     print "older or equal"
 
             else:
-                if not (file_path in restore_requests):
+                if not (file_path in restore_requests) and file['status'] != 'deleted':
                     url = self.api+'files/restoreFile.php'
                     values = {'apikey': '12',
                               'computerId': self.computerId,
