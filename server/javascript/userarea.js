@@ -18,7 +18,7 @@ $(document).ready(function(){
 	});
 	
 	$('.accounti').click(function(){
-		$('#giveFeedbackModal').reveal();
+		$('#editAccountModal').reveal();
 	});
 	
 	$('.peersi').click(function(){
@@ -37,13 +37,13 @@ $(document).ready(function(){
 	
 	/* Mouse hover active file */
 	$('.active .file').hover(function(){
-		var actions = '<button type="button" class="download">Download</button> <button type="button" class="delete">Delete</button>';
+		var actions = '<button type="button" class="delete">Delete</button>';
 		$(this).children(".actions").html(actions);
 		
 		/* Bind delete event */
 		$('.active .file .actions button.delete').click(function(){
 			var file = $(this).parent().parent();
-			var path = getPath(file, 15),
+			var path = getPath(file, 6),
 				status = "deleted",
 				user = getUserSession()["email"];
 			if (confirm('Are you sure you want to delete '+ path + ' ?')) { 
@@ -100,6 +100,38 @@ $(document).ready(function(){
 		if(text.length > 1)
 			addFeedback(user, text);
 	});
+	
+	/* Offer spinner */
+	var spinner = $( "#spinner" ).spinner();
+	
+	/* Edit Account */
+	$(".editAccount button").click(function(){
+		var data = $(".editAccount").serializeArray();
+		var	name = data[0]["value"],
+			newEmail = data[1]["value"],
+			password = data[2]["value"],
+			offer = data[3]["value"],
+			email = data[4]["value"];
+		
+		// Set params
+		var params = {};
+		params["name"] = name;
+		params["email"] = email;
+		params["newEmail"] = newEmail;
+		params["offer"] = offer;
+		
+		if(password.length > 0){
+			params["password"] = password;
+		}
+		var emailRegex= /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+		if(!emailRegex.test(newEmail)){
+			alert("Invalid Email");
+		}
+		else{
+			updateUser(params);
+			alert("Changes done sucessfully!");
+		}
+	});
 
 });
 
@@ -132,6 +164,14 @@ function getUserSession(){
 	$.ajaxSetup( { "async": true } );
 	return $.parseJSON(data["responseText"]);
 }
+
+function updateUser(data){
+	$.ajaxSetup( { "async": false } );
+	var data = $.getJSON("api/users/update.php?",data);
+	$.ajaxSetup( { "async": true } );
+	return $.parseJSON(data["responseText"]);
+}
+
 
 function loadUserInfo(){
 	var info = getUserSession(),

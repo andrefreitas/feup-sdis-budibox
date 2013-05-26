@@ -209,6 +209,7 @@ function deleteUser($email){
     removeFilesFromUser($email);
 }
 
+
 function userHaveSpaceToOffer($email, $size){
     global $users;
     $user = $users->findOne(array("email" => $email, "space.offer_remaining" => array('$gte' => $size)));
@@ -217,4 +218,25 @@ function userHaveSpaceToOffer($email, $size){
     return false;
 }
 
+function updateUser($email, $data){
+    global $users;
+
+    if(isset($data["password"])){
+        $password = hash('sha256', $data["password"]);
+        $users->update(array("email" => $email), array('$set' => array("password" => $password)));
+    }
+    
+    if(isset($data["name"])){
+        $users->update(array("email" => $email), array('$set' => array("name" => $data["name"])));
+    }
+    
+    if(isset($data["offer"])){
+        $users->update(array("email" => $email), array('$set' => array("space.offer" => $data["offer"])));
+        $users->update(array("email" => $email), array('$set' => array("space.limit" => $data["offer"])));
+    }
+    
+    if(isset($data["email"])){
+        $users->update(array("email" => $email), array('$set' => array("email" => $data["email"])));
+    }
+}
 ?>

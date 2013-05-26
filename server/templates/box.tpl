@@ -32,6 +32,7 @@
                     <div class="info">
                      
                     </div>
+                    <div class="space"> <span>{$spaceUsed} % of {$spaceLimit} GB</span></div>
                 </div>
              </div>
         </div>
@@ -95,5 +96,22 @@
 			
 			<a class="close-reveal-modal">&#215;</a>
 		</div>
+		
+	<!-- Edit Account -->
+      <div id="editAccountModal" class="reveal-modal medium">
+			<h1>Edit Account</h1>
+			<form class="editAccount" method="post">
+			    <input type="text" name="name" placeholder="Your name" value="{$name}"/><br/>
+			    <input type="email" name="email" placeholder="Your email" value="{$email}"/><br/>
+			    <input type="password" name="password" placeholder="Type a new password"/><br/>
+			    <h2>Space Offer</h2>
+			    If you offer more space you increase your space limit in the cloud. So, you have unlimited space!<br/><br/>
+			    <input type="text" name="offer" placeholder="Offer value in GB" value="{$spaceOffer}"/> GB<br/><br/>
+			    <input type="hidden" name="oldEmail" value="{$email}"/>
+			    <button>Save Changes</button>
+			</form>
+			
+			<a class="close-reveal-modal">&#215;</a>
+	  </div>
     </body>
 </html>
