@@ -36,7 +36,7 @@ if (isset($_GET['path']) and isset($_GET['user'])
         $size = getFileSize($path, $user);
         if(count($who) >0)
             requestFileDelete($modification, $who);
-        addUserSpaceUsage($user, -$size);
+        // please don't remove space from the usage
         removeFile($path, $user);
         echo json_encode(array("result" => "ok"));
     }
