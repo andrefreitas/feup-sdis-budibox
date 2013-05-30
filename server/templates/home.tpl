@@ -65,7 +65,7 @@
                      Choose your plataform:<br/>
                      
                      <a href="https://feupload.fe.up.pt/get/hlk93W9eqrgt4di"><img src="images/windows.png" width="80" height="80" alt="Windows"></a>
-                     <a href="https://feupload.fe.up.pt/get/AFn79Ss5f3zYRVn"><img src="images/linux.png" width="80" height="80" alt="Linux"></a>
+                     <a href="https://feupload.fe.up.pt/get/uxpnOGGK7vR0hGD"><img src="images/linux.png" width="80" height="80" alt="Linux"></a>
 
                 </div>
             </div>
