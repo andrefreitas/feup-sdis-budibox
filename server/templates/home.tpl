@@ -4,9 +4,9 @@
         <title>Welcome to Budibox</title>
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
         <link rel="shortcut icon" href="images/favicon.ico" />
-        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
-        <script src="http://code.jquery.com/jquery-migrate-1.2.0.js"></script>
+        <script src="javascript/jquery-1.9.1.min.js"></script>
+        <script src="javascript/jquery-ui.min.js"></script>
+        <script src="javascript/jquery-migrate-1.2.0.js"></script>
         <script src="javascript/scripts.js"></script>
         <meta charset="UTF-8" />
     </head>
@@ -17,7 +17,7 @@
                     <form action="actions/login.php" onsubmit="return validateLogin()">
                         <input type="email" name="email" placeholder="Email" />
                         <input type="password" name="password" placeholder="Password"/>
-                        <input type="submit" value="LOGIN">                     
+                        <input type="submit" value="LOGIN">
                     </form>
                      <span class="forgot">Don't remember your password?</span>
                 </div>
@@ -27,23 +27,23 @@
             <div class="subnotifications"></div>
             <img src="images/clouds.png" alt ="Clouds">
             <div class="notifications">
-               {if isset($welcome) and $welcome eq 0} 
+               {if isset($welcome) and $welcome eq 0}
                  <div class="error">
                      Invalid registration key!
                  </div>
                 {/if}
-                {if isset($welcome) and $welcome eq 1} 
+                {if isset($welcome) and $welcome eq 1}
                  <div class="confirmation">
-                  Your registration has been confirmed :) 
+                  Your registration has been confirmed :)
                  </div>
-                {/if} 
-                {if isset($welcome) and $welcome eq 2} 
+                {/if}
+                {if isset($welcome) and $welcome eq 2}
                  <div class="confirmation">
                       That account was already active.
                  </div>
                 {/if}
             </div>
-  
+
             <div class="blocks">
                 <div class="block unlimited">
                     <h1>Unlimited cloud space!</h1>
@@ -63,13 +63,13 @@
                 <div class="block download">
                     <h1>Download the app</h1>
                      Choose your plataform:<br/>
-                     
+
                      <a href="https://feupload.fe.up.pt/get/hlk93W9eqrgt4di"><img src="images/windows.png" width="80" height="80" alt="Windows"></a>
                      <a href="https://feupload.fe.up.pt/get/uxpnOGGK7vR0hGD"><img src="images/linux.png" width="80" height="80" alt="Linux"></a>
 
                 </div>
             </div>
         </div>
-   
+
     </body>
 </html>

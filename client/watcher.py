@@ -8,16 +8,16 @@ import Tkinter
 
 
 class Watcher:
-    
+
     def __init__(self, path_to_watch):
         print_message("Watching " + path_to_watch)
-        self.api = "http://apolo.budibox.com/api/"
+        self.api = "https://andrefreitas.pt/budibox/api/"
         self.path_to_watch = path_to_watch.replace("\\", "/")
-        
+
     def start(self, client, computer_id):
         self.computer_id = computer_id
         before = self.files_to_timestamp(self.path_to_watch)
-        
+
         while 1:
             time.sleep (1)
             after = self.files_to_timestamp(self.path_to_watch)
@@ -29,20 +29,20 @@ class Watcher:
                     if os.path.getmtime(f) != before.get(f):
                         modified.append(f)
             # Handle Events
-            if added: 
+            if added:
                for path in added:
                    self.added(path, client)
-                
+
             if removed:
                  for path in removed:
                    self.removed(path, client)
-                   
+
             if modified:
                 for path in modified:
                     self.modified(path, client)
-    
+
             before = after
-        
+
     def added(self, path, client):
         path = path.replace("\\", "/")
         file_extension_pattern=self.path_to_watch+"/chunks"
@@ -51,7 +51,7 @@ class Watcher:
             if (re.search(file_extension_pattern,path) == None):
                 # Prints message of file added
                 print_message("Added: " + path)
-                
+
                 if (os.path.isfile(path)):
                     # Creates file information
                     f = File(path, client)
@@ -76,40 +76,40 @@ class Watcher:
                         print_message("Not enough space. Space left to use " + str(response['spaceLeft']))
                         window = Tkinter.Tk()
                         window.wm_withdraw()
-                        
+
                         tkMessageBox.showerror(title="Budibox", message="Not enough space! Space left to use " + str(response['spaceLeft']) + "bytes !")
-                        return                        
-                    
+                        return
+
                     if (response['result'] != 'ok'):
                         print_message("Error sending information created about file " + path)
                         return
-                    
+
                     print_message("Created file " + path + " successfully")
-                    
+
                     url = self.api+'files/getId.php'
                     values = {'apikey': '12',
                               'path': relative_path,
                               'user': client.get_email(),
                               }
-                    
+
                     response = json_request(url, values)
-                    
+
                     if (response['result'] != 'ok'):
                         print_message("Error getting fileId of " + path)
                         return
-                    
+
                     print_message("Get fileId of " + path + "successfully")
-                    
+
                     # Send information about chunks to server
                     db_file_id = response['id']
                     f.generate_chunks(db_file_id)
-            
+
     def removed(self, path, client):
         # Gets relative_path location
         relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
         path = path.replace("\\", "/")
         file_extension_pattern=self.path_to_watch+"/chunks"
-        
+
         if (re.search(file_extension_pattern,path) != None):
             print_message("Removed " +  path)
             # Send message of chunk deleted
@@ -122,34 +122,34 @@ class Watcher:
                       'number': chunk_number,
                       'computerId': self.computer_id
                       }
-            
+
             response = json_request(url, values)
-            
+
             if (response['result'] == 'ok'):
                 print_message("Deleted chunk successfully " + file_name)
-                
+
             else:
                 print_message("Error sending delete chunk message of " + file_name)
-        
+
         if (re.search("Thumsb.db", path) == None):
             print_message("Removed " +  path)
-            # Modify File Status 
+            # Modify File Status
             url = self.api+'files/setStatus.php'
             values = {'apikey': '12',
                       'path': relative_path,
                       'user': client.get_email(),
                       'status': 'deleted'
                       }
-            
+
             response = json_request(url, values)
-            
+
             if (response['result'] != 'ok'):
                 print_message("Error while trying to change file "+ path +" status")
                 return
-            
+
             print_message("Set status of file " + path + " to deleted")
-            
-        
+
+
     def modified(self, path, client):
         path = path.replace("\\", "/")
         file_extension_pattern=self.path_to_watch+"/chunks"
@@ -168,17 +168,17 @@ class Watcher:
                               'number': chunk_number,
                               'computerId': self.computer_id
                               }
-                    
+
                     response = json_request(url, values)
-                    
-                    
-                    
+
+
+
                     if (response['result'] == 'ok'):
                         print_message("Deleted chunk successfully " + file_name)
-                        
+
                     else:
                         print_message("Error sending delete chunk message of " + file_name)
-            else:   
+            else:
                 if (os.path.isfile(path)):
                     print_message("Modified " +  path)
                     # Creates file information
@@ -186,10 +186,10 @@ class Watcher:
                     f.generate_file_id()
                     f.get_salt()
                     file_size = f.get_file_size()
-                    
+
                     # Gets relative_path location
-                    relative_path = path.split(self.path_to_watch)[1].replace("\\", "/") 
-                    modification_date = f.get_modification_date().replace(" ", "T").split(".")[0] +"Z"    
+                    relative_path = path.split(self.path_to_watch)[1].replace("\\", "/")
+                    modification_date = f.get_modification_date().replace(" ", "T").split(".")[0] +"Z"
                     # Sends request to server with information about the new file
                     url = self.api+'files/modify.php'
                     values = {'apikey': '12',
@@ -199,40 +199,40 @@ class Watcher:
                               'dateModified': modification_date,
                               'size': str(int(file_size))
                               }
-                    
+
                     response = json_request(url, values)
-                    
+
                     if (response['result'] == 'notEnoughSpace'):
                         print_message("Not enough space. Space left to use " + str(response['spaceLeft']))
                         window = Tkinter.Tk()
                         window.wm_withdraw()
-                         
+
                         tkMessageBox.showerror(title="Budibox", message="Not enough space! Space left to use " + str(response['spaceLeft']) + "bytes !")
                         return
-                    
-                    
+
+
                     if (response['result'] != 'ok'):
                         print_message("Error sending information modify about file " + path)
                         return
-                        
+
                     print_message("Sent modify message of: " + path)
-                    
+
                     url = self.api+'files/getId.php'
                     values = {'apikey': '12',
                               'path': relative_path,
                               'user': client.get_email(),
                               }
-                    
+
                     response = json_request(url, values)
-                    
+
                     if (response['result'] != 'ok'):
                         print_message("Error getting fileId of " + path)
                         return
-                    
+
                     # Send information about chunks to server
                     db_file_id = response['id']
                     f.generate_chunks(db_file_id)
-        
+
     def files_to_timestamp(self, path):
         files = [os.path.join(path, f) for f in os.listdir(path)]
         i = 0
